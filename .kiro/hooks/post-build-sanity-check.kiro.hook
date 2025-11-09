@@ -1,0 +1,17 @@
+{
+  "enabled": true,
+  "name": "Post-Build UI Sanity Check",
+  "description": "After running npm run build, automatically start the production server, open it in Chrome DevTools, check the console for errors, run a performance trace, test the wallet connection flow, and report any issues found. Then stop the server.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      ".next/BUILD_ID",
+      ".next/build-manifest.json"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A production build has just completed. Please perform the following automated sanity checks:\n\n1. Start the production server using `npm start` (run in background)\n2. Wait for the server to be ready (typically localhost:3000)\n3. Open the application in Chrome with DevTools protocol enabled\n4. Navigate to the home page and check the browser console for any errors or warnings\n5. Run a Lighthouse performance trace focusing on:\n   - First Contentful Paint\n   - Time to Interactive\n   - Any console errors during page load\n6. Test the wallet connection flow:\n   - Check if WalletConnectButton renders without errors\n   - Verify no React hydration errors\n   - Check for any cryptography-related errors in console\n7. Navigate to the /create page and verify it loads without errors\n8. Compile a report with:\n   - Any console errors found (with stack traces)\n   - Performance metrics summary\n   - UI rendering issues detected\n   - Wallet integration status\n   - Overall pass/fail status\n9. Stop the production server\n\nIf any critical issues are found (console errors, failed renders, broken wallet integration), report them with severity levels and suggested fixes. Focus on client-side encryption functionality, Polkadot wallet integration, and Next.js hydration issues."
+  }
+}

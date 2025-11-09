@@ -1,0 +1,19 @@
+{
+  "enabled": true,
+  "name": "Environment Config Validator",
+  "description": "Validates .env files on save to ensure all required variables from .env.example are present, contract addresses are valid Polkadot format, RPC endpoints use wss:// protocol, and warns about demo mode or placeholder values",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/.env",
+      "**/.env.local",
+      "**/.env.development",
+      "**/.env.production"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A .env file has been modified. Please perform the following validation checks:\n\n1. Read the .env.example file to get the list of required environment variables\n2. Read the modified .env file and check that all required variables from .env.example are present\n3. Validate NEXT_PUBLIC_CONTRACT_ADDRESS:\n   - Check if it looks like a valid Polkadot address (should be SS58 format, typically starting with specific prefixes)\n   - Warn if it appears to be a placeholder or invalid format\n4. Validate NEXT_PUBLIC_RPC_ENDPOINT:\n   - Ensure it uses the wss:// protocol (not ws:// or http://)\n   - Warn if it's missing or uses incorrect protocol\n5. Check NEXT_PUBLIC_DEMO_MODE:\n   - Warn if it's set to \"true\" as this might be accidentally enabled\n6. Check for placeholder values:\n   - Look for common placeholder patterns like \"your-\", \"placeholder\", \"xxx\", \"TODO\", \"CHANGE_ME\", etc.\n   - Warn about any tokens or API keys that appear to be placeholder text\n\nProvide a clear summary of:\n- Missing required variables\n- Invalid or suspicious values\n- Security concerns (demo mode enabled, placeholder values)\n- Any validation errors found\n\nIf everything is valid, confirm that the environment configuration looks good."
+  }
+}

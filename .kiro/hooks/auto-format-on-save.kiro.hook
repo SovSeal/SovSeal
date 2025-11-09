@@ -1,0 +1,22 @@
+{
+  "enabled": true,
+  "name": "Auto-Format on Save",
+  "description": "When you save any code file (TypeScript, JavaScript, CSS, JSON, or Markdown), automatically format it with Prettier to keep your code style consistent across the project.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.js",
+      "**/*.jsx",
+      "**/*.css",
+      "**/*.json",
+      "**/*.md"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A code file has been saved. Please format it using Prettier to ensure consistent code style. Run the Prettier formatter on the changed file and apply the formatting. Make sure to respect the .prettierrc configuration and .prettierignore rules in the project."
+  }
+}

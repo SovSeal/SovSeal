@@ -1,0 +1,24 @@
+{
+  "enabled": true,
+  "name": "Documentation & JSDoc Checker",
+  "description": "Monitors TypeScript/JavaScript files for changes and checks if corresponding documentation needs updating. Flags missing JSDoc comments on public APIs to keep documentation accurate as the codebase evolves.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "lib/**/*.ts",
+      "lib/**/*.tsx",
+      "components/**/*.tsx",
+      "components/**/*.ts",
+      "hooks/**/*.ts",
+      "utils/**/*.ts",
+      "types/**/*.ts",
+      "app/**/*.tsx",
+      "app/**/*.ts"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Review the changed files and:\n1. Identify any public functions, classes, or exported APIs that are missing JSDoc comments\n2. Check if related documentation files (README.md files in the same directory or docs/ folder) need to be updated based on the code changes\n3. Flag any public interfaces or types that lack proper documentation\n4. Suggest what documentation updates are needed to keep docs synchronized with the code changes\n5. Prioritize service classes in lib/, exported components, and public utility functions\n\nProvide a concise summary of:\n- Missing JSDoc comments on public APIs\n- Documentation files that may need updates\n- Specific recommendations for keeping documentation accurate"
+  }
+}

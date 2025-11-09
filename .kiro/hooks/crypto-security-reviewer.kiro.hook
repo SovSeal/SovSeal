@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Crypto Code Security Reviewer",
+  "description": "Automatically reviews files in the lib/crypto folder for common cryptography mistakes like weak algorithms, hardcoded encryption keys, missing random number generation, or forgotten memory cleanup after handling sensitive data",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "lib/crypto/**/*"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Review the changed file for cryptography security issues. Check for:\n1. Weak or deprecated algorithms (anything other than AES-256-GCM, RSA-OAEP with SHA-256)\n2. Hardcoded encryption keys, IVs, or secrets\n3. Improper random number generation (must use crypto.getRandomValues())\n4. Missing memory cleanup after handling sensitive data (keys, plaintext)\n5. Insecure key derivation or storage\n6. Missing error handling for crypto operations\n7. Improper IV/nonce reuse\n8. Insufficient key lengths\n9. Missing authentication tags or integrity checks\n10. Exposure of sensitive data in logs or error messages\n\nProvide specific line-by-line feedback with severity levels (CRITICAL, HIGH, MEDIUM, LOW) and actionable remediation steps."
+  }
+}

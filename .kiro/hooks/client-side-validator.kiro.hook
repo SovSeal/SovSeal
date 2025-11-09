@@ -1,0 +1,23 @@
+{
+  "enabled": true,
+  "name": "Client-Side Only Validator",
+  "description": "Validates that files handling sensitive data (keys, wallet info, crypto operations) have the 'use client' directive and aren't accidentally using browser-only APIs like localStorage/sessionStorage in server components",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "lib/crypto/**/*.ts",
+      "lib/crypto/**/*.tsx",
+      "lib/wallet/**/*.ts",
+      "lib/wallet/**/*.tsx",
+      "components/wallet/**/*.tsx",
+      "components/wallet/**/*.ts",
+      "hooks/**/*.ts",
+      "hooks/**/*.tsx"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Review the modified file(s) and check:\n\n1. **'use client' directive requirement**: If the file uses any of these browser-only APIs, it MUST have 'use client' at the top:\n   - localStorage or sessionStorage\n   - window object\n   - Web Crypto API (crypto.subtle)\n   - Browser extension APIs (@polkadot/extension-dapp)\n   - Any React hooks (useState, useEffect, useContext, etc.)\n\n2. **Server component violations**: If the file does NOT have 'use client' directive, verify it's not using:\n   - localStorage/sessionStorage\n   - window object\n   - document object\n   - Web Crypto API\n   - Browser-specific APIs\n\n3. **Sensitive data handling**: For files in lib/crypto/, lib/wallet/, or components/wallet/:\n   - Ensure encryption/decryption operations are client-side only\n   - Verify private keys and sensitive data never leak to server components\n   - Check that wallet operations have 'use client' directive\n\nIf violations are found, provide:\n- Clear explanation of the issue\n- Exact location (file and line)\n- Suggested fix with code example\n- Security implications if applicable\n\nIf everything is correct, confirm the file properly uses client-side directives."
+  }
+}

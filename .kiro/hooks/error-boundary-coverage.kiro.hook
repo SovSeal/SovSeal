@@ -1,0 +1,18 @@
+{
+  "enabled": true,
+  "name": "Error Boundary Coverage Checker",
+  "description": "Monitors creation of new page and major component files to verify they're wrapped in error boundaries, preventing component crashes from breaking the entire crypto app",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "app/**/page.tsx",
+      "app/**/layout.tsx",
+      "components/**/*.tsx"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A new page or major component file has been created or modified. Please:\n\n1. Analyze the file to check if it's a new page component (in app/ directory) or a major component (in components/ directory)\n2. Verify if the component is wrapped in an error boundary or if its parent layout has error boundary protection\n3. Check if an error.tsx file exists in the same directory for page components\n4. For major components (especially wallet/, crypto-related, or data-fetching components), verify they have error handling\n5. If error boundary coverage is missing, provide specific recommendations on:\n   - Where to add error.tsx files for pages\n   - How to wrap components in error boundaries\n   - What error states to handle for crypto operations (wallet connection failures, transaction errors, etc.)\n6. Suggest appropriate fallback UI for the specific component type\n\nFocus on critical paths: wallet operations, blockchain interactions, and encryption services where failures could break the entire app."
+  }
+}

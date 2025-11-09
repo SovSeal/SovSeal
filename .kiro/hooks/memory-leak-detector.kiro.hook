@@ -1,0 +1,22 @@
+{
+  "enabled": true,
+  "name": "Memory Leak Detector",
+  "description": "Analyzes crypto and media handling files for common memory leak patterns including missing cleanup in useEffect, unreleased object URLs, crypto keys not being cleared, event listeners not removed, and timers not cancelled",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "lib/crypto/**/*.ts",
+      "lib/crypto/**/*.tsx",
+      "components/**/*.tsx",
+      "hooks/**/*.ts",
+      "hooks/**/*.tsx",
+      "lib/wallet/**/*.tsx",
+      "app/**/*.tsx"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Analyze the changed files for memory leak patterns. Check for:\n\n1. **useEffect cleanup**: Ensure all useEffect hooks return cleanup functions when they create subscriptions, timers, or event listeners\n2. **Object URLs**: Verify that createObjectURL() calls have corresponding revokeObjectURL() cleanup\n3. **Crypto keys**: Check that CryptoKey objects are explicitly cleared/nullified after use, especially in Web Crypto API operations\n4. **Event listeners**: Confirm all addEventListener() calls have matching removeEventListener() in cleanup\n5. **Timers**: Verify setTimeout/setInterval are cleared with clearTimeout/clearInterval\n6. **Media streams**: Ensure MediaStream tracks are stopped with track.stop() when no longer needed\n7. **Polkadot API subscriptions**: Check that blockchain subscriptions are unsubscribed in cleanup\n\nFor each issue found, provide:\n- File and line number\n- Description of the memory leak pattern\n- Suggested fix with code example\n- Severity (critical/warning/info)\n\nIf no issues are found, confirm the code follows proper cleanup patterns."
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "enabled": true,
+  "name": "Security Commit Guard",
+  "description": "Monitors all code changes to ensure no encryption keys, secrets, or plaintext sensitive data are being committed to git. Verifies all crypto operations stay client-side only and no keys appear in logs or error messages.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "lib/crypto/**/*",
+      "lib/wallet/**/*",
+      "lib/contract/**/*",
+      "lib/storage/**/*",
+      "components/**/*",
+      "app/**/*",
+      ".env.local",
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.js",
+      "**/*.jsx"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Review the changed files for security violations:\n\n1. **Check for hardcoded secrets/keys:**\n   - API keys, tokens, or credentials in code\n   - Private keys or encryption keys\n   - Passwords or authentication secrets\n   - Check against patterns like: \"key:\", \"secret:\", \"password:\", \"token:\", hex strings, base64 encoded data\n\n2. **Verify client-side only crypto:**\n   - All CryptoService and AsymmetricCrypto operations must use Web Crypto API\n   - No server-side encryption/decryption\n   - No API endpoints that handle keys or plaintext sensitive data\n   - Ensure 'use client' directive is present where needed\n\n3. **Check for key/secret exposure in logs:**\n   - console.log, console.error with sensitive data\n   - Error messages that might leak keys or plaintext\n   - Debug statements with encryption keys or private data\n\n4. **Verify .env.local is gitignored:**\n   - Ensure .env.local is not being committed\n   - Check that sensitive environment variables are not in code\n\n5. **Check for plaintext sensitive data:**\n   - Unencrypted message content in storage\n   - Keys stored in localStorage without encryption\n   - Sensitive data in component state that could be logged\n\nIf violations found, provide specific line numbers and remediation steps. If clean, confirm the commit is secure."
+  }
+}

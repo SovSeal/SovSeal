@@ -1,0 +1,18 @@
+{
+  "enabled": true,
+  "name": "IPFS Storage Validator",
+  "description": "Validates IPFS CID format, checks for Pinata fallback logic when Web3.Storage fails, and verifies uploaded files are accessible before continuing",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "lib/storage/**/*",
+      "components/storage/**/*",
+      "components/media/MediaUploader.tsx"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Review the storage-related code changes and verify:\n1. IPFS CIDs are properly validated using the correct format (CIDv0: Qm... base58, CIDv1: b... base32)\n2. There is fallback logic to Pinata API when Web3.Storage fails (check for try-catch blocks and alternative upload paths)\n3. After upload, the code verifies file accessibility by attempting to fetch/retrieve the file before marking the operation as successful\n4. Error handling is comprehensive for network failures, invalid CIDs, and inaccessible files\n5. Timeout mechanisms are in place for accessibility checks\n\nProvide specific feedback on any missing validations or fallback mechanisms."
+  }
+}

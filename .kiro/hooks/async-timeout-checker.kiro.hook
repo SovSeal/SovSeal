@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Async Operation Timeout Checker",
+  "description": "Scans for async operations (IPFS uploads, blockchain queries, wallet calls) that don't have timeout handling and suggests adding timeout wrappers to prevent the app from hanging indefinitely",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Analyze the modified files for async operations that lack timeout handling. Specifically look for:\n\n1. IPFS/Web3.Storage operations (uploads, pins, retrievals) without timeouts\n2. Polkadot.js API calls (blockchain queries, contract calls, transaction submissions) without timeouts\n3. Wallet extension calls (@polkadot/extension-dapp) without timeouts\n4. fetch() calls without AbortController or timeout\n5. Promise-based operations that could hang indefinitely\n\nFor each async operation found without timeout handling:\n- Identify the specific operation and location\n- Assess the risk of hanging (high for external services like IPFS, blockchain RPCs)\n- Suggest adding a timeout wrapper using Promise.race() or AbortController\n- Provide code examples showing how to add timeout handling\n- Recommend appropriate timeout durations based on operation type (e.g., 30s for IPFS uploads, 10s for blockchain queries, 5s for wallet calls)\n\nFocus on critical paths in:\n- lib/storage/IPFSService.ts (IPFS operations)\n- lib/contract/ContractService.ts (blockchain operations)\n- lib/wallet/WalletProvider.tsx (wallet operations)\n- components/media/MediaUploader.tsx (upload flows)\n- components/wallet/WalletConnectButton.tsx (connection flows)\n\nProvide actionable recommendations with code snippets for implementing timeout wrappers."
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "enabled": true,
+  "name": "Contract ABI Verification",
+  "description": "Monitors contract-related files and verifies that the ABI in the codebase matches the deployed contract on Westend testnet. Alerts if there's a mismatch that could cause runtime transaction failures.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "lib/contract/ContractService.ts",
+      "types/contract.ts",
+      "lib/contract/index.ts",
+      ".env.local"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A contract-related file has been modified. Please verify the following:\n\n1. Connect to the Westend testnet using the RPC endpoint from .env.local\n2. Fetch the contract metadata from the deployed contract at NEXT_PUBLIC_CONTRACT_ADDRESS\n3. Compare the ABI in the codebase (ContractService.ts and types/contract.ts) with the deployed contract's ABI\n4. Check for:\n   - Missing or extra methods\n   - Parameter type mismatches\n   - Return type differences\n   - Event signature changes\n5. If there's a mismatch, provide a detailed alert with:\n   - Specific differences found\n   - Which transactions/calls would fail\n   - Recommended actions to fix the mismatch\n6. If ABI matches, confirm verification passed\n\nFocus on preventing runtime transaction failures by catching ABI mismatches early."
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "enabled": true,
+  "name": "Plaintext Security Guard",
+  "description": "Monitors code changes for network calls, localStorage usage, and analytics to ensure no plaintext media, encryption keys, or sensitive data is transmitted or stored unencrypted. Enforces the \"no plaintext ever leaves device\" promise.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "lib/**/*.ts",
+      "lib/**/*.tsx",
+      "components/**/*.tsx",
+      "components/**/*.ts",
+      "app/**/*.tsx",
+      "app/**/*.ts",
+      "hooks/**/*.ts",
+      "utils/**/*.ts"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Scan the modified code for security violations:\n\n1. **Network Calls**: Check for fetch(), axios, XMLHttpRequest, or any HTTP requests that might send:\n   - Unencrypted media files (audio/video blobs)\n   - Encryption keys (AES keys, RSA private keys)\n   - Plaintext message content\n   - Decrypted data of any kind\n\n2. **localStorage/sessionStorage**: Verify that nothing stored includes:\n   - Plaintext encryption keys\n   - Unencrypted media data\n   - Decrypted message content\n   - Private keys in plaintext\n\n3. **Analytics/Logging**: Ensure no analytics, error tracking, or logging sends:\n   - Encryption keys\n   - Plaintext media\n   - Decrypted content\n   - Sensitive user data\n\n4. **IPFS/Web3.Storage**: Confirm only encrypted data is uploaded, never plaintext\n\n5. **Blockchain Transactions**: Verify only encrypted CIDs and metadata are sent, not plaintext content\n\nReport any violations with:\n- File and line number\n- Type of violation\n- Severity (CRITICAL/HIGH/MEDIUM)\n- Recommended fix\n- Reference to the \"guaranteed by math, not corporations\" promise\n\nIf no violations found, confirm the code maintains encryption guarantees."
+  }
+}

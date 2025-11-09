@@ -1,0 +1,18 @@
+{
+  "enabled": true,
+  "name": "Network Retry Logic Validator",
+  "description": "Validates that files making network calls to IPFS or blockchain RPC endpoints implement exponential backoff retry logic for handling transient failures",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "lib/storage/IPFSService.ts",
+      "lib/contract/ContractService.ts",
+      "lib/wallet/WalletProvider.tsx"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Review the modified file(s) for network calls to IPFS (Web3.Storage, Pinata) or blockchain RPC endpoints (Polkadot.js API). Verify that:\n\n1. All network operations implement retry logic with exponential backoff\n2. Transient failures (network timeouts, 429 rate limits, 503 service unavailable) are properly caught and retried\n3. Maximum retry attempts are defined (recommended: 3-5 attempts)\n4. Backoff delays increase exponentially (e.g., 1s, 2s, 4s, 8s)\n5. Optional jitter is added to prevent thundering herd\n6. Non-retryable errors (4xx client errors except 429) fail fast without retry\n7. Retry logic is documented with comments explaining the strategy\n\nIf retry logic is missing or inadequate, provide specific code suggestions showing:\n- How to implement exponential backoff helper function\n- Where to wrap network calls with retry logic\n- Appropriate error handling for different failure types\n- Configuration for retry attempts and backoff timing\n\nFocus on critical paths: IPFS uploads/downloads, blockchain transaction submission, RPC queries, and wallet connection attempts."
+  }
+}

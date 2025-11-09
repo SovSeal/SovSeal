@@ -1,0 +1,14 @@
+{
+  "enabled": true,
+  "name": "Auto-Lint on Save",
+  "description": "Automatically runs ESLint on TypeScript and TSX files when saved to catch code issues and apply auto-fixes. Shows a summary of any errors that cannot be automatically fixed.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": []
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A TypeScript or TSX file has been saved. Run ESLint on the modified file to check for code quality issues. Use `npm run lint` or run ESLint directly on the specific file. If there are auto-fixable issues, apply the fixes automatically. Provide a concise summary of:\n1. Any issues that were automatically fixed\n2. Any remaining errors or warnings that require manual attention\n3. Overall lint status (pass/fail)\n\nKeep the output brief and actionable."
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "enabled": true,
+  "name": "Network State Handler",
+  "description": "When saving blockchain-related files, verify they handle network disconnections, RPC endpoint failures, and network switches gracefully. Check for proper reconnection logic.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "lib/contract/**/*.ts",
+      "lib/wallet/**/*.tsx",
+      "lib/wallet/**/*.ts",
+      "components/wallet/**/*.tsx",
+      "types/wallet.ts",
+      "types/contract.ts"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Review the saved blockchain-related file for network resilience. Verify it includes:\n\n1. **Network Disconnection Handling**: Check for proper error handling when RPC endpoints become unavailable or WebSocket connections drop\n2. **RPC Endpoint Failures**: Ensure graceful degradation when the Polkadot RPC endpoint (NEXT_PUBLIC_RPC_ENDPOINT) fails or times out\n3. **Network Switch Detection**: Verify the code handles users switching between networks (e.g., Westend to other networks)\n4. **Reconnection Logic**: Look for automatic retry mechanisms, exponential backoff, or manual reconnection triggers\n5. **Connection State Management**: Check if connection status is tracked and exposed to UI components\n6. **Error Messages**: Ensure user-friendly error messages for network issues\n7. **Timeout Handling**: Verify appropriate timeouts for blockchain operations\n8. **Fallback Mechanisms**: Check for alternative RPC endpoints or graceful feature degradation\n\nProvide specific feedback on any missing network resilience patterns and suggest improvements with code examples."
+  }
+}

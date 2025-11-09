@@ -1,0 +1,20 @@
+{
+  "enabled": true,
+  "name": "Sensitive Data Leak Detector",
+  "description": "Automatically scans TypeScript, JavaScript, and JSON files for accidentally committed secrets like private keys, API tokens, wallet mnemonics, or hardcoded passwords whenever files are saved",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.js",
+      "**/*.jsx",
+      "**/*.json"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Scan the modified file for sensitive data leaks including:\n- Private keys (patterns like \"private_key\", \"privateKey\", hex strings 64+ chars, base64 encoded keys)\n- API tokens and secrets (patterns like \"api_key\", \"apiKey\", \"token\", \"secret\", \"bearer\")\n- Wallet mnemonics (12 or 24 word seed phrases)\n- Hardcoded passwords (patterns like \"password\", \"passwd\", \"pwd\" with values)\n- AWS/GCP/Azure credentials\n- Database connection strings with embedded credentials\n- JWT tokens\n- Cryptocurrency wallet addresses with associated private keys\n\nFor each file change, analyze the content line by line. If any suspicious patterns are found:\n1. Report the exact line number(s)\n2. Describe what type of sensitive data was detected\n3. Show the problematic code snippet (redacted if needed)\n4. Provide immediate remediation advice (use environment variables, .env files, secret management)\n\nIf no issues found, provide a brief confirmation that the file is clean. Be thorough but avoid false positives for legitimate test data or example placeholders."
+  }
+}

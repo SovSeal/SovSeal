@@ -1,0 +1,17 @@
+{
+  "enabled": true,
+  "name": "NPM Audit Crypto Security",
+  "description": "Runs npm audit when package files change and flags vulnerabilities in crypto-related packages like @polkadot packages or crypto libraries. Blocks high or critical vulnerabilities that could compromise the security model.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "package.json",
+      "package-lock.json"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Run `npm audit --json` and analyze the output. Focus specifically on vulnerabilities in crypto-related packages including:\n- @polkadot/* packages (@polkadot/api, @polkadot/extension-dapp, @polkadot/util-crypto)\n- @web3-storage/* packages\n- Any packages with \"crypto\", \"encryption\", \"cipher\", or \"key\" in their name\n- Dependencies of the above packages\n\nFor each vulnerability found:\n1. Report the package name, current version, and vulnerability severity\n2. Identify if it affects crypto-related functionality\n3. For HIGH or CRITICAL vulnerabilities in crypto packages: BLOCK and require immediate action\n4. For MODERATE vulnerabilities in crypto packages: WARN and recommend review\n5. Provide specific remediation steps (update commands, workarounds, or migration paths)\n\nOutput format:\n- Summary of total vulnerabilities by severity\n- Detailed list of crypto-related vulnerabilities with impact assessment\n- Clear BLOCK/WARN status for each issue\n- Actionable remediation steps\n- If blocking issues exist, prevent further development until resolved"
+  }
+}
