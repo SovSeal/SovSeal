@@ -16,7 +16,7 @@ export default function TestMediaPage() {
   // Upload progress state
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'success' | 'error'>('idle');
-  const [uploadProvider, setUploadProvider] = useState<'web3.storage' | 'pinata' | undefined>();
+  const [uploadProvider, setUploadProvider] = useState<'storacha' | undefined>();
   const [uploadError, setUploadError] = useState<string>();
 
   const handleRecordingComplete = (blob: Blob, type: 'audio' | 'video') => {
@@ -67,7 +67,7 @@ export default function TestMediaPage() {
 
     // Simulate provider selection
     setTimeout(() => {
-      setUploadProvider('web3.storage');
+      setUploadProvider('storacha');
     }, 1000);
 
     // Simulate completion or error
@@ -85,7 +85,7 @@ export default function TestMediaPage() {
         // Simulate fallback to Pinata
         setTimeout(() => {
           setUploadStatus('uploading');
-          setUploadProvider('pinata');
+          setUploadProvider('storacha');
           setUploadProgress(50);
           
           setTimeout(() => {

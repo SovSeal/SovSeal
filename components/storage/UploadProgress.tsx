@@ -185,7 +185,7 @@ export function UploadProgress({
       {/* Upload Info */}
       {status === 'uploading' && provider && (
         <p className="text-xs text-gray-500">
-          {provider === 'pinata' && 'Using fallback provider due to Web3.Storage unavailability'}
+          Uploading to {provider === 'storacha' ? 'Storacha Network' : 'IPFS'}
         </p>
       )}
     </div>

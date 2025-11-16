@@ -118,7 +118,7 @@ export default function SettingsPage() {
                   Reset Connection
                 </button>
                 <p className="mt-2 text-xs text-gray-500">
-                  Clear your Storacha authentication and re-connect. Use this if you're experiencing upload issues.
+                  Clear your Storacha authentication and re-connect. Use this if you&apos;re experiencing upload issues.
                 </p>
               </div>
             </div>

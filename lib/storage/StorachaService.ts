@@ -169,8 +169,9 @@ export class StorachaService {
       }
 
       // Use the first account
-      const account = accounts[accountDIDs[0]];
-      console.log("Storacha: Using account:", accountDIDs[0]);
+      const accountDID = accountDIDs[0] as `did:mailto:${string}:${string}`;
+      const account = accounts[accountDID];
+      console.log("Storacha: Using account:", accountDID);
 
       // Create space with name and account for recovery
       const space = await client.createSpace(spaceName, { account });

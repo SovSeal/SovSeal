@@ -32,21 +32,26 @@ export function useBlockchainConnection() {
 
   useEffect(() => {
     // Subscribe to connection state changes
-    const unsubscribe = ContractService.onConnectionChange((connected) => {
+    const listener = (connected: boolean) => {
       setIsConnected(connected);
       if (connected) {
         setIsReconnecting(false);
       }
-    });
+    };
+    
+    ContractService.addConnectionListener(listener);
 
     // Cleanup subscription on unmount
-    return unsubscribe;
+    return () => {
+      ContractService.removeConnectionListener(listener);
+    };
   }, []);
 
   const reconnect = async () => {
     setIsReconnecting(true);
     try {
-      await ContractService.reconnect();
+      await ContractService.disconnect();
+      await ContractService.getProvider();
     } catch (error) {
       console.error('Manual reconnection failed:', error);
       setIsReconnecting(false);

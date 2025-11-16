@@ -21,7 +21,7 @@ import { withTimeout, TIMEOUTS, TimeoutError } from "@/utils/timeout";
 const WalletContext = createContext<WalletContextValue | undefined>(undefined);
 
 const STORAGE_KEY = "futureproof_wallet_connection";
-const APP_NAME = "FutureProof";
+// const APP_NAME = "FutureProof"; // Reserved for future use
 
 interface WalletProviderProps {
   children: React.ReactNode;
@@ -113,6 +113,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
         window.ethereum.removeListener("chainChanged", handleChainChanged);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.isConnected, state.address]);
 
   const connect = useCallback(async (preferredAddress?: string) => {

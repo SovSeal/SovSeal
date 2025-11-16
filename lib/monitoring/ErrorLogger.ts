@@ -108,9 +108,9 @@ export class ErrorLogger {
    * - Datadog
    * - Custom logging endpoint
    */
-  private static sendToMonitoring(entry: ErrorLogEntry): void {
+  private static sendToMonitoring(_entry: ErrorLogEntry): void {
     // Placeholder for monitoring service integration
-    // Example: Sentry.captureException(entry);
+    // Example: Sentry.captureException(_entry);
   }
 
   /**
