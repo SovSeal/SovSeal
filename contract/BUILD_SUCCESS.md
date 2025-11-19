@@ -1,6 +1,6 @@
 # Contract Build Success! ✅
 
-The FutureProof smart contract has been successfully built and tested.
+The Lockdrop smart contract has been successfully built and tested.
 
 ## Build Summary
 

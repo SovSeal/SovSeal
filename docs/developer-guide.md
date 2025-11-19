@@ -1,4 +1,4 @@
-# FutureProof Developer Guide
+# Lockdrop Developer Guide
 
 ## Table of Contents
 
@@ -13,7 +13,7 @@
 
 ## Architecture Overview
 
-FutureProof follows a modular architecture with clear separation of concerns:
+Lockdrop follows a modular architecture with clear separation of concerns:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐

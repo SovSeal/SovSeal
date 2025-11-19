@@ -1,4 +1,4 @@
-# FutureProof - Current Status
+# Lockdrop - Current Status
 
 **Last Updated**: November 17, 2025  
 **Version**: 1.0.0  

@@ -1,4 +1,4 @@
-# FutureProof Contract Deployment Record
+# Lockdrop Contract Deployment Record
 
 ## Latest Deployment
 

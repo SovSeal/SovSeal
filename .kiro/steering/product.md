@@ -1,6 +1,6 @@
 # Product Overview
 
-FutureProof is a decentralized time-capsule application that enables users to create time-locked audio/video messages using client-side encryption, IPFS storage, and Polkadot blockchain.
+Lockdrop is a decentralized time-capsule application that enables users to create time-locked audio/video messages using client-side encryption, IPFS storage, and Polkadot blockchain.
 
 ## Core Value Proposition
 

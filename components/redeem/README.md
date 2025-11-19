@@ -1,6 +1,6 @@
 # Redeem Package Components
 
-Components for handling recipient-without-wallet flow in FutureProof.
+Components for handling recipient-without-wallet flow in Lockdrop.
 
 ## Overview
 

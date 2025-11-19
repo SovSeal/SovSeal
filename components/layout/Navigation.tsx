@@ -28,7 +28,7 @@ export function Navigation() {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center" aria-label="FutureProof home">
+          <Link href="/" className="flex items-center" aria-label="Lockdrop home">
             <Logo size="md" />
           </Link>
 

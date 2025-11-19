@@ -1,6 +1,6 @@
 # Dashboard Components
 
-This directory contains components for displaying and managing time-locked messages in the FutureProof application.
+This directory contains components for displaying and managing time-locked messages in the Lockdrop application.
 
 ## Components
 
@@ -122,4 +122,4 @@ Status updates automatically every 10 seconds to reflect time-based changes.
 
 ## LocalStorage
 
-Unlocked message IDs are stored in localStorage under the key `futureproof_unlocked_messages` to persist unlock state across sessions.
+Unlocked message IDs are stored in localStorage under the key `lockdrop_unlocked_messages` to persist unlock state across sessions.

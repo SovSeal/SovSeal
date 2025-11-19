@@ -320,7 +320,7 @@ But it's still **inside the Polkadot mall**, using:
 
 ### User Perspective
 ```
-1. Opens FutureProof app
+1. Opens Lockdrop app
 2. Connects Talisman wallet (Polkadot wallet)
 3. Creates time-locked message
 4. Pays with PAS tokens (Polkadot token)

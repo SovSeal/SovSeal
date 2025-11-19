@@ -18,22 +18,22 @@ echo ""
 
 # Check for message cache localStorage keys
 echo "2. Checking for message cache localStorage keys..."
-if grep -r "futureproof_messages" --include="*.ts" --include="*.tsx" --exclude-dir=node_modules . 2>/dev/null; then
-  echo "❌ FAIL: Found futureproof_messages localStorage usage"
+if grep -r "lockdrop_messages" --include="*.ts" --include="*.tsx" --exclude-dir=node_modules . 2>/dev/null; then
+  echo "❌ FAIL: Found lockdrop_messages localStorage usage"
   exit 1
 else
-  echo "✅ PASS: No futureproof_messages localStorage usage"
+  echo "✅ PASS: No lockdrop_messages localStorage usage"
 fi
 
 echo ""
 
 # Check for unlocked messages localStorage
 echo "3. Checking for unlocked messages localStorage..."
-if grep -r "futureproof_unlocked" --include="*.ts" --include="*.tsx" --exclude-dir=node_modules . 2>/dev/null; then
-  echo "❌ FAIL: Found futureproof_unlocked localStorage usage"
+if grep -r "lockdrop_unlocked" --include="*.ts" --include="*.tsx" --exclude-dir=node_modules . 2>/dev/null; then
+  echo "❌ FAIL: Found lockdrop_unlocked localStorage usage"
   exit 1
 else
-  echo "✅ PASS: No futureproof_unlocked localStorage usage"
+  echo "✅ PASS: No lockdrop_unlocked localStorage usage"
 fi
 
 echo ""
@@ -54,7 +54,7 @@ echo ""
 
 # Verify legitimate localStorage usage still exists
 echo "5. Verifying legitimate localStorage usage..."
-if ! grep -q "futureproof_storacha_auth" lib/storage/StorachaService.ts 2>/dev/null; then
+if ! grep -q "lockdrop_storacha_auth" lib/storage/StorachaService.ts 2>/dev/null; then
   echo "⚠️  WARNING: Storacha auth localStorage not found (should exist)"
 fi
 
@@ -62,5 +62,5 @@ echo ""
 echo "✅ All checks passed! localStorage cleanup is complete."
 echo ""
 echo "Legitimate localStorage usage (should remain):"
-echo "  - lib/storage/StorachaService.ts: futureproof_storacha_auth"
+echo "  - lib/storage/StorachaService.ts: lockdrop_storacha_auth"
 echo "  - lib/wallet/WalletProvider.tsx: Security cleanup only"

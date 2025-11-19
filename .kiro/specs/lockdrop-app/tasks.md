@@ -2,7 +2,7 @@
 
 ## Overview
 
-This implementation plan breaks down the FutureProof application into discrete, manageable coding tasks. Each task builds incrementally on previous work, ensuring a systematic approach from project setup through final deployment.
+This implementation plan breaks down the Lockdrop application into discrete, manageable coding tasks. Each task builds incrementally on previous work, ensuring a systematic approach from project setup through final deployment.
 
 ## Task List
 
@@ -238,7 +238,7 @@ This implementation plan breaks down the FutureProof application into discrete, 
 
 - [ ] 11. Design and implement UI/UX
   - [x] 11.1 Create branding and layout
-    - Design FutureProof logo
+    - Design Lockdrop logo
     - Create homepage with logo and tagline "Guaranteed by math, not corporations"
     - Build navigation header with wallet connection
     - Create footer with links

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 
-const WARNING_STORAGE_KEY = 'futureproof_key_backup_warning_shown';
+const WARNING_STORAGE_KEY = 'lockdrop_key_backup_warning_shown';
 
 export function KeyBackupWarning() {
   const [isOpen, setIsOpen] = useState(false);
@@ -52,7 +52,7 @@ export function KeyBackupWarning() {
                 <strong>Your wallet keys are the ONLY way to decrypt your messages.</strong>
               </p>
               <p>
-                If you lose access to your Talisman wallet or forget your password, your encrypted messages will be permanently inaccessible.
+                If you lose access to your Talisman wallet or forget your password, your Lockdrop messages will be permanently inaccessible.
               </p>
               <p className="font-semibold text-yellow-700">
                 Please ensure you have backed up your wallet recovery phrase in a secure location.

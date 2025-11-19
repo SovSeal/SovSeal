@@ -1,6 +1,6 @@
 # Edge Case Testing Guide
 
-This document provides a comprehensive guide for testing edge cases and error scenarios in the FutureProof application.
+This document provides a comprehensive guide for testing edge cases and error scenarios in the Lockdrop application.
 
 ## Requirements
 

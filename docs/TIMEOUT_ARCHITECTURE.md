@@ -1,6 +1,6 @@
 # Timeout Architecture
 
-Visual guide to timeout handling in FutureProof.
+Visual guide to timeout handling in Lockdrop.
 
 ## System Architecture
 

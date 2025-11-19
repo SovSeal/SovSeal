@@ -30,7 +30,7 @@ export interface AuthState {
 
 const MAX_RETRY_ATTEMPTS = 3;
 const INITIAL_RETRY_DELAY = 1000;
-const STORAGE_KEY = "futureproof_storacha_auth";
+const STORAGE_KEY = "lockdrop_storacha_auth";
 
 /**
  * StorachaService provides methods for uploading encrypted blobs to IPFS
@@ -157,7 +157,7 @@ export class StorachaService {
     }
 
     try {
-      const spaceName = name || "futureproof-space";
+      const spaceName = name || "lockdrop-space";
       console.log("Storacha: Creating space:", spaceName);
 
       // Get the accounts to use for space creation

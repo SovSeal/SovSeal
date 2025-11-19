@@ -1,10 +1,10 @@
-# FutureProof Smart Contract
+# Lockdrop Smart Contract
 
-This directory contains the Solidity smart contract for the FutureProof application, deployed to Passet Hub testnet via pallet-revive (PolkaVM).
+This directory contains the Solidity smart contract for the Lockdrop application, deployed to Passet Hub testnet via pallet-revive (PolkaVM).
 
 ## Overview
 
-The FutureProof smart contract stores metadata for time-locked encrypted messages on the Polkadot blockchain. It provides functionality to:
+The Lockdrop smart contract stores metadata for time-locked encrypted messages on the Polkadot blockchain (Passet Hub testnet). It provides functionality to:
 
 - Store message metadata (IPFS CIDs, unlock timestamps, sender/recipient info)
 - Query messages sent by a specific address

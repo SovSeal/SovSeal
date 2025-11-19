@@ -1,6 +1,6 @@
 # Error Handling Quick Reference
 
-Quick reference guide for using the error handling system in FutureProof.
+Quick reference guide for using the error handling system in Lockdrop.
 
 ## Basic Error Handling
 

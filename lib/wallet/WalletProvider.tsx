@@ -20,8 +20,8 @@ import { withTimeout, TIMEOUTS, TimeoutError } from "@/utils/timeout";
 
 const WalletContext = createContext<WalletContextValue | undefined>(undefined);
 
-const STORAGE_KEY = "futureproof_wallet_connection";
-// const APP_NAME = "FutureProof"; // Reserved for future use
+const STORAGE_KEY = "lockdrop_wallet_connection";
+// const APP_NAME = "Lockdrop"; // Reserved for future use
 
 interface WalletProviderProps {
   children: React.ReactNode;

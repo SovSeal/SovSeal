@@ -18,12 +18,11 @@ export function Footer() {
           {/* About Section */}
           <div>
             <h3 className="text-sm font-semibold text-gray-900 mb-3">
-              About FutureProof
+              About Lockdrop
             </h3>
             <p className="text-sm text-gray-600">
-              Decentralized time-capsule application with client-side
-              encryption, IPFS storage, and blockchain-enforced unlock
-              conditions.
+              Lockdrop: Time-locked messages guaranteed by cryptography and
+              blockchain consensus, not corporate promises.
             </p>
             <p className="text-xs text-gray-500 mt-2 italic">
               Guaranteed by math, not corporations
@@ -106,7 +105,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="mt-8 pt-6 border-t border-gray-200">
           <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
-            <p>© {currentYear} FutureProof. Open source and decentralized.</p>
+            <p>© {currentYear} Lockdrop. Open source and decentralized.</p>
             <div className="flex space-x-4 mt-4 md:mt-0">
               <a
                 href="https://github.com"

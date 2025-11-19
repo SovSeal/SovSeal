@@ -2,7 +2,7 @@
 
 ## Overview
 
-Comprehensive testing has been implemented for the FutureProof application, covering unit tests, integration tests, and manual testing procedures.
+Comprehensive testing has been implemented for the Lockdrop application, covering unit tests, integration tests, and manual testing procedures.
 
 ## Test Coverage
 
@@ -199,7 +199,7 @@ Potential areas for additional testing:
 
 ## Conclusion
 
-The FutureProof application has comprehensive test coverage across unit, integration, and manual testing. All 102 automated tests are passing, and a detailed manual testing guide is available for QA and user acceptance testing.
+The Lockdrop application has comprehensive test coverage across unit, integration, and manual testing. All 102 automated tests are passing, and a detailed manual testing guide is available for QA and user acceptance testing.
 
 The test suite ensures:
 - ✅ Core cryptographic operations work correctly

@@ -95,7 +95,7 @@ export function WalletConnectButton() {
                 Install a Wallet
               </h3>
               <p className="text-sm text-blue-800 mb-3">
-                FutureProof works best with Talisman wallet. MetaMask is also supported as an alternative.
+                Lockdrop works best with Talisman wallet. MetaMask is also supported as an alternative.
               </p>
               <div className="space-y-2">
                 <a

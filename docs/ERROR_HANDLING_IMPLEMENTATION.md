@@ -1,6 +1,6 @@
 # Error Handling Implementation
 
-This document describes the comprehensive error handling system implemented in FutureProof.
+This document describes the comprehensive error handling system implemented in Lockdrop.
 
 ## Overview
 

@@ -1,8 +1,8 @@
-# FutureProof Design Document
+# Lockdrop Design Document
 
 ## Overview
 
-FutureProof is a decentralized time-capsule application built with Next.js that enables users to create time-locked audio/video messages. The application prioritizes privacy through client-side encryption, decentralized storage via IPFS, and blockchain-enforced unlock conditions on Polkadot's Westend testnet.
+Lockdrop is a decentralized time-capsule application built with Next.js that enables users to create time-locked audio/video messages. The application prioritizes privacy through client-side encryption, decentralized storage via IPFS, and blockchain-enforced unlock conditions on Polkadot's Passet Hub testnet.
 
 The core principle is "Guaranteed by math, not corporations" - no plaintext media or encryption keys ever leave the user's browser, and all unlock conditions are enforced by blockchain consensus rather than centralized servers.
 

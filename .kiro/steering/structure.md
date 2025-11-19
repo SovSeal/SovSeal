@@ -3,7 +3,7 @@
 ## Directory Organization
 
 ```
-futureproof-app/
+lockdrop-app/
 ├── app/              # Next.js App Router pages and layouts
 ├── components/       # React components (organized by feature)
 ├── lib/              # Core services and business logic

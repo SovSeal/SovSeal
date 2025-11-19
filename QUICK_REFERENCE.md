@@ -76,7 +76,7 @@ localStorage.clear()
 
 ## Legitimate localStorage (Keep These!)
 
-1. **Storacha Auth**: `futureproof_storacha_auth` in `StorachaService.ts`
+1. **Storacha Auth**: `lockdrop_storacha_auth` in `StorachaService.ts`
 2. **Wallet Security**: Cleared on mount in `WalletProvider.tsx`
 
 ## Status

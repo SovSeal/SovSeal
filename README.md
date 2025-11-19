@@ -1,12 +1,12 @@
-# FutureProof
+# Lockdrop
 
 **Guaranteed by math, not corporations**
 
-A decentralized time-capsule application that enables users to create time-locked audio/video messages using client-side encryption, IPFS storage, and Polkadot blockchain.
+Lockdrop is a decentralized time-capsule application that enables users to create time-locked audio/video messages using client-side encryption, IPFS storage, and Polkadot blockchain.
 
 ## 🎯 Overview
 
-FutureProof is a privacy-first application that allows you to send messages to the future. Record or upload audio/video content, encrypt it locally in your browser, store it on decentralized IPFS, and set a future unlock time enforced by the Polkadot blockchain. No corporation, server, or third party can access your content before the unlock time—it's guaranteed by cryptography and blockchain consensus.
+Lockdrop is a privacy-first application that allows you to send messages to the future. Record or upload audio/video content, encrypt it locally in your browser, store it on decentralized IPFS, and set a future unlock time enforced by the Polkadot blockchain. No corporation, server, or third party can access your content before the unlock time—it's guaranteed by cryptography and blockchain consensus.
 
 ## ✨ Features
 
@@ -84,7 +84,7 @@ Before you begin, ensure you have the following installed and configured:
 
 ### Storacha Setup
 
-FutureProof uses Storacha Network for decentralized storage. To enable uploads:
+Lockdrop uses Storacha Network for decentralized storage. To enable uploads:
 
 1. Start the development server (see below)
 2. Navigate to **Settings** in the app
@@ -100,8 +100,8 @@ FutureProof uses Storacha Network for decentralized storage. To enable uploads:
 1. **Clone the repository:**
 
 ```bash
-git clone https://github.com/yourusername/futureproof-app.git
-cd futureproof-app
+git clone https://github.com/yourusername/lockdrop-app.git
+cd lockdrop-app
 ```
 
 2. **Install dependencies:**
@@ -198,7 +198,7 @@ npm run format
 ## Project Structure
 
 ```
-futureproof-app/
+lockdrop-app/
 ├── app/              # Next.js App Router pages
 ├── components/       # React components
 ├── lib/              # Core services (encryption, IPFS, contracts)
@@ -210,7 +210,7 @@ futureproof-app/
 
 ## 🔒 Privacy Guarantees
 
-FutureProof is designed with privacy as the foundation. Here's what makes it secure:
+Lockdrop is designed with privacy as the foundation. Here's what makes it secure:
 
 ### Client-Side Encryption
 
@@ -323,7 +323,7 @@ To ensure long-term access to your messages, export and back up the encrypted CI
 
 ## 📦 Smart Contract
 
-The FutureProof smart contract is written in Solidity 0.8.20 and deployed to Passet Hub testnet via pallet-revive (PolkaVM).
+The Lockdrop smart contract is written in Solidity 0.8.20 and deployed to Passet Hub testnet via pallet-revive (PolkaVM).
 
 ### Contract Details
 
@@ -427,7 +427,7 @@ const redeemPackage = {
 
 ### For Users
 
-- **[User Guide](docs/user-guide.md)**: Step-by-step tutorials for using FutureProof
+- **[User Guide](docs/user-guide.md)**: Step-by-step tutorials for using Lockdrop
 - **[FAQ](docs/user-guide.md#faq)**: Common questions and answers
 
 ### For Developers
@@ -435,8 +435,8 @@ const redeemPackage = {
 - **[RPC Endpoints Reference](docs/RPC_ENDPOINTS.md)**: Complete guide to Passet Hub RPC endpoints
 - **[Contract Deployment Guide](contract/DEPLOYMENT_GUIDE.md)**: Deploy Solidity contracts to Passet Hub
 - **[Developer Guide](docs/developer-guide.md)**: API reference, architecture, and technical details
-- **[Requirements](.kiro/specs/futureproof-app/requirements.md)**: Detailed requirements specification
-- **[Design](.kiro/specs/futureproof-app/design.md)**: Architecture and design decisions
+- **[Requirements](.kiro/specs/lockdrop-app/requirements.md)**: Detailed requirements specification
+- **[Design](.kiro/specs/lockdrop-app/design.md)**: Architecture and design decisions
 
 ### Additional Resources
 
@@ -469,9 +469,9 @@ MIT License - see [LICENSE](LICENSE) file for details
 
 ## 📞 Support
 
-- **Issues**: [GitHub Issues](https://github.com/yourusername/futureproof-app/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/futureproof-app/discussions)
-- **Email**: support@futureproof.example.com
+- **Issues**: [GitHub Issues](https://github.com/yourusername/lockdrop-app/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/yourusername/lockdrop-app/discussions)
+- **Email**: support@lockdrop.example.com
 
 ---
 

@@ -1,10 +1,10 @@
-# FutureProof User Guide
+# Lockdrop User Guide
 
-Welcome to FutureProof! This guide will help you get started with creating and receiving time-locked messages.
+Welcome to Lockdrop! This guide will help you get started with creating and receiving time-locked messages.
 
 ## Table of Contents
 
-1. [What is FutureProof?](#what-is-futureproof)
+1. [What is Lockdrop?](#what-is-lockdrop)
 2. [Getting Started](#getting-started)
 3. [Connecting Your Wallet](#connecting-your-wallet)
 4. [Creating Time-Locked Messages](#creating-time-locked-messages)
@@ -14,9 +14,9 @@ Welcome to FutureProof! This guide will help you get started with creating and r
 8. [Key Backup](#key-backup)
 9. [FAQ](#faq)
 
-## What is FutureProof?
+## What is Lockdrop?
 
-FutureProof is a decentralized application that lets you send messages to the future. You can:
+Lockdrop is a decentralized application that lets you send messages to the future. You can:
 
 - **Record or upload** audio/video messages
 - **Set an unlock time** when the message can be viewed
@@ -37,7 +37,7 @@ Your messages are encrypted in your browser, stored on decentralized IPFS, and u
 
 ### What You'll Need
 
-Before using FutureProof, make sure you have:
+Before using Lockdrop, make sure you have:
 
 1. **A modern web browser**
    - Chrome, Firefox, or Edge (recommended)
@@ -99,12 +99,12 @@ You need WND tokens to send messages on the Westend testnet:
 - Send your address in the chat
 - The bot will send you tokens
 
-### Step 4: Connect to FutureProof
+### Step 4: Connect to Lockdrop
 
-1. Open FutureProof in your browser
+1. Open Lockdrop in your browser
 2. Click "Connect Wallet" button
 3. Talisman will pop up asking for permission
-4. Click "Connect" to authorize FutureProof
+4. Click "Connect" to authorize Lockdrop
 5. Select the account you want to use
 6. You're connected! Your address will appear in the header
 
@@ -293,7 +293,7 @@ You CANNOT unlock if:
 ### Step 2: Verify and Decrypt
 
 **Automatic Process:**
-1. FutureProof verifies the unlock timestamp
+1. Lockdrop verifies the unlock timestamp
 2. Downloads encrypted key from IPFS
 3. Talisman decrypts the key using your private key
 4. Downloads encrypted media from IPFS
@@ -361,9 +361,9 @@ When you're done:
 
 ## Privacy Features
 
-### What Makes FutureProof Private?
+### What Makes Lockdrop Private?
 
-FutureProof is designed with privacy as the foundation. Here's how your data is protected:
+Lockdrop is designed with privacy as the foundation. Here's how your data is protected:
 
 ### 1. Client-Side Encryption
 
@@ -418,7 +418,7 @@ FutureProof is designed with privacy as the foundation. Here's how your data is 
 
 ### 4. Zero-Knowledge Design
 
-**What FutureProof NEVER sees:**
+**What Lockdrop NEVER sees:**
 - Your unencrypted media
 - Your encryption keys
 - Your private keys (always in Talisman)
@@ -476,7 +476,7 @@ FutureProof is designed with privacy as the foundation. Here's how your data is 
 
 ### Verifying Privacy
 
-You can verify FutureProof's privacy claims:
+You can verify Lockdrop's privacy claims:
 
 1. **Open Source Code**: Review on GitHub
 2. **Network Inspector**: Check browser DevTools
@@ -580,7 +580,7 @@ witch collapse practice feed shame open despair creek road again ice least
    - Not with anyone, ever
 
 2. **Beware of Phishing**
-   - FutureProof will never ask for your seed phrase
+   - Lockdrop will never ask for your seed phrase
    - Talisman will never ask for it outside the wallet
    - No legitimate service needs your seed phrase
 
@@ -624,17 +624,17 @@ witch collapse practice feed shame open despair creek road again ice least
 - [ ] Inheritance plan in place (optional)
 - [ ] Never stored digitally or online
 
-**Remember: Your seed phrase is your responsibility. FutureProof cannot help you recover it!**
+**Remember: Your seed phrase is your responsibility. Lockdrop cannot help you recover it!**
 
 
 ## FAQ
 
 ### General Questions
 
-**Q: What is FutureProof?**  
-A: FutureProof is a decentralized application for creating time-locked audio/video messages. Messages are encrypted in your browser, stored on IPFS, and unlock times are enforced by the Polkadot blockchain.
+**Q: What is Lockdrop?**  
+A: Lockdrop is a decentralized application for creating time-locked audio/video messages. Messages are encrypted in your browser, stored on IPFS, and unlock times are enforced by the Polkadot blockchain.
 
-**Q: Is FutureProof free to use?**  
+**Q: Is Lockdrop free to use?**  
 A: The application is free, but you need Westend testnet tokens (WND) to send messages. These are free from the faucet. For mainnet deployment, you'd need real DOT tokens.
 
 **Q: Do I need to create an account?**  
@@ -716,14 +716,14 @@ A: IPFS is decentralized and distributed. Content is stored on multiple nodes. I
 
 ### Technical Questions
 
-**Q: What encryption does FutureProof use?**  
+**Q: What encryption does Lockdrop use?**  
 A: AES-256-GCM for content encryption and RSA-OAEP (or X25519 ECDH) for key encryption. These are industry-standard, battle-tested algorithms.
 
 **Q: Where is my data stored?**  
 A: Encrypted content is stored on IPFS (via Web3.Storage). Metadata is stored on the Polkadot blockchain. Nothing is stored on centralized servers.
 
-**Q: Can FutureProof see my messages?**  
-A: No. FutureProof is a client-side application. All encryption happens in your browser. We never see your plaintext content or encryption keys.
+**Q: Can Lockdrop see my messages?**  
+A: No. Lockdrop is a client-side application. All encryption happens in your browser. We never see your plaintext content or encryption keys.
 
 **Q: What is IPFS?**  
 A: InterPlanetary File System—a decentralized storage network. Files are distributed across many nodes and addressed by content hash (CID).
@@ -772,10 +772,10 @@ A: They can access your wallet and decrypt your messages. Treat your seed phrase
 **Q: Can the government access my messages?**  
 A: Not without your private key. The encryption is end-to-end. Even if they seize servers, they only get encrypted data.
 
-**Q: Is FutureProof audited?**  
+**Q: Is Lockdrop audited?**  
 A: The code is open source on GitHub for community review. Professional security audits may be conducted in the future.
 
-**Q: Can I trust FutureProof?**  
+**Q: Can I trust Lockdrop?**  
 A: You don't have to trust us—you can verify! The code is open source, encryption happens client-side, and the blockchain is transparent.
 
 ---
@@ -807,8 +807,8 @@ A: Check this user guide first. For technical issues, visit our GitHub repositor
 **Q: How do I report a bug?**  
 A: Open an issue on our GitHub repository with details about the problem, steps to reproduce, and your browser/OS information.
 
-**Q: Can I contribute to FutureProof?**  
-A: Yes! FutureProof is open source. Check the GitHub repository for contribution guidelines.
+**Q: Can I contribute to Lockdrop?**  
+A: Yes! Lockdrop is open source. Check the GitHub repository for contribution guidelines.
 
 **Q: Where can I learn more?**  
 A: Visit our documentation:
@@ -849,4 +849,4 @@ A: Visit our documentation:
 
 ---
 
-**Thank you for using FutureProof! Your privacy is guaranteed by math, not corporations.**
+**Thank you for using Lockdrop! Your privacy is guaranteed by math, not corporations.**

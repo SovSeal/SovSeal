@@ -1,6 +1,6 @@
-# FutureProof Contract Deployment Guide - Passet Hub
+# Lockdrop Contract Deployment Guide - Passet Hub
 
-This guide walks you through deploying the FutureProof Solidity smart contract to Passet Hub testnet via pallet-revive (PolkaVM).
+This guide walks you through deploying the Lockdrop Solidity smart contract to Passet Hub testnet via pallet-revive (PolkaVM).
 
 ## Prerequisites
 

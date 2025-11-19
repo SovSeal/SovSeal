@@ -4,14 +4,14 @@ pragma solidity ^0.8.20;
 /**
  * @title Lockdrop
  * @notice Smart contract for storing time-locked encrypted message metadata
- * @dev Stores IPFS CIDs and metadata for encrypted messages on Polkadot (Lockdrop)
+ * @dev Stores IPFS CIDs and metadata for encrypted messages on Polkadot
  * 
  * Requirements implemented:
  * - 6.2: Store message metadata on blockchain
  * - 7.1: Query sent messages by sender
  * - 8.1: Query received messages by recipient
  */
-contract FutureProof {
+contract Lockdrop {
     /// @notice Message metadata stored on-chain
     struct MessageMetadata {
         string encryptedKeyCid;      // IPFS CID of the encrypted AES key

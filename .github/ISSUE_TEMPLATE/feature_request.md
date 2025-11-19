@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-about: Suggest a new feature for FutureProof
+about: Suggest a new feature for Lockdrop
 title: '[FEATURE] '
 labels: enhancement
 assignees: ''

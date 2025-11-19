@@ -1,5 +1,5 @@
 /**
- * Logo - FutureProof logo component
+ * Logo - Lockdrop logo component
  *
  * Requirements: 11.1
  */
@@ -92,7 +92,7 @@ export function Logo({ size = "md", showIcon = true }: LogoProps) {
       <span
         className={`${sizeClasses[size]} bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text font-bold text-transparent`}
       >
-        FutureProof
+        Lockdrop
       </span>
     </div>
   );

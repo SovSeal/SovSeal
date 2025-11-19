@@ -1,7 +1,7 @@
 const hre = require("hardhat");
 
 async function main() {
-  console.log("Deploying FutureProof contract...");
+  console.log("Deploying Lockdrop contract...");
 
   const [deployer] = await hre.ethers.getSigners();
   console.log("Deploying with account:", deployer.address);
@@ -9,16 +9,16 @@ async function main() {
   const balance = await hre.ethers.provider.getBalance(deployer.address);
   console.log("Account balance:", hre.ethers.formatEther(balance), "tokens");
 
-  const FutureProof = await hre.ethers.getContractFactory("FutureProof");
-  const futureProof = await FutureProof.deploy();
+  const Lockdrop = await hre.ethers.getContractFactory("Lockdrop");
+  const lockdrop = await Lockdrop.deploy();
 
-  await futureProof.waitForDeployment();
+  await lockdrop.waitForDeployment();
 
-  const address = await futureProof.getAddress();
-  console.log("FutureProof deployed to:", address);
+  const address = await lockdrop.getAddress();
+  console.log("Lockdrop deployed to:", address);
 
   // Verify deployment
-  const messageCount = await futureProof.getMessageCount();
+  const messageCount = await lockdrop.getMessageCount();
   console.log("Initial message count:", messageCount.toString());
 
   console.log("\n✅ Deployment successful!");

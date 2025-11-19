@@ -5,8 +5,8 @@ import { Navigation, Footer } from "@/components/layout";
 import { ToastProvider, SkipToContent } from "@/components/ui";
 
 export const metadata: Metadata = {
-  title: "FutureProof - Guaranteed by math, not corporations",
-  description: "Decentralized time-capsule application for time-locked messages",
+  title: "Lockdrop - Guaranteed by math, not corporations",
+  description: "Lockdrop: Decentralized time-capsule for time-locked audio/video messages with blockchain-enforced privacy",
 };
 
 export default function RootLayout({

@@ -1,4 +1,4 @@
-# FutureProof Contract Quick Reference
+# Lockdrop Contract Quick Reference
 
 ## Build & Deploy
 

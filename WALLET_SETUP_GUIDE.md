@@ -126,7 +126,7 @@ MetaMask is a popular alternative as all accounts are Ethereum by default.
 
 ### Test Connection
 
-1. Open FutureProof app
+1. Open Lockdrop app
 2. Click "Connect Wallet"
 3. Select your wallet (Talisman recommended, MetaMask supported)
 4. Approve connection

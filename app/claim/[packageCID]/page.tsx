@@ -50,7 +50,7 @@ export default function ClaimPage({ params }: ClaimPageProps) {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            FutureProof
+            Lockdrop
           </h1>
           <p className="text-gray-600">
             Guaranteed by math, not corporations
@@ -63,7 +63,7 @@ export default function ClaimPage({ params }: ClaimPageProps) {
         {/* Info Section */}
         <div className="mt-8 text-center text-sm text-gray-500">
           <p>
-            FutureProof uses client-side encryption and blockchain technology
+            Lockdrop uses client-side encryption and blockchain technology
           </p>
           <p>to ensure your messages remain private and time-locked.</p>
         </div>

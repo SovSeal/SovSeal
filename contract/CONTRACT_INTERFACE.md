@@ -1,4 +1,4 @@
-# FutureProof Contract Interface
+# Lockdrop Contract Interface
 
 ## Contract Address
 **Passet Hub Testnet:** `<TO_BE_DEPLOYED>`

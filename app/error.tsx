@@ -49,7 +49,7 @@ export default function GlobalError({
 
             {/* Error Description */}
             <p className="text-gray-600 text-center mb-6">
-              FutureProof encountered an unexpected error. This may be due to a
+              Lockdrop encountered an unexpected error. This may be due to a
               browser compatibility issue or a temporary problem.
             </p>
 
@@ -107,7 +107,7 @@ export default function GlobalError({
             {/* Help Section */}
             <div className="mt-6 pt-6 border-t border-gray-200">
               <p className="text-sm text-gray-600 text-center mb-2">
-                <strong>FutureProof</strong> - Guaranteed by math, not corporations
+                <strong>Lockdrop</strong> - Guaranteed by math, not corporations
               </p>
               <p className="text-xs text-gray-500 text-center">
                 If this problem persists, please{' '}

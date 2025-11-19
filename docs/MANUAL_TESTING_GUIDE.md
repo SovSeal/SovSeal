@@ -1,6 +1,6 @@
 # Manual Testing Guide
 
-This guide provides a comprehensive checklist for manually testing the FutureProof application across different browsers and scenarios.
+This guide provides a comprehensive checklist for manually testing the Lockdrop application across different browsers and scenarios.
 
 ## Prerequisites
 

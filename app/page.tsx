@@ -59,8 +59,8 @@ export default function Home() {
                 Decentralized Storage
               </h3>
               <p className="text-gray-600">
-                Encrypted messages stored on IPFS. No central authority controls
-                your data.
+                Lockdrop stores encrypted messages on IPFS. No central authority
+                controls your data.
               </p>
             </div>
           </div>

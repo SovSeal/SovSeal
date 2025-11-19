@@ -5,7 +5,7 @@ All notable changes to FutureProof will be documented in this file.
 ## [1.0.0] - 2025-11-17
 
 ### Added
-- ✅ Complete end-to-end encrypted time-capsule messaging
+- ✅ Complete end-to-end encrypted time-capsule messaging with Lockdrop
 - ✅ Talisman wallet integration (recommended) with MetaMask support
 - ✅ Storacha Network (IPFS) for decentralized storage
 - ✅ Passet Hub testnet (Polkadot) smart contract integration
