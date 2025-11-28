@@ -151,7 +151,7 @@ import FutureProofABI from "./FutureProof.abi.json";
 
 // Connect to contract
 const provider = new ethers.JsonRpcProvider(
-  "wss://testnet-passet-hub.polkadot.io"
+  "https://testnet-passet-hub-eth-rpc.polkadot.io"
 );
 const signer = await provider.getSigner();
 const contract = new ethers.Contract(CONTRACT_ADDRESS, FutureProofABI, signer);
@@ -264,11 +264,14 @@ console.log("Messages:", count.toString());
 
 ### Passet Hub Testnet
 
-- **RPC:** wss://testnet-passet-hub.polkadot.io
-- **Chain ID:** 1000
+- **Ethereum RPC:** https://testnet-passet-hub-eth-rpc.polkadot.io
+- **Substrate RPC:** wss://testnet-passet-hub.polkadot.io
+- **Chain ID:** 420420421
 - **Currency:** PAS
 - **Block Time:** ~6 seconds
 - **Faucet:** https://faucet.polkadot.io/paseo
+
+**Note:** Use the Ethereum RPC for Solidity contract interactions.
 
 ## Security Notes
 
@@ -293,4 +296,4 @@ This contract is **not upgradeable**. For future versions:
 
 - Contract Source: `contract/contracts/FutureProof.sol`
 - Tests: `contract/test/FutureProof.test.js`
-- Deployment Guide: `contract/SOLIDITY_DEPLOYMENT_GUIDE.md`
+- Deployment Guide: `contract/DEPLOYMENT_GUIDE.md`

@@ -435,8 +435,8 @@ const redeemPackage = {
 ### Quick Start
 
 - **[Passet Hub Quick Reference](PASSET_HUB_QUICK_REFERENCE.md)**: Essential commands and configuration
-- **[Quick Start Guide](QUICK_START_PASSET_HUB.md)**: 5-minute setup for Passet Hub
 - **[Wallet Setup Guide](WALLET_SETUP_GUIDE.md)**: Configure MetaMask or Talisman
+- **[Storacha Setup](docs/STORACHA_SETUP.md)**: Configure decentralized storage
 
 ### For Users
 
@@ -453,7 +453,7 @@ const redeemPackage = {
 
 ### Additional Resources
 
-- **[RPC Discovery Summary](RPC_DISCOVERY_SUMMARY.md)**: How we found the correct RPC endpoints
+- **[RPC Endpoints](docs/RPC_ENDPOINTS.md)**: Complete RPC endpoint reference
 - **[Error Handling](docs/ERROR_HANDLING_QUICK_REFERENCE.md)**: Error handling patterns
 - **[Network Resilience](docs/NETWORK_RESILIENCE.md)**: Retry logic and timeout handling
 - **[Testing Guide](docs/EDGE_CASE_TESTING.md)**: Testing strategies and edge cases

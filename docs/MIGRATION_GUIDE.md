@@ -240,7 +240,7 @@ If you're having trouble with migration:
 1. **Check the [User Connection Guide](USER_CONNECTION_GUIDE.md)**
 2. **Review [Troubleshooting Steps](USER_CONNECTION_GUIDE.md#troubleshooting-steps)**
 3. **Report issues on [GitHub](https://github.com/your-repo/issues)**
-4. **Join our [Discord](https://discord.gg/your-invite) for support**
+4. **Check the project documentation**
 
 ## Feedback
 
@@ -250,7 +250,7 @@ We'd love to hear about your experience:
 - Are connections persisting as expected?
 - Any issues or suggestions?
 
-Please share your feedback on GitHub or Discord!
+Please share your feedback on GitHub!
 
 ---
 

@@ -121,7 +121,7 @@ NEXT_PUBLIC_STORACHA_GATEWAY=storacha.link
 - **Full Guide:** `README.md`
 - **RPC Details:** `docs/RPC_ENDPOINTS.md`
 - **Deployment:** `contract/DEPLOYMENT_GUIDE.md`
-- **Quick Start:** `QUICK_START_PASSET_HUB.md`
+- **Wallet Setup:** `WALLET_SETUP_GUIDE.md`
 
 ## 🆘 Emergency Recovery
 

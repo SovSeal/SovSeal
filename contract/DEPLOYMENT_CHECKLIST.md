@@ -2,11 +2,11 @@
 
 ## Pre-Deployment
 
-- [ ] Contract compiled successfully (`npx hardhat compile`)
-- [ ] All tests passing (`npx hardhat test`)
+- [ ] Contract compiled successfully (`forge build --use solc:0.8.20`)
+- [ ] All tests passing (`forge test`)
 - [ ] Wallet has PAS testnet tokens
 - [ ] Private key added to `.env` file
-- [ ] RPC endpoint verified: `wss://testnet-passet-hub.polkadot.io`
+- [ ] RPC endpoint verified: `https://testnet-passet-hub-eth-rpc.polkadot.io`
 
 ## Deployment Steps
 
@@ -33,7 +33,10 @@ EOF
 ### 3. Deploy Contract
 
 ```bash
-npx hardhat run scripts/deploy.js --network passetHub
+forge create --resolc \
+  --rpc-url https://testnet-passet-hub-eth-rpc.polkadot.io \
+  --private-key $PRIVATE_KEY \
+  contracts/Lockdrop.sol:Lockdrop
 ```
 
 ### 4. Save Contract Address
@@ -57,16 +60,14 @@ NEXT_PUBLIC_NETWORK=passet-hub
 ### 2. Verify Deployment
 
 ```bash
-npx hardhat console --network passetHub
-```
+# Check contract bytecode exists
+cast code YOUR_CONTRACT_ADDRESS \
+  --rpc-url https://testnet-passet-hub-eth-rpc.polkadot.io
 
-In console:
-
-```javascript
-const FutureProof = await ethers.getContractFactory("FutureProof");
-const contract = FutureProof.attach("YOUR_CONTRACT_ADDRESS");
-const count = await contract.getMessageCount();
-console.log("Message count:", count.toString()); // Should be 0
+# Query message count
+cast call YOUR_CONTRACT_ADDRESS \
+  "getMessageCount()(uint256)" \
+  --rpc-url https://testnet-passet-hub-eth-rpc.polkadot.io
 ```
 
 ### 3. Update Documentation

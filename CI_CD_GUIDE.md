@@ -100,9 +100,9 @@ Add these secrets in GitHub repository settings (Settings → Secrets and variab
 | `VERCEL_TOKEN`                 | Vercel authentication token | [Vercel Account Settings](https://vercel.com/account/tokens) |
 | `VERCEL_ORG_ID`                | Vercel organization ID      | Run `vercel link` locally, check `.vercel/project.json`      |
 | `VERCEL_PROJECT_ID`            | Vercel project ID           | Run `vercel link` locally, check `.vercel/project.json`      |
-| `NEXT_PUBLIC_CONTRACT_ADDRESS` | Smart contract address      | Your deployed contract on Westend                            |
-| `NEXT_PUBLIC_RPC_ENDPOINT`     | Polkadot RPC endpoint       | `wss://westend-rpc.polkadot.io`                              |
-| `NEXT_PUBLIC_NETWORK`          | Network name                | `westend`                                                    |
+| `NEXT_PUBLIC_CONTRACT_ADDRESS` | Smart contract address      | Your deployed contract on Passet Hub                         |
+| `NEXT_PUBLIC_RPC_ENDPOINT`     | Passet Hub RPC endpoint     | `https://testnet-passet-hub-eth-rpc.polkadot.io`             |
+| `NEXT_PUBLIC_NETWORK`          | Network name                | `passet-hub`                                                 |
 
 ### 2. Get Vercel Credentials
 

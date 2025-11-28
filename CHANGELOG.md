@@ -2,6 +2,24 @@
 
 All notable changes to Lockdrop will be documented in this file.
 
+## [1.0.1] - 2025-11-19
+
+### Improved
+
+- ✅ Wallet connections now persist across page refreshes and browser restarts
+- ✅ Storacha authentication persists - no need to re-verify email
+- ✅ Added visual connection status indicators
+- ✅ Better error handling with clear recovery steps
+- ✅ Partial state recovery for interrupted authentication flows
+
+### Fixed
+
+- Fixed wallet disconnecting on every page refresh
+- Fixed Storacha authentication breaking if interrupted
+- Fixed users having to reconnect multiple times unnecessarily
+
+---
+
 ## [1.0.0] - 2025-11-17
 
 ### Added

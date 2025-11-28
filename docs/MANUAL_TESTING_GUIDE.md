@@ -4,11 +4,13 @@ This guide provides a comprehensive checklist for manually testing the Lockdrop 
 
 ## Prerequisites
 
-- Talisman wallet extension installed
-- Test wallet with Westend testnet tokens
+- Talisman or MetaMask wallet extension installed
+- Test wallet with Passet Hub testnet tokens (PAS)
 - Multiple browsers installed (Chrome, Firefox, Safari)
 - Test media files (audio and video)
 - Mobile device for responsive testing (optional)
+
+**Note:** Get PAS tokens from https://faucet.polkadot.io/paseo
 
 ## Browser Compatibility Testing
 
@@ -48,13 +50,13 @@ This guide provides a comprehensive checklist for manually testing the Lockdrop 
 - [ ] Test message unlock flow
 - [ ] Verify no console errors
 
-## Talisman Wallet Integration
+## Wallet Integration (Talisman/MetaMask)
 
 ### Wallet Connection
 
 - [ ] Click "Connect Wallet" button
-- [ ] Verify Talisman extension popup appears
-- [ ] Select test account
+- [ ] Verify wallet extension popup appears
+- [ ] Select test account (must be Ethereum account with 0x address)
 - [ ] Verify wallet address displays in UI
 - [ ] Verify connection persists on page refresh
 - [ ] Test disconnect functionality
@@ -62,11 +64,11 @@ This guide provides a comprehensive checklist for manually testing the Lockdrop 
 
 ### Wallet Not Installed
 
-- [ ] Disable/remove Talisman extension
+- [ ] Disable/remove wallet extensions
 - [ ] Attempt to connect wallet
 - [ ] Verify error message displays
 - [ ] Verify installation instructions are shown
-- [ ] Verify link to Talisman website works
+- [ ] Verify link to Talisman/MetaMask website works
 
 ### Wallet Locked
 

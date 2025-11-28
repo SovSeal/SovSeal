@@ -46,8 +46,8 @@ Lockdrop follows a modular architecture with clear separation of concerns:
         │                   │                   │
         ▼                   ▼                   ▼
 ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
-│ Web3.Storage │    │   Polkadot   │    │   Talisman   │
-│   (IPFS)     │    │   Westend    │    │    Wallet    │
+│   Storacha   │    │  Passet Hub  │    │  Talisman/   │
+│   (IPFS)     │    │  (Polkadot)  │    │   MetaMask   │
 └──────────────┘    └──────────────┘    └──────────────┘
 ```
 
@@ -412,123 +412,115 @@ const claimed = await RedeemPackageService.claimRedeemPackage(
 
 ### Contract Interface
 
-The Lockdrop smart contract is written in ink! and deployed on Polkadot Westend testnet.
+The Lockdrop smart contract is written in Solidity 0.8.20 and deployed on Passet Hub testnet via pallet-revive (PolkaVM).
 
 #### Storage Structure
 
-```rust
-pub struct MessageMetadata {
-    pub encrypted_key_cid: String,
-    pub encrypted_message_cid: String,
-    pub message_hash: String,
-    pub unlock_timestamp: u64,
-    pub sender: AccountId,
-    pub recipient: AccountId,
-    pub created_at: u64,
+```solidity
+struct MessageMetadata {
+    string encryptedKeyCid;
+    string encryptedMessageCid;
+    string messageHash;
+    uint256 unlockTimestamp;
+    address sender;
+    address recipient;
+    uint256 createdAt;
 }
 ```
 
 #### Contract Methods
 
-##### `store_message`
+##### `storeMessage`
 
 Stores a new time-locked message on-chain.
 
 **Signature**:
 
-```rust
-#[ink(message)]
-pub fn store_message(
-    &mut self,
-    encrypted_key_cid: String,
-    encrypted_message_cid: String,
-    message_hash: String,
-    unlock_timestamp: u64,
-    recipient: AccountId,
-) -> Result<MessageId, Error>
+```solidity
+function storeMessage(
+    string memory encryptedKeyCid,
+    string memory encryptedMessageCid,
+    string memory messageHash,
+    uint256 unlockTimestamp,
+    address recipient
+) external returns (uint256 messageId)
 ```
 
 **Parameters**:
 
-- `encrypted_key_cid`: IPFS CID of the encrypted AES key
-- `encrypted_message_cid`: IPFS CID of the encrypted media blob
-- `message_hash`: SHA-256 hash of the encrypted media (for integrity verification)
-- `unlock_timestamp`: Unix timestamp when message becomes unlockable
-- `recipient`: Polkadot address of the recipient
+- `encryptedKeyCid`: IPFS CID of the encrypted AES key
+- `encryptedMessageCid`: IPFS CID of the encrypted media blob
+- `messageHash`: SHA-256 hash of the encrypted media (for integrity verification)
+- `unlockTimestamp`: Unix timestamp when message becomes unlockable
+- `recipient`: Ethereum address of the recipient (0x...)
 
-**Returns**: `MessageId` - Unique identifier for the stored message
+**Returns**: `messageId` - Unique identifier for the stored message
 
 **Errors**:
 
 - `InvalidTimestamp`: Unlock timestamp is in the past
 - `InvalidCID`: CID format is invalid
-- `StorageFull`: Contract storage limit reached
+- `SenderIsRecipient`: Sender and recipient are the same
 
 ---
 
-##### `get_sent_messages`
+##### `getSentMessages`
 
 Retrieves all messages sent by a specific address.
 
 **Signature**:
 
-```rust
-#[ink(message)]
-pub fn get_sent_messages(
-    &self,
-    sender: AccountId
-) -> Vec<MessageMetadata>
+```solidity
+function getSentMessages(
+    address sender
+) external view returns (MessageMetadata[] memory)
 ```
 
 **Parameters**:
 
-- `sender`: Polkadot address of the sender
+- `sender`: Ethereum address of the sender
 
-**Returns**: `Vec<MessageMetadata>` - Array of message metadata
+**Returns**: `MessageMetadata[]` - Array of message metadata
 
 ---
 
-##### `get_received_messages`
+##### `getReceivedMessages`
 
 Retrieves all messages received by a specific address.
 
 **Signature**:
 
-```rust
-#[ink(message)]
-pub fn get_received_messages(
-    &self,
-    recipient: AccountId
-) -> Vec<MessageMetadata>
+```solidity
+function getReceivedMessages(
+    address recipient
+) external view returns (MessageMetadata[] memory)
 ```
 
 **Parameters**:
 
-- `recipient`: Polkadot address of the recipient
+- `recipient`: Ethereum address of the recipient
 
-**Returns**: `Vec<MessageMetadata>` - Array of message metadata
+**Returns**: `MessageMetadata[]` - Array of message metadata
 
 ---
 
-##### `get_message`
+##### `getMessage`
 
 Retrieves a specific message by ID.
 
 **Signature**:
 
-```rust
-#[ink(message)]
-pub fn get_message(
-    &self,
-    message_id: MessageId
-) -> Option<MessageMetadata>
+```solidity
+function getMessage(
+    uint256 messageId
+) external view returns (MessageMetadata memory)
 ```
 
 **Parameters**:
 
-- `message_id`: Unique message identifier
+- `messageId`: Unique message identifier
 
-**Returns**: `Option<MessageMetadata>` - Message metadata if found
+**Returns**: `MessageMetadata` - Message metadata
 
 ---
 
@@ -1164,10 +1156,9 @@ Add these environment variables in Vercel project settings:
 
 ```
 NEXT_PUBLIC_CONTRACT_ADDRESS=your_contract_address
-NEXT_PUBLIC_RPC_ENDPOINT=wss://westend-rpc.polkadot.io
-NEXT_PUBLIC_NETWORK=westend
-NEXT_PUBLIC_PINATA_API_KEY=your_pinata_key (optional)
-NEXT_PUBLIC_PINATA_SECRET=your_pinata_secret (optional)
+NEXT_PUBLIC_RPC_ENDPOINT=https://testnet-passet-hub-eth-rpc.polkadot.io
+NEXT_PUBLIC_NETWORK=passet-hub
+NEXT_PUBLIC_STORACHA_GATEWAY=storacha.link
 NEXT_PUBLIC_DEMO_MODE=false
 ```
 

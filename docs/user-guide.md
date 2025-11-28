@@ -48,9 +48,9 @@ Before using Lockdrop, make sure you have:
    - Available for Chrome, Firefox, and Edge
    - Free to install and use
 
-3. **Westend Testnet Tokens** (WND)
+3. **Passet Hub Testnet Tokens** (PAS)
    - Free tokens for testing
-   - Get them from the faucet (see below)
+   - Get them from the faucet: https://faucet.polkadot.io/paseo
 
 4. **Internet Connection**
    - Required for uploading to IPFS and blockchain
@@ -71,7 +71,7 @@ Before using Lockdrop, make sure you have:
 
 1. Open Talisman wallet
 2. Click "Create New Account"
-3. Choose "Polkadot" as the network
+3. Choose **"Ethereum"** as the network (NOT Polkadot!)
 4. Give your account a name
 5. **IMPORTANT**: Write down your seed phrase and store it safely!
 6. Confirm your seed phrase
@@ -82,24 +82,22 @@ Before using Lockdrop, make sure you have:
 1. Open Talisman wallet
 2. Click "Import Account"
 3. Enter your seed phrase or private key
-4. Choose "Polkadot" network
+4. Choose **"Ethereum"** network
 5. Set a password
+
+**Note:** Your address must start with 0x (Ethereum format)
 
 ### Step 3: Get Testnet Tokens
 
-You need WND tokens to send messages on the Westend testnet:
+You need PAS tokens to send messages on the Passet Hub testnet:
 
-1. Copy your Polkadot address from Talisman
-2. Visit the [Westend Faucet](https://faucet.polkadot.io/westend)
+1. Copy your Ethereum address from Talisman or MetaMask (starts with 0x)
+2. Visit the [Paseo Faucet](https://faucet.polkadot.io/paseo)
 3. Paste your address and request tokens
 4. Wait 1-2 minutes for tokens to arrive
-5. Check your balance in Talisman
+5. Check your balance in your wallet
 
-**Alternative Faucet:**
-
-- Join the [Westend Faucet Matrix room](https://matrix.to/#/#westend_faucet:matrix.org)
-- Send your address in the chat
-- The bot will send you tokens
+**Important:** Use an Ethereum address (0x...), not a Polkadot address (5...)
 
 ### Step 4: Connect to Lockdrop
 
@@ -156,8 +154,8 @@ You have two options:
 ### Step 3: Set Recipient and Unlock Time
 
 1. **Enter Recipient Address**
-   - Paste the recipient's Polkadot address
-   - Format: `5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY`
+   - Paste the recipient's Ethereum address
+   - Format: `0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb`
    - Double-check the address is correct!
 
 2. **Set Unlock Date and Time**
@@ -683,7 +681,7 @@ witch collapse practice feed shame open despair creek road again ice least
 A: Lockdrop is a decentralized application for creating time-locked audio/video messages. Messages are encrypted in your browser, stored on IPFS, and unlock times are enforced by the Polkadot blockchain.
 
 **Q: Is Lockdrop free to use?**  
-A: The application is free, but you need Westend testnet tokens (WND) to send messages. These are free from the faucet. For mainnet deployment, you'd need real DOT tokens.
+A: The application is free, but you need Passet Hub testnet tokens (PAS) to send messages. These are free from the faucet at https://faucet.polkadot.io/paseo. For mainnet deployment, you'd need real tokens.
 
 **Q: Do I need to create an account?**  
 A: No traditional account needed. You just connect your Talisman wallet, which serves as your identity.
@@ -702,7 +700,7 @@ A: Yes! All encryption happens in your browser. Your plaintext content never lea
 A: The wallet provides your identity on the blockchain and holds your private keys for decryption. It's like your digital ID and key ring combined.
 
 **Q: Can I use a different wallet besides Talisman?**  
-A: Currently, Lockdrop only supports Talisman. Support for other Polkadot wallets may be added in the future.
+A: Yes! Lockdrop supports both Talisman and MetaMask. Both wallets must use Ethereum accounts (addresses starting with 0x).
 
 **Q: What if I lose access to my wallet?**  
 A: If you have your seed phrase, you can restore your wallet on any device. Without it, you cannot recover your account or decrypt messages.
@@ -890,7 +888,7 @@ A: Visit our documentation:
 ### Important Links
 
 - **Talisman Wallet**: https://talisman.xyz/
-- **Westend Faucet**: https://faucet.polkadot.io/westend
+- **Paseo Faucet**: https://faucet.polkadot.io/paseo
 - **GitHub Repository**: [Your repo URL]
 - **Documentation**: [Your docs URL]
 

@@ -92,7 +92,7 @@ Visit http://localhost:3000
 
 ```bash
 # Blockchain
-NEXT_PUBLIC_CONTRACT_ADDRESS=0xeD0fDD8c03c8B5030d8B9F8d1654668F1e8e1Ea3
+NEXT_PUBLIC_CONTRACT_ADDRESS=0xeD0fDD2be363590800F86ec8562Dde951654668F
 NEXT_PUBLIC_RPC_ENDPOINT=https://testnet-passet-hub-eth-rpc.polkadot.io
 NEXT_PUBLIC_NETWORK=passet-hub
 
@@ -149,12 +149,11 @@ NEXT_PUBLIC_STORACHA_DID=your_did_here
 - [ETHERS_QUICK_REFERENCE.md](ETHERS_QUICK_REFERENCE.md) - Contract interaction guide
 - [PASSET_HUB_QUICK_REFERENCE.md](PASSET_HUB_QUICK_REFERENCE.md) - Network commands
 
-### Recent Fixes
+### Developer Docs
 
-- [ADDRESS_TYPE_FIX.md](ADDRESS_TYPE_FIX.md) - Fixed address type mismatch
-- [MESSAGE_STATUS_FIX.md](MESSAGE_STATUS_FIX.md) - Fixed auto-marking as viewed
-- [TALISMAN_PRIORITY_UPDATE.md](TALISMAN_PRIORITY_UPDATE.md) - Wallet priority changes
-- [WALLET_ETHEREUM_MIGRATION.md](WALLET_ETHEREUM_MIGRATION.md) - EIP-1193 migration
+- [docs/CONNECTION_IMPROVEMENTS.md](docs/CONNECTION_IMPROVEMENTS.md) - Connection persistence improvements
+- [docs/USER_CONNECTION_GUIDE.md](docs/USER_CONNECTION_GUIDE.md) - User connection setup guide
+- [docs/RPC_ENDPOINTS.md](docs/RPC_ENDPOINTS.md) - RPC endpoint reference
 
 ---
 
