@@ -5,6 +5,8 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useWallet } from "@/lib/wallet/WalletProvider";
 import { useStoracha } from "@/hooks/useStoracha";
+import { useNetworkCheck } from "@/hooks/useNetworkCheck";
+import { NetworkCheckModal } from "@/components/ui/NetworkCheckModal";
 import type { MediaFile } from "@/types/media";
 import type { MessageCreationProgress } from "@/lib/message";
 import {
@@ -73,6 +75,7 @@ type MediaSource = "record" | "upload" | null;
 export default function CreateMessagePage() {
   const { address, isConnected, selectedAccount } = useWallet();
   const { isReady: isStorachaReady } = useStoracha();
+  const { isCorrectNetwork, isChecking: isCheckingNetwork } = useNetworkCheck();
 
   const [recipientAddress, setRecipientAddress] = useState("");
   const [unlockDate, setUnlockDate] = useState("");
@@ -82,6 +85,8 @@ export default function CreateMessagePage() {
   const [mediaSource, setMediaSource] = useState<MediaSource>(null);
   const [mediaFile, setMediaFile] = useState<MediaFile | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showNetworkModal, setShowNetworkModal] = useState(false);
+  const [pendingSubmit, setPendingSubmit] = useState(false);
   const [progress, setProgress] = useState<MessageCreationProgress | null>(
     null
   );
@@ -155,6 +160,17 @@ export default function CreateMessagePage() {
       return;
     }
 
+    // Check network before proceeding
+    if (!isCorrectNetwork && !isCheckingNetwork) {
+      setPendingSubmit(true);
+      setShowNetworkModal(true);
+      return;
+    }
+
+    await executeSubmit();
+  };
+
+  const executeSubmit = async () => {
     setResult(null);
     setIsSubmitting(true);
 
@@ -164,10 +180,10 @@ export default function CreateMessagePage() {
       const MessageCreationService = await loadMessageCreationService();
       const creationResult = await MessageCreationService.createMessage(
         {
-          mediaFile,
+          mediaFile: mediaFile!,
           recipientAddress: recipientAddress.trim(),
           unlockTimestamp,
-          senderAccount: selectedAccount,
+          senderAccount: selectedAccount!,
         },
         (progressUpdate) => setProgress(progressUpdate)
       );
@@ -190,6 +206,14 @@ export default function CreateMessagePage() {
       });
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleNetworkReady = () => {
+    setShowNetworkModal(false);
+    if (pendingSubmit) {
+      setPendingSubmit(false);
+      executeSubmit();
     }
   };
 
@@ -489,6 +513,16 @@ export default function CreateMessagePage() {
           </button>
         </div>
       </form>
+
+      {/* Network check modal */}
+      <NetworkCheckModal
+        isOpen={showNetworkModal}
+        onClose={() => {
+          setShowNetworkModal(false);
+          setPendingSubmit(false);
+        }}
+        onNetworkReady={handleNetworkReady}
+      />
     </div>
   );
 }

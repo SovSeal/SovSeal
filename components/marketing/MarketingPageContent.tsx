@@ -255,20 +255,33 @@ const techLogos = [
 ];
 
 function TechLogosCarousel() {
-  // Triple the logos for truly seamless infinite loop
-  const allLogos = [...techLogos, ...techLogos, ...techLogos];
-
   return (
-    <div className="relative mx-auto w-full max-w-3xl overflow-hidden">
+    <div className="relative mx-auto w-full overflow-hidden">
       {/* Fade edges */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-dark-900/50 to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-dark-900/50 to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-dark-900 to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-dark-900 to-transparent" />
 
-      <div className="flex animate-slide-logos items-center justify-center">
-        {allLogos.map((logo, index) => (
+      <div className="flex w-max animate-slide-logos">
+        {/* First set */}
+        {techLogos.map((logo, index) => (
           <div
-            key={`${logo.name}-${index}`}
-            className="flex-shrink-0 px-16 opacity-70 transition-opacity hover:opacity-100"
+            key={`first-${logo.name}-${index}`}
+            className="flex-shrink-0 px-12 opacity-70 transition-opacity hover:opacity-100"
+          >
+            <Image
+              src={logo.src}
+              alt={logo.name}
+              width={140}
+              height={56}
+              className="h-14 w-auto object-contain"
+            />
+          </div>
+        ))}
+        {/* Duplicate set for seamless loop */}
+        {techLogos.map((logo, index) => (
+          <div
+            key={`second-${logo.name}-${index}`}
+            className="flex-shrink-0 px-12 opacity-70 transition-opacity hover:opacity-100"
           >
             <Image
               src={logo.src}

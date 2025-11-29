@@ -12,4 +12,5 @@ export { HelpText } from "./HelpText";
 export { SkipToContent } from "./SkipToContent";
 export { ErrorRecovery } from "./ErrorRecovery";
 export { AuroraBackground } from "./AuroraBackground";
+export { NetworkCheckModal } from "./NetworkCheckModal";
 export type { ToastType } from "./Toast";

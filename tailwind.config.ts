@@ -90,7 +90,7 @@ const config: Config = {
         },
         slideLogos: {
           "0%": { transform: "translateX(0)" },
-          "100%": { transform: "translateX(-33.333%)" },
+          "100%": { transform: "translateX(-50%)" },
         },
       },
       backgroundImage: {
