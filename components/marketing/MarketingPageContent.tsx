@@ -173,12 +173,7 @@ export function MarketingPageContent() {
               Powered by industry-leading decentralized technologies
             </p>
 
-            <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
-              <TechLogo name="Polkadot" />
-              <TechLogo name="IPFS" />
-              <TechLogo name="Storacha" />
-              <TechLogo name="Talisman" />
-            </div>
+            <TechLogosCarousel />
           </div>
         </section>
 
@@ -252,15 +247,33 @@ function FeatureCard({
   );
 }
 
-function TechLogo({ name }: { name: string }) {
+const techLogos = [
+  { name: "Polkadot", src: "/logos/polkadotnew.svg" },
+  { name: "IPFS", src: "/logos/ipfsnew.svg" },
+  { name: "Storacha", src: "/logos/storachanew.svg" },
+  { name: "Talisman", src: "/logos/talismannew.svg" },
+];
+
+function TechLogosCarousel() {
   return (
-    <div className="flex flex-col items-center gap-2 opacity-60 transition-opacity hover:opacity-100">
-      <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-dark-700 bg-dark-800">
-        <span className="text-xs font-medium text-dark-300">
-          {name.charAt(0)}
-        </span>
+    <div className="relative w-full overflow-hidden">
+      <div className="flex animate-slide-logos items-center">
+        {/* Double the logos for seamless loop */}
+        {[...techLogos, ...techLogos].map((logo, index) => (
+          <div
+            key={`${logo.name}-${index}`}
+            className="flex-shrink-0 px-10 opacity-70 transition-opacity hover:opacity-100"
+          >
+            <Image
+              src={logo.src}
+              alt={logo.name}
+              width={120}
+              height={48}
+              className="h-12 w-auto object-contain"
+            />
+          </div>
+        ))}
       </div>
-      <span className="text-sm text-dark-400">{name}</span>
     </div>
   );
 }

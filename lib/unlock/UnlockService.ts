@@ -1,7 +1,5 @@
 /**
  * UnlockService - Handles timestamp verification and message decryption
- *
- * Requirements: 9.1, 9.2, 9.4, 9.5, 9.6, 10.1
  */
 
 "use client";
@@ -34,8 +32,6 @@ export class UnlockService {
   /**
    * Verify that the current time is at or after the unlock timestamp
    *
-   * Requirements: 9.1, 9.2
-   *
    * @param unlockTimestamp - The timestamp when the message becomes unlockable
    * @returns true if unlockable, false otherwise
    * @throws Error if timestamp not reached
@@ -66,8 +62,6 @@ export class UnlockService {
    * 5. Verify SHA-256 hash matches messageHash
    * 6. Decrypt media blob using recovered AES key
    * 7. Create object URL for playback
-   *
-   * Requirements: 9.1, 9.2, 9.4, 9.5, 9.6, 10.1
    *
    * @param message - The message to unlock
    * @param options - Unlock options including progress callback and demo mode

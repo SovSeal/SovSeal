@@ -15,7 +15,6 @@ interface MediaUploaderProps {
 
 /**
  * MediaUploader component with drag-and-drop support
- * Requirements: 3.1, 3.2, 3.3, 3.4, 3.5
  */
 export function MediaUploader({ onFileSelect, onError }: MediaUploaderProps) {
   const [isDragging, setIsDragging] = useState(false);
@@ -26,7 +25,6 @@ export function MediaUploader({ onFileSelect, onError }: MediaUploaderProps) {
 
   /**
    * Process and validate uploaded file - directly passes to parent
-   * Requirements: 3.1, 3.2, 3.3
    */
   const processFile = async (file: File) => {
     setIsProcessing(true);

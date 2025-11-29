@@ -1,7 +1,5 @@
 /**
  * ReceivedMessages - Display messages received by the user
- *
- * Requirements: 8.1, 8.2, 8.3, 8.4, 8.5
  */
 
 "use client";
@@ -38,8 +36,6 @@ export function ReceivedMessages({ address }: ReceivedMessagesProps) {
   /**
    * Convert MessageMetadata to Message with calculated status
    *
-   * Requirements: 8.3 - Calculate status (Locked/Unlockable/Unlocked)
-   *
    * Note: Status is "Locked" before unlock time, "Unlockable" after unlock time,
    * and only becomes "Unlocked" after the user actually views it.
    */
@@ -69,8 +65,6 @@ export function ReceivedMessages({ address }: ReceivedMessagesProps) {
 
   /**
    * Load received messages from blockchain
-   *
-   * Requirements: 8.1 - Query blockchain for received messages
    */
   const loadMessages = useCallback(async () => {
     try {
@@ -93,8 +87,6 @@ export function ReceivedMessages({ address }: ReceivedMessagesProps) {
 
   /**
    * Update message statuses based on current time
-   *
-   * Requirements: 8.5 - Implement real-time status updates
    */
   const updateStatuses = useCallback(() => {
     setMessages((prevMessages) =>
@@ -116,8 +108,6 @@ export function ReceivedMessages({ address }: ReceivedMessagesProps) {
 
   /**
    * Handle unlock button click
-   *
-   * Requirements: 9.1 - Navigate to unlock flow
    */
   const handleUnlock = useCallback(
     (message: Message) => {
@@ -134,8 +124,6 @@ export function ReceivedMessages({ address }: ReceivedMessagesProps) {
 
   /**
    * Set up interval for real-time status updates
-   *
-   * Requirements: 8.5 - Update Message_Status values in real-time
    */
   useEffect(() => {
     // Update statuses every 10 seconds
@@ -146,8 +134,6 @@ export function ReceivedMessages({ address }: ReceivedMessagesProps) {
 
   /**
    * Filter and sort messages
-   *
-   * Requirements: 7.2, 8.2 - Implement status filter and sorting
    */
   const filteredAndSortedMessages = useMemo(() => {
     let filtered = messages;
@@ -171,8 +157,6 @@ export function ReceivedMessages({ address }: ReceivedMessagesProps) {
 
   /**
    * Paginate messages
-   *
-   * Requirements: 7.2 - Add pagination for large message lists
    */
   const paginatedMessages = useMemo(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;

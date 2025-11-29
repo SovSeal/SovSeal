@@ -1,6 +1,5 @@
 /**
  * Service for creating and managing redeem packages for recipients without wallets
- * Requirements: 6.6
  *
  * This service enables senders to create passphrase-protected packages that allow
  * recipients to claim messages after setting up a wallet.
@@ -16,7 +15,6 @@ import type {
 export class RedeemPackageService {
   /**
    * Derives a cryptographic key from a passphrase using PBKDF2
-   * Requirements: 6.6 - Passphrase-based encryption
    *
    * @param passphrase - User-provided passphrase
    * @param salt - Random salt for key derivation
@@ -53,7 +51,6 @@ export class RedeemPackageService {
 
   /**
    * Creates a redeem package with the provided message metadata
-   * Requirements: 6.6 - Create redeem package JSON
    *
    * @param encryptedKeyCID - CID of the encrypted AES key
    * @param encryptedMessageCID - CID of the encrypted message blob
@@ -90,7 +87,6 @@ export class RedeemPackageService {
 
   /**
    * Encrypts a redeem package with a passphrase
-   * Requirements: 6.6 - Encrypt redeem package
    *
    * @param redeemPackage - Package to encrypt
    * @param passphrase - User-provided passphrase
@@ -133,7 +129,6 @@ export class RedeemPackageService {
 
   /**
    * Decrypts a redeem package with a passphrase
-   * Requirements: 6.6 - Decrypt redeem package
    *
    * @param encryptedPackage - Encrypted package data
    * @param passphrase - User-provided passphrase
@@ -232,7 +227,6 @@ export class RedeemPackageService {
 
   /**
    * Generates a claim link for a redeem package
-   * Requirements: 6.6 - Generate claim link with package CID
    *
    * @param packageCID - CID of the encrypted package on IPFS
    * @param baseUrl - Base URL of the application

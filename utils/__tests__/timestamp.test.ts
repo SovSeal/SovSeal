@@ -1,6 +1,5 @@
 /**
  * Unit tests for timestamp validation and status calculation
- * Requirements: 7.3, 7.4, 7.5, 8.3, 8.4, 9.1, 9.2
  */
 
 import { describe, it, expect } from "vitest";

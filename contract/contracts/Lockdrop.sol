@@ -5,11 +5,6 @@ pragma solidity ^0.8.20;
  * @title Lockdrop
  * @notice Smart contract for storing time-locked encrypted message metadata
  * @dev Stores IPFS CIDs and metadata for encrypted messages on Polkadot
- * 
- * Requirements implemented:
- * - 6.2: Store message metadata on blockchain
- * - 7.1: Query sent messages by sender
- * - 8.1: Query received messages by recipient
  */
 contract Lockdrop {
     /// @notice Message metadata stored on-chain
@@ -59,9 +54,6 @@ contract Lockdrop {
      * @param unlockTimestamp Unix timestamp when the message can be unlocked
      * @param recipient Address of the message recipient
      * @return messageId The unique ID of the stored message
-     * 
-     * Requirements:
-     * - 6.2: Submit transaction with metadata to smart contract
      */
     function storeMessage(
         string calldata encryptedKeyCid,
@@ -70,7 +62,7 @@ contract Lockdrop {
         uint64 unlockTimestamp,
         address recipient
     ) external returns (uint64 messageId) {
-        // Validation: Requirement 6.2 - Validate input parameters
+        // Validate input parameters
         if (bytes(encryptedKeyCid).length == 0) revert InvalidKeyCID();
         if (bytes(encryptedMessageCid).length == 0) revert InvalidMessageCID();
         if (bytes(messageHash).length < 64) revert InvalidMessageHash();
@@ -107,9 +99,6 @@ contract Lockdrop {
      * @notice Get all messages sent by a specific address
      * @param sender Address of the sender
      * @return Array of message metadata
-     * 
-     * Requirements:
-     * - 7.1: Query sent messages by sender address
      */
     function getSentMessages(address sender) 
         external 
@@ -124,9 +113,6 @@ contract Lockdrop {
      * @notice Get all messages received by a specific address
      * @param recipient Address of the recipient
      * @return Array of message metadata
-     * 
-     * Requirements:
-     * - 8.1: Query received messages by recipient address
      */
     function getReceivedMessages(address recipient) 
         external 

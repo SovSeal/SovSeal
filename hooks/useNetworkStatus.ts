@@ -2,8 +2,6 @@
  * useNetworkStatus Hook
  *
  * Monitors network connectivity and provides status information
- *
- * Requirements: 12.2 - Test with network disconnection
  */
 
 "use client";

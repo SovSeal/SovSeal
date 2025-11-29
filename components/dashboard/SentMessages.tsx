@@ -1,7 +1,5 @@
 /**
  * SentMessages - Display messages sent by the user
- *
- * Requirements: 7.1, 7.2, 7.3, 7.4, 7.5
  */
 
 "use client";
@@ -54,8 +52,6 @@ export function SentMessages({ address }: SentMessagesProps) {
 
   /**
    * Load sent messages from blockchain
-   *
-   * Requirements: 7.1 - Query blockchain for sent messages
    */
   const loadMessages = useCallback(async () => {
     try {
@@ -78,8 +74,6 @@ export function SentMessages({ address }: SentMessagesProps) {
 
   /**
    * Update message statuses based on current time
-   *
-   * Requirements: 7.5 - Implement real-time status updates
    */
   const updateStatuses = useCallback(() => {
     setMessages((prevMessages) =>
@@ -97,8 +91,6 @@ export function SentMessages({ address }: SentMessagesProps) {
 
   /**
    * Set up interval for real-time status updates
-   *
-   * Requirements: 7.5 - Update Message_Status values in real-time
    */
   useEffect(() => {
     // Update statuses every 10 seconds
@@ -109,8 +101,6 @@ export function SentMessages({ address }: SentMessagesProps) {
 
   /**
    * Filter and sort messages
-   *
-   * Requirements: 7.2, 8.2 - Implement status filter and sorting
    */
   const filteredAndSortedMessages = useMemo(() => {
     let filtered = messages;
@@ -134,8 +124,6 @@ export function SentMessages({ address }: SentMessagesProps) {
 
   /**
    * Paginate messages
-   *
-   * Requirements: 7.2 - Add pagination for large message lists
    */
   const paginatedMessages = useMemo(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;

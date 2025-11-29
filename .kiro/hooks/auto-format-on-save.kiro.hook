@@ -4,7 +4,8 @@
   "description": "When you save any code file (TypeScript, JavaScript, CSS, JSON, or Markdown), automatically format it with Prettier to keep your code style consistent across the project.",
   "version": "1",
   "when": {
-    "type": "userTriggered"
+    "type": "fileEdited",
+    "patterns": []
   },
   "then": {
     "type": "askAgent",

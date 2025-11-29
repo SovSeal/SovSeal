@@ -177,19 +177,19 @@ Tests: 102 passed (102)
 - Validate responsive design
 - Check accessibility compliance
 
-## Requirements Coverage
+## Test Coverage
 
-The test suite covers the following requirements:
+The test suite covers the following areas:
 
-- **4.1-4.5**: Encryption and key management
-- **5.1-5.6**: IPFS storage integration
-- **6.1-6.6**: Smart contract interaction
-- **7.1-7.5**: Sent messages dashboard
-- **8.1-8.5**: Received messages dashboard
-- **9.1-9.6**: Unlock and decryption flow
-- **10.1-10.6**: Media playback
-- **11.1-11.5**: UI/UX requirements
-- **12.1-12.6**: Error handling and edge cases
+- Encryption and key management
+- IPFS storage integration
+- Smart contract interaction
+- Sent messages dashboard
+- Received messages dashboard
+- Unlock and decryption flow
+- Media playback
+- UI/UX functionality
+- Error handling and edge cases
 
 ## Continuous Integration
 

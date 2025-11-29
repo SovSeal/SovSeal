@@ -117,14 +117,13 @@ Get free Westend testnet tokens:
 - https://faucet.polkadot.io/westend
 - https://matrix.to/#/#westend_faucet:matrix.org
 
-## Requirements
+## Features
 
-This module implements requirements:
+This module provides:
 
-- 6.2: Store message metadata on blockchain
-- 6.3: Request transaction signing via Talisman
-- 6.4: Handle transaction confirmation
-- 6.5: Display success/error feedback
-- 7.1: Query sent messages
-- 8.1: Query received messages
-- 13.5: Configure contract via environment variables
+- Store message metadata on blockchain
+- Request transaction signing via wallet
+- Handle transaction confirmation
+- Display success/error feedback
+- Query sent and received messages
+- Configure contract via environment variables

@@ -1,7 +1,5 @@
 /**
  * UnlockFlow - UI for unlocking and viewing time-locked messages
- *
- * Requirements: 9.1, 9.2, 9.3
  */
 
 "use client";

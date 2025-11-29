@@ -1,7 +1,5 @@
 /**
  * ToastContainer - Container for managing multiple toast notifications
- *
- * Requirements: 11.3
  */
 
 "use client";

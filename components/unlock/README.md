@@ -17,8 +17,6 @@ Modal component that displays message metadata and handles the unlock process.
 - Supports demo mode for testing (bypasses timestamp verification)
 - Error handling with user-friendly messages
 
-**Requirements:** 9.1, 9.2, 9.3
-
 ### MediaPlayer
 
 Secure media player for decrypted content with full playback controls.
@@ -32,8 +30,6 @@ Secure media player for decrypted content with full playback controls.
 - Clears decrypted data from memory when closed
 - Security notice to inform users about privacy guarantees
 
-**Requirements:** 10.2, 10.3, 10.4, 10.5, 10.6
-
 ### DemoModeBanner
 
 Prominent warning banner displayed when demo mode is active.
@@ -43,8 +39,6 @@ Prominent warning banner displayed when demo mode is active.
 - Bright yellow banner with warning icons
 - Clear messaging about bypassed timestamp verification
 - Displayed at top of application when `NEXT_PUBLIC_DEMO_MODE=true`
-
-**Requirements:** 9.3
 
 ## Usage
 

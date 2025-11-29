@@ -2,7 +2,6 @@
 
 /**
  * Error boundary for claim page
- * Requirements: 6.6
  */
 
 import { useEffect } from "react";

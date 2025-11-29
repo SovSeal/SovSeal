@@ -2,7 +2,6 @@
 
 /**
  * Component for displaying generated claim link to sender
- * Requirements: 6.6
  */
 
 import { useState } from "react";

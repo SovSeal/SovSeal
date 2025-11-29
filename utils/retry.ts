@@ -3,8 +3,6 @@
  *
  * Provides retry logic with exponential backoff for handling
  * transient failures in network operations.
- *
- * Requirements: 12.1 - Add retry mechanisms for network errors
  */
 
 import { isRetryableError } from "./errorHandling";

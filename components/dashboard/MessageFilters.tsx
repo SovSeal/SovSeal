@@ -1,7 +1,5 @@
 /**
  * MessageFilters - Filter and sort controls for message lists
- *
- * Requirements: 7.2, 8.2
  */
 
 "use client";

@@ -2,9 +2,9 @@
 
 This document provides a comprehensive guide for testing edge cases and error scenarios in the Lockdrop application.
 
-## Requirements
+## Overview
 
-Task 12.2 - Handle edge cases:
+This guide covers edge case testing scenarios:
 
 - Test with no wallet installed
 - Test with wallet locked

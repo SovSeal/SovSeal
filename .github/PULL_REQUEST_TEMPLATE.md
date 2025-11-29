@@ -16,12 +16,6 @@ Brief description of the changes in this PR.
 
 Closes #[issue number]
 
-## Requirements
-
-This PR addresses the following requirements:
-
-- Requirement X.X: [description]
-
 ## Changes Made
 
 - Change 1

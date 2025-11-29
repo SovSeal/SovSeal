@@ -10,8 +10,6 @@
  * 6. Upload encrypted media blob to IPFS
  * 7. Submit transaction to smart contract
  * 8. Clear sensitive data from memory
- *
- * Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 5.1, 5.2, 6.1, 6.2, 6.3, 6.4
  */
 
 import { CryptoService } from "@/lib/crypto/CryptoService";
@@ -70,7 +68,6 @@ export class MessageCreationService {
 
     try {
       // Stage 1: Generate AES key and encrypt media blob
-      // Requirements: 4.1, 4.2, 4.3
       onProgress?.({
         stage: "encrypting",
         progress: 10,
@@ -87,7 +84,6 @@ export class MessageCreationService {
       const encryptedBlob = CryptoService.encryptedDataToBlob(encryptedData);
 
       // Stage 2: Calculate SHA-256 hash of encrypted blob
-      // Requirements: 9.4, 9.5
       onProgress?.({
         stage: "hashing",
         progress: 25,
@@ -97,7 +93,6 @@ export class MessageCreationService {
       const messageHash = await AsymmetricCrypto.generateHash(encryptedBlob);
 
       // Stage 3: Retrieve recipient's public key
-      // Requirements: 6.1
       onProgress?.({
         stage: "key-encryption",
         progress: 35,
@@ -110,7 +105,6 @@ export class MessageCreationService {
         );
 
       // Stage 4: Encrypt AES key with recipient's public key
-      // Requirements: 4.5, 6.1
       aesKeyData = await CryptoService.exportKey(aesKey);
       const encryptedKey = await AsymmetricCrypto.encryptAESKey(
         aesKeyData,
@@ -133,7 +127,6 @@ export class MessageCreationService {
       });
 
       // Stage 5: Upload encrypted AES key to IPFS
-      // Requirements: 5.1, 5.2
       onProgress?.({
         stage: "uploading-key",
         progress: 50,
@@ -146,7 +139,6 @@ export class MessageCreationService {
       );
 
       // Stage 6: Upload encrypted media blob to IPFS
-      // Requirements: 5.1, 5.2, 5.4
       onProgress?.({
         stage: "uploading-media",
         progress: 60,
@@ -170,7 +162,6 @@ export class MessageCreationService {
       );
 
       // Stage 7: Submit transaction to smart contract
-      // Requirements: 6.2, 6.3, 6.4
       onProgress?.({
         stage: "submitting",
         progress: 90,
@@ -213,7 +204,6 @@ export class MessageCreationService {
       };
     } finally {
       // Stage 9: Clear sensitive data from memory
-      // Requirements: 4.4, 4.5
       if (aesKeyData) {
         CryptoService.secureCleanup(aesKeyData);
       }

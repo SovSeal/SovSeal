@@ -5,8 +5,6 @@
  * interacting with the Lockdrop time-lock Solidity contract.
  *
  * Uses ethers.js for Ethereum-compatible contract interactions on Polkadot infrastructure.
- *
- * Requirements: 6.2, 13.5
  */
 
 "use client";
@@ -63,8 +61,6 @@ export class ContractService {
 
   /**
    * Get the contract configuration from environment variables
-   *
-   * Requirements: 13.5 - Configure contract address through environment variables
    */
   private static getConfig(): ContractConfig {
     const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
@@ -88,8 +84,6 @@ export class ContractService {
 
   /**
    * Connect to the Ethereum RPC endpoint
-   *
-   * Requirements: 6.2 - Connect to Passet Hub testnet RPC endpoint
    *
    * @returns Promise resolving to JsonRpcProvider instance
    * @throws Error if connection fails
@@ -321,8 +315,6 @@ export class ContractService {
   /**
    * Get the total number of messages stored in the contract
    *
-   * Requirements: 6.2 - Query blockchain for message count
-   *
    * @returns Promise resolving to the message count
    */
   static async getMessageCount(): Promise<number> {
@@ -337,8 +329,6 @@ export class ContractService {
 
   /**
    * Get all messages sent by a specific address
-   *
-   * Requirements: 6.2 - Query blockchain for sent messages
    *
    * @param senderAddress - Ethereum address of the sender
    * @returns Promise resolving to array of message metadata
@@ -371,8 +361,6 @@ export class ContractService {
   /**
    * Get all messages received by a specific address
    *
-   * Requirements: 6.2 - Query blockchain for received messages
-   *
    * @param recipientAddress - Ethereum address of the recipient
    * @returns Promise resolving to array of message metadata
    */
@@ -403,8 +391,6 @@ export class ContractService {
 
   /**
    * Get a specific message by its ID
-   *
-   * Requirements: 6.2 - Query blockchain for message by ID
    *
    * @param messageId - The message ID to retrieve
    * @returns Promise resolving to message metadata or null if not found
@@ -437,8 +423,6 @@ export class ContractService {
 
   /**
    * Store a new message on the blockchain
-   *
-   * Requirements: 6.2 - Store message metadata on blockchain
    *
    * @param params - Message parameters
    * @param signerAddress - Ethereum address to sign the transaction
@@ -522,8 +506,6 @@ export class ContractService {
 
   /**
    * Subscribe to MessageStored events
-   *
-   * Requirements: 6.2 - Listen for new messages on blockchain
    *
    * @param callback - Function to call when a new message is stored
    * @returns Cleanup function to unsubscribe

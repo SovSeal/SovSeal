@@ -2,7 +2,6 @@
 
 /**
  * Component for generating redeem packages for recipients without wallets
- * Requirements: 6.6
  */
 
 import { useState } from "react";

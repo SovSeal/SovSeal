@@ -1,7 +1,6 @@
 /**
  * Integration tests for encryption flow
  * Tests the complete encryption/decryption workflow
- * Requirements: Message creation end-to-end, message retrieval and decryption
  */
 
 import { describe, it, expect, beforeAll } from "vitest";

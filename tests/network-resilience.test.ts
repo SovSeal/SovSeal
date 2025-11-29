@@ -2,8 +2,6 @@
  * Network Resilience Tests
  *
  * Tests for network error handling, retry logic, and offline scenarios
- *
- * Requirements: 12.2 - Test with network disconnection
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";

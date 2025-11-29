@@ -25,7 +25,6 @@ export class CryptoService {
 
   /**
    * Generate a unique 256-bit AES key for encryption
-   * Requirements: 4.1
    */
   static async generateAESKey(): Promise<CryptoKey> {
     try {
@@ -47,7 +46,6 @@ export class CryptoService {
 
   /**
    * Encrypt a media blob using AES-256-GCM with IV generation
-   * Requirements: 4.2, 4.3
    */
   static async encryptBlob(blob: Blob, key: CryptoKey): Promise<EncryptedData> {
     try {
@@ -83,7 +81,6 @@ export class CryptoService {
 
   /**
    * Decrypt an encrypted blob using AES-256-GCM
-   * Requirements: 4.3
    */
   static async decryptBlob(
     encryptedData: EncryptedData,
@@ -148,7 +145,6 @@ export class CryptoService {
 
   /**
    * Secure memory cleanup - overwrite sensitive data
-   * Requirements: 4.4, 4.5
    *
    * Note: crypto.getRandomValues() has a limit of 65536 bytes.
    * For larger buffers, we chunk the operation.

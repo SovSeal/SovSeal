@@ -11,7 +11,6 @@ interface MediaRecorderProps {
 
 /**
  * MediaRecorder component for recording audio/video
- * Requirements: 2.1, 2.2, 2.3, 2.4, 2.5
  */
 export function MediaRecorder({
   onRecordingComplete,

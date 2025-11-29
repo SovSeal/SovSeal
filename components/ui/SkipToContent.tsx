@@ -1,7 +1,5 @@
 /**
  * SkipToContent - Accessibility component for keyboard navigation
- *
- * Requirements: 11.4
  */
 
 "use client";

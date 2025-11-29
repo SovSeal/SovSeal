@@ -1,7 +1,5 @@
 /**
  * ConfirmDialog - Confirmation dialog for critical actions
- *
- * Requirements: 11.3
  */
 
 "use client";

@@ -1,6 +1,5 @@
 /**
  * Type definitions for recipient-without-wallet redeem package flow
- * Requirements: 6.6
  */
 
 /**

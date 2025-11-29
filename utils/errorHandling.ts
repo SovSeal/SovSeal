@@ -3,8 +3,6 @@
  *
  * Provides centralized error handling, classification, and user-friendly
  * error messages for the Lockdrop application.
- *
- * Requirements: All error scenarios from design
  */
 
 /**

@@ -1,7 +1,5 @@
 /**
  * Unlock Page - Handle message unlocking and playback
- *
- * Requirements: 9.1, 9.2, 9.3, 10.2, 10.3
  */
 
 "use client";

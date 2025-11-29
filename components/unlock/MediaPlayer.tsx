@@ -1,7 +1,5 @@
 /**
  * MediaPlayer - Secure media player for decrypted content
- *
- * Requirements: 10.2, 10.3, 10.4, 10.5, 10.6
  */
 
 "use client";
@@ -81,7 +79,6 @@ export function MediaPlayer({
   }, []);
 
   // Cleanup on unmount - revoke object URL and clear decrypted data
-  // Requirements: 10.5, 10.6 - Clear decrypted content from memory on close
   useEffect(() => {
     // Store the current URL for cleanup
     const currentUrl = objectUrlRef.current;

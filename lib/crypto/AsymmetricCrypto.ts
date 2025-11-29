@@ -44,7 +44,6 @@ export class AsymmetricCrypto {
 
   /**
    * Retrieve public key for encryption from an Ethereum address
-   * Requirements: 6.1
    *
    * Note: For Ethereum addresses (0x...), we derive a deterministic public key
    * from the address itself for encryption purposes. This is a simplified approach
@@ -115,7 +114,6 @@ export class AsymmetricCrypto {
 
   /**
    * Convert Ed25519/Sr25519 public key to X25519 for encryption
-   * Requirements: 6.1a
    *
    * Note: For the MVP, we use the public key directly as Curve25519 is compatible
    * with Ed25519 for encryption purposes. In production, use proper key conversion.
@@ -131,7 +129,6 @@ export class AsymmetricCrypto {
 
   /**
    * Encrypt AES key with recipient's public key using NaCl sealed box
-   * Requirements: 4.5, 6.1
    *
    * Note: For MVP, we use symmetric encryption with a shared secret derived from
    * the recipient's public key. In production, implement proper sealed box encryption.
@@ -179,7 +176,6 @@ export class AsymmetricCrypto {
 
   /**
    * Decrypt AES key using the stored secret
-   * Requirements: 9.4, 9.5
    *
    * Note: For MVP, this uses the secret stored with the encrypted data
    * In production, derive the secret from ECDH key agreement with recipient's private key
@@ -218,7 +214,6 @@ export class AsymmetricCrypto {
 
   /**
    * Generate SHA-256 hash of encrypted blob for integrity verification
-   * Requirements: 9.4, 9.5
    */
   static async generateHash(data: ArrayBuffer | Blob): Promise<string> {
     try {

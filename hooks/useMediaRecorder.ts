@@ -5,7 +5,6 @@ import type { MediaType, RecordingState } from "@/types/media";
 
 /**
  * Custom hook for media recording functionality
- * Requirements: 2.1, 2.2, 2.3, 2.4, 2.5
  */
 export function useMediaRecorder(mediaType: MediaType = "audio") {
   const [recordingState, setRecordingState] = useState<RecordingState>({
@@ -48,7 +47,6 @@ export function useMediaRecorder(mediaType: MediaType = "audio") {
 
   /**
    * Start recording
-   * Requirements: 2.1, 2.2, 2.3
    */
   const startRecording = useCallback(async () => {
     try {

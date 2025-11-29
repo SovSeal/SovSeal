@@ -1,7 +1,6 @@
 /**
  * Unit tests for AsymmetricCrypto
  * Tests key encryption, hash generation, and passphrase-based encryption
- * Requirements: 4.5, 6.1, 6.1a, 9.4, 9.5
  */
 
 import { describe, it, expect, beforeAll } from "vitest";

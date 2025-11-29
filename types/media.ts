@@ -1,6 +1,5 @@
 /**
  * Type definitions for media capture and upload functionality
- * Requirements: 2.1-2.5, 3.1-3.5
  */
 
 export type MediaType = "audio" | "video";

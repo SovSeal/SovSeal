@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document summarizes the security audit performed on the Lockdrop application as part of task 17.2. The audit focused on verifying the security requirements specified in the design document.
+This document summarizes the security audit performed on the Lockdrop application. The audit focused on verifying the security requirements specified in the design document.
 
 ## Audit Date
 
@@ -62,7 +62,6 @@ static async encryptBlob(blob: Blob, key: CryptoKey): Promise<EncryptedData> {
 // MessageCreationService.ts - Line 175-183
 finally {
   // Stage 9: Clear sensitive data from memory
-  // Requirements: 4.4, 4.5
   if (aesKeyData) {
     CryptoService.secureCleanup(aesKeyData);
   }

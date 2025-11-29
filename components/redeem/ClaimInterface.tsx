@@ -2,7 +2,6 @@
 
 /**
  * Component for recipients to claim messages using a passphrase
- * Requirements: 6.6
  */
 
 import { useState } from "react";

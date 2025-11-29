@@ -3,8 +3,6 @@
  *
  * Provides user-friendly error display with recovery suggestions
  * and retry functionality.
- *
- * Requirements: 12.1 - Display user-friendly error messages
  */
 
 "use client";

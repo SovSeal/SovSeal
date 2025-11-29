@@ -1,7 +1,5 @@
 /**
  * Toast - Toast notification component
- *
- * Requirements: 11.3
  */
 
 "use client";

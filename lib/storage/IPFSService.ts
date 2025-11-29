@@ -3,8 +3,6 @@
  *
  * Legacy implementation for backward compatibility.
  * New code should use StorachaService instead.
- *
- * Requirements: 3.6, 5.1, 5.2, 5.3, 5.4, 5.6
  */
 
 import { withTimeout, TIMEOUTS } from "@/utils/timeout";
@@ -142,12 +140,6 @@ export class IPFSService {
    * - Exponential backoff with jitter: 1s, 2s, 4s (±30% jitter)
    * - Fails fast on non-retryable errors (4xx except 429)
    * - Maximum 3 attempts
-   *
-   * Requirements:
-   * - 5.1: Upload encrypted blob to Web3.Storage
-   * - 5.2: Return IPFS CID on successful upload
-   * - 5.4: Add upload progress tracking
-   * - 5.6: Verify CID accessibility after upload
    *
    * @param blob - The encrypted blob to upload
    * @param filename - Optional filename for the uploaded file

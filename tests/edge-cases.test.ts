@@ -2,8 +2,6 @@
  * Edge Case Tests
  *
  * Comprehensive tests for edge cases and error scenarios
- *
- * Requirements: 12.2 - Handle edge cases
  */
 
 import { describe, it, expect } from "vitest";

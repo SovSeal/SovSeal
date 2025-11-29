@@ -1,7 +1,6 @@
 /**
  * Integration tests for message lifecycle
  * Tests message status transitions and timestamp verification
- * Requirements: Dashboard data loading, unlock flow with timestamp verification
  */
 
 import { describe, it, expect } from "vitest";

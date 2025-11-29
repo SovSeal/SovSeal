@@ -1,7 +1,5 @@
 /**
  * MessageList - Display a grid of message cards
- *
- * Requirements: 7.2, 8.2, 11.4
  */
 
 "use client";

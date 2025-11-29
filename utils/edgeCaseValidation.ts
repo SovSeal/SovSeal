@@ -3,8 +3,6 @@
  *
  * Provides validation functions for handling edge cases and
  * preventing common errors.
- *
- * Requirements: 12.2 - Handle edge cases
  */
 
 // Pre-load web3Enable to avoid dynamic imports

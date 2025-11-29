@@ -4,7 +4,8 @@
   "description": "Automatically runs ESLint on TypeScript and TSX files when saved to catch code issues and apply auto-fixes. Shows a summary of any errors that cannot be automatically fixed.",
   "version": "1",
   "when": {
-    "type": "userTriggered"
+    "type": "fileEdited",
+    "patterns": []
   },
   "then": {
     "type": "askAgent",

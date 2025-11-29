@@ -3,8 +3,6 @@
  *
  * Provides structured error logging with context, categorization,
  * and integration points for monitoring services.
- *
- * Requirements: 12.1 - Log errors for debugging
  */
 
 import {

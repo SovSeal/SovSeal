@@ -1,7 +1,5 @@
 /**
  * HelpText - Help text component for providing guidance
- *
- * Requirements: 11.5, 14.3, 14.4
  */
 
 "use client";
