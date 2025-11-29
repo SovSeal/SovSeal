@@ -255,21 +255,27 @@ const techLogos = [
 ];
 
 function TechLogosCarousel() {
+  // Triple the logos for truly seamless infinite loop
+  const allLogos = [...techLogos, ...techLogos, ...techLogos];
+
   return (
-    <div className="relative w-full overflow-hidden">
-      <div className="flex animate-slide-logos items-center">
-        {/* Double the logos for seamless loop */}
-        {[...techLogos, ...techLogos].map((logo, index) => (
+    <div className="relative mx-auto w-full max-w-3xl overflow-hidden">
+      {/* Fade edges */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-dark-900/50 to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-dark-900/50 to-transparent" />
+
+      <div className="flex animate-slide-logos items-center justify-center">
+        {allLogos.map((logo, index) => (
           <div
             key={`${logo.name}-${index}`}
-            className="flex-shrink-0 px-10 opacity-70 transition-opacity hover:opacity-100"
+            className="flex-shrink-0 px-16 opacity-70 transition-opacity hover:opacity-100"
           >
             <Image
               src={logo.src}
               alt={logo.name}
-              width={120}
-              height={48}
-              className="h-12 w-auto object-contain"
+              width={140}
+              height={56}
+              className="h-14 w-auto object-contain"
             />
           </div>
         ))}
