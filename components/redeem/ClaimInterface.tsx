@@ -5,6 +5,7 @@
  */
 
 import { useState } from "react";
+import Link from "next/link";
 import { RedeemPackageService } from "@/lib/redeem";
 import { IPFSService } from "@/lib/storage";
 import type { DecryptedRedeemPackage } from "@/types/redeem";
@@ -126,18 +127,18 @@ export function ClaimInterface({ packageCID, onClaimed }: ClaimInterfaceProps) {
         </div>
 
         <div className="flex gap-3">
-          <a
+          <Link
             href="/dashboard"
             className="flex-1 rounded-md bg-blue-600 px-4 py-2 text-center text-white transition-colors hover:bg-blue-700"
           >
             Go to Dashboard
-          </a>
-          <a
+          </Link>
+          <Link
             href="/"
             className="rounded-md border border-gray-300 px-4 py-2 text-center transition-colors hover:bg-gray-50"
           >
             Home
-          </a>
+          </Link>
         </div>
       </div>
     );

@@ -5,6 +5,7 @@
  */
 
 import { useEffect } from "react";
+import Link from "next/link";
 
 export default function ClaimError({
   error,
@@ -48,12 +49,12 @@ export default function ClaimError({
             >
               Try Again
             </button>
-            <a
+            <Link
               href="/"
               className="rounded-md border border-gray-300 px-4 py-2 text-center transition-colors hover:bg-gray-50"
             >
               Go Home
-            </a>
+            </Link>
           </div>
         </div>
       </div>

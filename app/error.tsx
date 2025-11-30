@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 
 /**
  * Root error boundary for the entire application
@@ -98,12 +99,12 @@ export default function GlobalError({
               >
                 Try Again
               </button>
-              <a
+              <Link
                 href="/"
                 className="w-full rounded-lg bg-gray-200 px-6 py-3 text-center font-medium text-gray-700 transition-colors hover:bg-gray-300"
               >
                 Return to Home
-              </a>
+              </Link>
             </div>
 
             {/* Help Section */}

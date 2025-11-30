@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 
 /**
  * Error boundary for the Dashboard page
@@ -157,12 +158,12 @@ export default function DashboardError({
           >
             Try Again
           </button>
-          <a
+          <Link
             href="/"
             className="flex-1 rounded-lg bg-gray-200 px-6 py-3 text-center font-medium text-gray-700 transition-colors hover:bg-gray-300"
           >
             Go to Home
-          </a>
+          </Link>
         </div>
 
         {/* Help Link */}
