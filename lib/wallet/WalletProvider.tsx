@@ -3,7 +3,7 @@
 /**
  * WalletProvider - Ethereum wallet connection using EIP-1193 (window.ethereum)
  *
- * Supports MetaMask and Talisman Ethereum accounts
+ * Supports MetaMask and Talisman Ethereum accounts with wallet selection
  * Returns Ethereum addresses (0x...) compatible with ethers.js and Passet Hub
  */
 
@@ -20,6 +20,7 @@ import { withTimeout, TIMEOUTS, TimeoutError } from "@/utils/timeout";
 import { ErrorLogger } from "@/lib/monitoring/ErrorLogger";
 import { AppStorage, STORAGE_KEYS } from "@/utils/storage";
 import { INTERVALS } from "@/utils/constants";
+import { WalletSelector, WalletType } from "@/components/wallet/WalletSelector";
 
 const WalletContext = createContext<WalletContextValue | undefined>(undefined);
 
@@ -41,10 +42,73 @@ interface EthereumProvider {
   isTalisman?: boolean;
 }
 
+// Extended window interface for multiple wallet providers
+interface WindowWithProviders extends Window {
+  ethereum?: EthereumProvider;
+  talismanEth?: EthereumProvider;
+}
+
 declare global {
   interface Window {
     ethereum?: EthereumProvider;
+    talismanEth?: EthereumProvider;
   }
+}
+
+/**
+ * Detect which wallet providers are available
+ */
+function detectAvailableWallets(): WalletType[] {
+  if (typeof window === "undefined") return [];
+  
+  const wallets: WalletType[] = [];
+  const win = window as WindowWithProviders;
+  
+  // Check for Talisman (has dedicated talismanEth or isTalisman flag)
+  if (win.talismanEth || win.ethereum?.isTalisman) {
+    wallets.push("talisman");
+  }
+  
+  // Check for MetaMask (has isMetaMask flag but not isTalisman)
+  if (win.ethereum?.isMetaMask && !win.ethereum?.isTalisman) {
+    wallets.push("metamask");
+  }
+  
+  // If only ethereum exists without specific flags, assume it's MetaMask-compatible
+  if (win.ethereum && wallets.length === 0) {
+    wallets.push("metamask");
+  }
+  
+  return wallets;
+}
+
+/**
+ * Get the provider for a specific wallet type
+ */
+function getProviderForWallet(walletType: WalletType): EthereumProvider | null {
+  if (typeof window === "undefined") return null;
+  
+  const win = window as WindowWithProviders;
+  
+  if (walletType === "talisman") {
+    // Prefer dedicated talismanEth provider if available
+    if (win.talismanEth) return win.talismanEth;
+    // Fall back to ethereum if it's Talisman
+    if (win.ethereum?.isTalisman) return win.ethereum;
+  }
+  
+  if (walletType === "metamask") {
+    // Use ethereum if it's MetaMask (and not Talisman)
+    if (win.ethereum?.isMetaMask && !win.ethereum?.isTalisman) {
+      return win.ethereum;
+    }
+    // Fall back to generic ethereum
+    if (win.ethereum && !win.ethereum.isTalisman) {
+      return win.ethereum;
+    }
+  }
+  
+  return null;
 }
 
 export function WalletProvider({ children }: WalletProviderProps) {
@@ -56,9 +120,13 @@ export function WalletProvider({ children }: WalletProviderProps) {
     selectedAccount: null,
   });
   const [isHealthy, setIsHealthy] = useState(true);
+  const [showWalletSelector, setShowWalletSelector] = useState(false);
+  const [availableWallets, setAvailableWallets] = useState<WalletType[]>([]);
+  const [activeProvider, setActiveProvider] = useState<EthereumProvider | null>(null);
   const connectionListeners = useRef<Set<(connected: boolean) => void>>(
     new Set()
   );
+  const pendingConnectionResolve = useRef<((walletType: WalletType) => void) | null>(null);
 
   // Try to restore wallet connection on mount
   useEffect(() => {
@@ -183,35 +251,49 @@ export function WalletProvider({ children }: WalletProviderProps) {
 
   const connect = useCallback(async (preferredAddress?: string) => {
     try {
-      // Check if ethereum provider exists
-      if (typeof window === "undefined" || !window.ethereum) {
+      // Detect available wallets
+      const wallets = detectAvailableWallets();
+      setAvailableWallets(wallets);
+      
+      if (wallets.length === 0) {
         throw new Error(
           "No Ethereum wallet detected. Please install Talisman wallet extension (recommended) or MetaMask as an alternative."
         );
       }
 
-      // Detect wallet type - prioritize Talisman
-      const isTalisman = window.ethereum.isTalisman;
-      const isMetaMask = window.ethereum.isMetaMask && !isTalisman;
-
-      let walletName = "Ethereum Wallet";
-      if (isTalisman) {
-        walletName = "Talisman";
-        ErrorLogger.info(LOG_CONTEXT, "Talisman wallet detected (recommended)");
-      } else if (isMetaMask) {
-        walletName = "MetaMask";
-        ErrorLogger.info(LOG_CONTEXT, "MetaMask wallet detected (alternative)");
+      let selectedWalletType: WalletType;
+      
+      // If multiple wallets available, show selector
+      if (wallets.length > 1) {
+        ErrorLogger.info(LOG_CONTEXT, "Multiple wallets detected, showing selector", { wallets });
+        
+        // Show wallet selector and wait for user choice
+        selectedWalletType = await new Promise<WalletType>((resolve) => {
+          pendingConnectionResolve.current = resolve;
+          setShowWalletSelector(true);
+        });
+        
+        setShowWalletSelector(false);
+        pendingConnectionResolve.current = null;
       } else {
-        ErrorLogger.info(LOG_CONTEXT, "Generic Ethereum wallet detected");
+        // Only one wallet, use it directly
+        selectedWalletType = wallets[0];
       }
-
-      ErrorLogger.debug(LOG_CONTEXT, "Requesting Ethereum accounts...");
+      
+      // Get the provider for the selected wallet
+      const provider = getProviderForWallet(selectedWalletType);
+      if (!provider) {
+        throw new Error(`Failed to get provider for ${selectedWalletType}`);
+      }
+      
+      setActiveProvider(provider);
+      
+      const walletName = selectedWalletType === "talisman" ? "Talisman" : "MetaMask";
+      ErrorLogger.info(LOG_CONTEXT, `Connecting to ${walletName}...`);
 
       // Request accounts (triggers wallet popup)
       const accounts = await withTimeout(
-        window.ethereum.request({ method: "eth_requestAccounts" }) as Promise<
-          string[]
-        >,
+        provider.request({ method: "eth_requestAccounts" }) as Promise<string[]>,
         TIMEOUTS.WALLET_ENABLE,
         "Request Ethereum accounts"
       );
@@ -249,7 +331,10 @@ export function WalletProvider({ children }: WalletProviderProps) {
         type: "ethereum" as const,
       }));
 
-      ErrorLogger.info(LOG_CONTEXT, "Successfully connected", { address: selectedAddress });
+      ErrorLogger.info(LOG_CONTEXT, "Successfully connected", { 
+        address: selectedAddress,
+        wallet: walletName 
+      });
 
       setState({
         isConnected: true,
@@ -258,8 +343,11 @@ export function WalletProvider({ children }: WalletProviderProps) {
         selectedAccount,
       });
 
-      // Persist connection state
-      AppStorage.set(STORAGE_KEYS.WALLET_CONNECTION, { wasConnected: true });
+      // Persist connection state with wallet type
+      AppStorage.set(STORAGE_KEYS.WALLET_CONNECTION, { 
+        wasConnected: true,
+        walletType: selectedWalletType 
+      });
 
       setIsHealthy(true);
     } catch (error) {
@@ -300,6 +388,23 @@ export function WalletProvider({ children }: WalletProviderProps) {
     }
   }, []);
 
+  // Handle wallet selection from modal
+  const handleWalletSelect = useCallback((walletType: WalletType) => {
+    if (pendingConnectionResolve.current) {
+      pendingConnectionResolve.current(walletType);
+    }
+  }, []);
+
+  // Handle wallet selector close
+  const handleWalletSelectorClose = useCallback(() => {
+    setShowWalletSelector(false);
+    if (pendingConnectionResolve.current) {
+      // Reject the connection by selecting the first available wallet
+      // This will be caught as an error if user closes without selecting
+      pendingConnectionResolve.current = null;
+    }
+  }, []);
+
   const disconnect = useCallback(() => {
     ErrorLogger.info(LOG_CONTEXT, "Disconnecting wallet");
     setState({
@@ -331,7 +436,9 @@ export function WalletProvider({ children }: WalletProviderProps) {
         throw new Error("No account selected");
       }
 
-      if (typeof window === "undefined" || !window.ethereum) {
+      // Use active provider or fall back to window.ethereum
+      const provider = activeProvider || window.ethereum;
+      if (!provider) {
         throw new Error("Ethereum wallet not available");
       }
 
@@ -343,7 +450,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
 
         // Request signature using personal_sign (EIP-191)
         const signature = await withTimeout(
-          window.ethereum.request({
+          provider.request({
             method: "personal_sign",
             params: [messageHex, state.selectedAccount.address],
           }) as Promise<string>,
@@ -375,7 +482,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
         throw error;
       }
     },
-    [state.selectedAccount]
+    [state.selectedAccount, activeProvider]
   );
 
   const checkHealth = useCallback(async (): Promise<boolean> => {
@@ -474,7 +581,15 @@ export function WalletProvider({ children }: WalletProviderProps) {
   };
 
   return (
-    <WalletContext.Provider value={value}>{children}</WalletContext.Provider>
+    <WalletContext.Provider value={value}>
+      {children}
+      <WalletSelector
+        isOpen={showWalletSelector}
+        onClose={handleWalletSelectorClose}
+        onSelect={handleWalletSelect}
+        availableWallets={availableWallets}
+      />
+    </WalletContext.Provider>
   );
 }
 

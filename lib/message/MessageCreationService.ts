@@ -16,6 +16,7 @@ import { CryptoService } from "@/lib/crypto/CryptoService";
 import { AsymmetricCrypto } from "@/lib/crypto/AsymmetricCrypto";
 import { ipfsService } from "@/lib/storage";
 import { ContractService } from "@/lib/contract/ContractService";
+import { isValidEthereumAddress } from "@/utils/edgeCaseValidation";
 import type { MediaFile } from "@/types/media";
 import type { WalletAccount } from "@/types/wallet";
 
@@ -126,40 +127,38 @@ export class MessageCreationService {
         type: "application/json",
       });
 
-      // Stage 5: Upload encrypted AES key to IPFS
+      // Stage 5 & 6: Upload encrypted key and media to IPFS in parallel
+      // This is a major performance optimization - uploads are independent
       onProgress?.({
         stage: "uploading-key",
         progress: 50,
-        message: "Uploading encrypted key to IPFS...",
+        message: "Uploading encrypted content to IPFS...",
       });
 
-      const keyUploadResult = await ipfsService.uploadEncryptedBlob(
-        encryptedKeyBlob,
-        `key-${Date.now()}.json`
-      );
-
-      // Stage 6: Upload encrypted media blob to IPFS
-      onProgress?.({
-        stage: "uploading-media",
-        progress: 60,
-        message: "Uploading encrypted message to IPFS...",
-      });
-
-      const mediaUploadResult = await ipfsService.uploadEncryptedBlob(
-        encryptedBlob,
-        `message-${Date.now()}.enc`,
-        {
-          onProgress: (uploadProgress: number) => {
-            // Map upload progress to overall progress (60-85%)
-            const overallProgress = 60 + uploadProgress * 0.25;
-            onProgress?.({
-              stage: "uploading-media",
-              progress: overallProgress,
-              message: `Uploading encrypted message to IPFS... ${uploadProgress}%`,
-            });
-          },
-        }
-      );
+      const timestamp = Date.now();
+      const [keyUploadResult, mediaUploadResult] = await Promise.all([
+        // Upload encrypted key (small, fast)
+        ipfsService.uploadEncryptedBlob(
+          encryptedKeyBlob,
+          `key-${timestamp}.json`
+        ),
+        // Upload encrypted media (larger, with progress tracking)
+        ipfsService.uploadEncryptedBlob(
+          encryptedBlob,
+          `message-${timestamp}.enc`,
+          {
+            onProgress: (uploadProgress: number) => {
+              // Map upload progress to overall progress (50-85%)
+              const overallProgress = 50 + uploadProgress * 0.35;
+              onProgress?.({
+                stage: "uploading-media",
+                progress: overallProgress,
+                message: `Uploading encrypted content to IPFS... ${uploadProgress}%`,
+              });
+            },
+          }
+        ),
+      ]);
 
       // Stage 7: Submit transaction to smart contract
       onProgress?.({
@@ -228,7 +227,7 @@ export class MessageCreationService {
       return { valid: false, error: "Media file is required" };
     }
 
-    // Validate recipient address
+    // Validate recipient address - must be Ethereum format (0x...)
     if (
       !params.recipientAddress ||
       params.recipientAddress.trim().length === 0
@@ -236,10 +235,12 @@ export class MessageCreationService {
       return { valid: false, error: "Recipient address is required" };
     }
 
-    // Basic Polkadot address validation
-    const polkadotAddressRegex = /^[1-9A-HJ-NP-Za-km-z]{47,48}$/;
-    if (!polkadotAddressRegex.test(params.recipientAddress.trim())) {
-      return { valid: false, error: "Invalid Polkadot address format" };
+    // Ethereum address validation (0x followed by 40 hex characters)
+    if (!isValidEthereumAddress(params.recipientAddress.trim())) {
+      return { 
+        valid: false, 
+        error: "Invalid Ethereum address format (must start with 0x followed by 40 hex characters)" 
+      };
     }
 
     // Validate unlock timestamp
@@ -252,8 +253,16 @@ export class MessageCreationService {
       return { valid: false, error: "Sender account is required" };
     }
 
-    // Check sender is not recipient
-    if (params.senderAccount.address === params.recipientAddress) {
+    // Validate sender address format
+    if (!isValidEthereumAddress(params.senderAccount.address)) {
+      return { 
+        valid: false, 
+        error: "Invalid sender address format (must be Ethereum format: 0x...)" 
+      };
+    }
+
+    // Check sender is not recipient (case-insensitive comparison for Ethereum addresses)
+    if (params.senderAccount.address.toLowerCase() === params.recipientAddress.toLowerCase()) {
       return { valid: false, error: "Cannot send message to yourself" };
     }
 

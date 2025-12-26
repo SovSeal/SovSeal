@@ -28,6 +28,8 @@ export interface UploadOptions {
   onProgress?: (progress: number) => void;
   chunked?: boolean;
   chunkSize?: number;
+  /** Skip CID accessibility verification after upload (default: true for performance) */
+  skipVerification?: boolean;
 }
 
 export interface AuthState {
@@ -321,18 +323,18 @@ export class StorachaService {
         "Not authenticated. Please go to Settings and connect with Storacha using your email."
       );
     }
-    
+
     if (!this.authState.spaceDid) {
       throw new Error(
         "No storage space configured. Please go to Settings and create a Storacha space."
       );
     }
-    
+
     // Try to ensure space is set before upload
     try {
       const client = await this.getClient();
       const currentSpace = client.currentSpace();
-      
+
       if (!currentSpace) {
         // Try to restore the space from saved state
         ErrorLogger.debug(LOG_CONTEXT, "No current space, attempting to restore from saved state...");
@@ -399,9 +401,9 @@ export class StorachaService {
 
     const onStoredChunk = onProgress
       ? (meta: { size: number }) => {
-          const progress = Math.round((meta.size / totalBytes) * 100);
-          onProgress(Math.min(progress, 99));
-        }
+        const progress = Math.round((meta.size / totalBytes) * 100);
+        onProgress(Math.min(progress, 99));
+      }
       : undefined;
 
     const cid = await withTimeout(
@@ -418,7 +420,11 @@ export class StorachaService {
       onProgress(100);
     }
 
-    await this.verifyCIDAccessibility(cid.toString());
+    // Skip verification by default for performance (saves 6-20 seconds)
+    // Set skipVerification: false if you need to verify CID accessibility
+    if (!options.skipVerification && options.skipVerification !== undefined) {
+      await this.verifyCIDAccessibility(cid.toString());
+    }
 
     return {
       cid: cid.toString(),

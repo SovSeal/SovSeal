@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect, beforeAll } from "vitest";
-import { AsymmetricCrypto } from "../AsymmetricCrypto";
+import { AsymmetricCrypto, EncryptedKey } from "../AsymmetricCrypto";
 
 describe("AsymmetricCrypto", () => {
   beforeAll(async () => {
@@ -18,6 +18,36 @@ describe("AsymmetricCrypto", () => {
   });
 
   describe("Public Key Retrieval", () => {
+    it("should derive key from valid Ethereum address", async () => {
+      const validAddress = "0x742d35Cc6634C0532925a3b844Bc9e7595f8fE00";
+
+      const publicKey =
+        await AsymmetricCrypto.getPublicKeyFromTalisman(validAddress);
+
+      expect(publicKey).toBeInstanceOf(Uint8Array);
+      expect(publicKey.length).toBe(32);
+    });
+
+    it("should derive same key for same Ethereum address (case insensitive)", async () => {
+      const address1 = "0x742d35Cc6634C0532925a3b844Bc9e7595f8fE00";
+      const address2 = "0x742D35CC6634C0532925A3B844BC9E7595F8FE00";
+
+      const key1 = await AsymmetricCrypto.getPublicKeyFromTalisman(address1);
+      const key2 = await AsymmetricCrypto.getPublicKeyFromTalisman(address2);
+
+      expect(key1).toEqual(key2);
+    });
+
+    it("should derive different keys for different addresses", async () => {
+      const address1 = "0x742d35Cc6634C0532925a3b844Bc9e7595f8fE00";
+      const address2 = "0x1234567890123456789012345678901234567890";
+
+      const key1 = await AsymmetricCrypto.getPublicKeyFromTalisman(address1);
+      const key2 = await AsymmetricCrypto.getPublicKeyFromTalisman(address2);
+
+      expect(key1).not.toEqual(key2);
+    });
+
     it("should decode valid Polkadot address", async () => {
       const validAddress = "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY";
 
@@ -26,6 +56,14 @@ describe("AsymmetricCrypto", () => {
 
       expect(publicKey).toBeInstanceOf(Uint8Array);
       expect(publicKey.length).toBe(32);
+    });
+
+    it("should reject invalid Ethereum address format", async () => {
+      const invalidAddress = "0xinvalid";
+
+      await expect(
+        AsymmetricCrypto.getPublicKeyFromTalisman(invalidAddress)
+      ).rejects.toThrow("Invalid Ethereum address format");
     });
 
     it("should reject invalid address format", async () => {
@@ -62,7 +100,7 @@ describe("AsymmetricCrypto", () => {
     });
   });
 
-  describe("AES Key Encryption", () => {
+  describe("AES Key Encryption (v2)", () => {
     it("should encrypt AES key with public key", async () => {
       const aesKeyData = new Uint8Array(32).fill(42).buffer;
       const recipientPublicKey = new Uint8Array(32).fill(1);
@@ -76,9 +114,11 @@ describe("AsymmetricCrypto", () => {
       expect(encrypted.encryptedAESKey).toBeTruthy();
       expect(encrypted.nonce).toBeTruthy();
       expect(encrypted.recipientPublicKey).toBeTruthy();
+      expect(encrypted.ephemeralPublicKey).toBeTruthy();
+      expect(encrypted.version).toBe("v2");
     });
 
-    it("should produce different ciphertext for same key (different nonce)", async () => {
+    it("should produce different ciphertext for same key (different ephemeral key)", async () => {
       const aesKeyData = new Uint8Array(32).fill(42).buffer;
       const recipientPublicKey = new Uint8Array(32).fill(1);
 
@@ -91,12 +131,26 @@ describe("AsymmetricCrypto", () => {
         recipientPublicKey
       );
 
+      // Different ephemeral keys should produce different ciphertext
+      expect(encrypted1.ephemeralPublicKey).not.toBe(encrypted2.ephemeralPublicKey);
       expect(encrypted1.nonce).not.toBe(encrypted2.nonce);
       expect(encrypted1.encryptedAESKey).not.toBe(encrypted2.encryptedAESKey);
     });
+
+    it("should include version identifier in encrypted output", async () => {
+      const aesKeyData = new Uint8Array(32).fill(42).buffer;
+      const recipientPublicKey = new Uint8Array(32).fill(1);
+
+      const encrypted = await AsymmetricCrypto.encryptAESKey(
+        aesKeyData,
+        recipientPublicKey
+      );
+
+      expect(encrypted.version).toBe("v2");
+    });
   });
 
-  describe("AES Key Decryption", () => {
+  describe("AES Key Decryption (v2)", () => {
     it("should decrypt encrypted AES key", async () => {
       const originalKey = new Uint8Array(32).fill(42);
       const recipientPublicKey = new Uint8Array(32).fill(1);
@@ -112,15 +166,123 @@ describe("AsymmetricCrypto", () => {
       expect(new Uint8Array(decrypted)).toEqual(originalKey);
     });
 
+    it("should decrypt with different key sizes", async () => {
+      // Test with 16-byte key (AES-128)
+      const key16 = new Uint8Array(16).fill(16);
+      const recipientPublicKey = new Uint8Array(32).fill(1);
+
+      const encrypted16 = await AsymmetricCrypto.encryptAESKey(
+        key16.buffer,
+        recipientPublicKey
+      );
+      const decrypted16 = await AsymmetricCrypto.decryptAESKeyWithTalisman(encrypted16);
+      expect(new Uint8Array(decrypted16)).toEqual(key16);
+
+      // Test with 32-byte key (AES-256)
+      const key32 = new Uint8Array(32).fill(32);
+      const encrypted32 = await AsymmetricCrypto.encryptAESKey(
+        key32.buffer,
+        recipientPublicKey
+      );
+      const decrypted32 = await AsymmetricCrypto.decryptAESKeyWithTalisman(encrypted32);
+      expect(new Uint8Array(decrypted32)).toEqual(key32);
+    });
+
+    it("should fail with tampered encrypted data", async () => {
+      const originalKey = new Uint8Array(32).fill(42);
+      const recipientPublicKey = new Uint8Array(32).fill(1);
+
+      const encrypted = await AsymmetricCrypto.encryptAESKey(
+        originalKey.buffer,
+        recipientPublicKey
+      );
+
+      // Tamper with the encrypted data
+      const tamperedEncrypted: EncryptedKey = {
+        ...encrypted,
+        encryptedAESKey: encrypted.encryptedAESKey.slice(0, -4) + "ffff",
+      };
+
+      await expect(
+        AsymmetricCrypto.decryptAESKeyWithTalisman(tamperedEncrypted)
+      ).rejects.toThrow();
+    });
+
+    it("should fail with wrong recipient public key", async () => {
+      const originalKey = new Uint8Array(32).fill(42);
+      const recipientPublicKey = new Uint8Array(32).fill(1);
+
+      const encrypted = await AsymmetricCrypto.encryptAESKey(
+        originalKey.buffer,
+        recipientPublicKey
+      );
+
+      // Change the recipient public key
+      const wrongRecipientEncrypted: EncryptedKey = {
+        ...encrypted,
+        recipientPublicKey: "0x" + "02".repeat(32),
+      };
+
+      await expect(
+        AsymmetricCrypto.decryptAESKeyWithTalisman(wrongRecipientEncrypted)
+      ).rejects.toThrow();
+    });
+
     it("should fail with corrupted encrypted data", async () => {
-      const encrypted = {
-        encryptedAESKey: "0x1234", // Invalid/corrupted data
+      const encrypted: EncryptedKey = {
+        encryptedAESKey: "0x1234",
         nonce: "0x5678",
         recipientPublicKey: "0x9abc",
+        ephemeralPublicKey: "0xdef0",
+        version: "v2",
       };
 
       await expect(
         AsymmetricCrypto.decryptAESKeyWithTalisman(encrypted)
+      ).rejects.toThrow();
+    });
+  });
+
+  describe("Security Properties", () => {
+    it("should not expose encryption secret in output", async () => {
+      const aesKeyData = new Uint8Array(32).fill(42).buffer;
+      const recipientPublicKey = new Uint8Array(32).fill(1);
+
+      const encrypted = await AsymmetricCrypto.encryptAESKey(
+        aesKeyData,
+        recipientPublicKey
+      );
+
+      // The encrypted output should NOT contain the original key
+      const encryptedHex = encrypted.encryptedAESKey.toLowerCase();
+      const originalKeyHex = Array.from(new Uint8Array(aesKeyData))
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+
+      expect(encryptedHex).not.toContain(originalKeyHex);
+    });
+
+    it("should require correct recipient key for decryption", async () => {
+      const aesKeyData = new Uint8Array(32).fill(42).buffer;
+      const recipientPublicKey1 = new Uint8Array(32).fill(1);
+      const recipientPublicKey2 = new Uint8Array(32).fill(2);
+
+      // Encrypt for recipient 1
+      const encrypted = await AsymmetricCrypto.encryptAESKey(
+        aesKeyData,
+        recipientPublicKey1
+      );
+
+      // Try to decrypt with recipient 2's key (should fail)
+      const wrongKeyEncrypted: EncryptedKey = {
+        ...encrypted,
+        recipientPublicKey: Array.from(recipientPublicKey2)
+          .map(b => b.toString(16).padStart(2, '0'))
+          .join(''),
+      };
+
+      await expect(
+        AsymmetricCrypto.decryptAESKeyWithTalisman(wrongKeyEncrypted)
       ).rejects.toThrow();
     });
   });
@@ -264,6 +426,27 @@ describe("AsymmetricCrypto", () => {
 
       expect(encrypted1.salt).not.toBe(encrypted2.salt);
       expect(encrypted1.encryptedKey).not.toBe(encrypted2.encryptedKey);
+    });
+  });
+
+  describe("End-to-End Encryption Flow", () => {
+    it("should complete full encryption/decryption cycle with Ethereum address", async () => {
+      const ethereumAddress = "0x742d35Cc6634C0532925a3b844Bc9e7595f8fE00";
+      const originalAESKey = crypto.getRandomValues(new Uint8Array(32));
+
+      // Get recipient's derived key
+      const recipientKey = await AsymmetricCrypto.getPublicKeyFromTalisman(ethereumAddress);
+
+      // Encrypt
+      const encrypted = await AsymmetricCrypto.encryptAESKey(
+        originalAESKey.buffer,
+        recipientKey
+      );
+
+      // Decrypt
+      const decrypted = await AsymmetricCrypto.decryptAESKeyWithTalisman(encrypted);
+
+      expect(new Uint8Array(decrypted)).toEqual(originalAESKey);
     });
   });
 });

@@ -14,6 +14,10 @@ import { withTimeout, TIMEOUTS } from "@/utils/timeout";
 import { withRetry } from "@/utils/retry";
 import { ErrorLogger } from "@/lib/monitoring/ErrorLogger";
 import solidityAbi from "@/contract/solidity-abi.json";
+import {
+  isValidEthereumAddress,
+  isValidIPFSCID,
+} from "@/utils/edgeCaseValidation";
 
 const LOG_CONTEXT = "ContractService";
 
@@ -75,6 +79,9 @@ export class ContractService {
     null;
   private static connectionListeners: Set<(connected: boolean) => void> =
     new Set();
+  // Connection freshness tracking to avoid redundant RPC calls
+  private static lastConnectionTest: number = 0;
+  private static readonly CONNECTION_TTL = 30_000; // 30 seconds
 
   /**
    * Get the contract configuration from environment variables
@@ -106,11 +113,17 @@ export class ContractService {
    * @throws Error if connection fails
    */
   private static async connect(): Promise<ethers.JsonRpcProvider> {
-    // Return existing connection if available
+    // Return existing connection if available and fresh
     if (this.provider) {
+      // Skip connection test if we verified recently (within TTL)
+      if (Date.now() - this.lastConnectionTest < this.CONNECTION_TTL) {
+        return this.provider;
+      }
+
       try {
-        // Test connection
+        // Test connection only when TTL expired
         await this.provider.getBlockNumber();
+        this.lastConnectionTest = Date.now();
         return this.provider;
       } catch {
         ErrorLogger.warn(LOG_CONTEXT, "Existing provider failed, reconnecting...");
@@ -186,6 +199,9 @@ export class ContractService {
           endpoint: config.rpcEndpoint,
         });
 
+        // Update connection freshness timestamp
+        this.lastConnectionTest = Date.now();
+
         // Notify listeners of successful connection
         this.notifyConnectionListeners(true);
 
@@ -207,7 +223,7 @@ export class ContractService {
       this.notifyConnectionListeners(false);
       throw new Error(
         `Failed to connect to Ethereum RPC endpoint: ${error.message}. ` +
-          `Please check your network connection and ensure the RPC endpoint is accessible.`
+        `Please check your network connection and ensure the RPC endpoint is accessible.`
       );
     });
   }
@@ -353,11 +369,30 @@ export class ContractService {
       encryptedKeyCID: msg.encryptedKeyCid,
       encryptedMessageCID: msg.encryptedMessageCid,
       messageHash: msg.messageHash,
-      unlockTimestamp: Number(msg.unlockTimestamp),
+      unlockTimestamp: this.toJsTimestamp(Number(msg.unlockTimestamp)),
       sender: msg.sender,
       recipient: msg.recipient,
-      createdAt: Number(msg.createdAt),
+      createdAt: this.toJsTimestamp(Number(msg.createdAt)),
     }));
+  }
+
+  /**
+   * Convert blockchain timestamp (seconds) to JavaScript timestamp (milliseconds)
+   * 
+   * Solidity's block.timestamp is in seconds (Unix timestamp), but JavaScript's
+   * Date constructor expects milliseconds. Without this conversion, dates appear
+   * as January 1970 because the seconds value is interpreted as milliseconds.
+   * 
+   * @param blockchainTimestamp - Timestamp from blockchain (in seconds)
+   * @returns Timestamp in milliseconds for JavaScript Date
+   */
+  private static toJsTimestamp(blockchainTimestamp: number): number {
+    // If timestamp is already in milliseconds (> year 2001 in ms), return as-is
+    // This handles edge cases where timestamps might already be converted
+    if (blockchainTimestamp > 1_000_000_000_000) {
+      return blockchainTimestamp;
+    }
+    return blockchainTimestamp * 1000;
   }
 
   /**
@@ -384,10 +419,10 @@ export class ContractService {
       encryptedKeyCID: msg.encryptedKeyCid,
       encryptedMessageCID: msg.encryptedMessageCid,
       messageHash: msg.messageHash,
-      unlockTimestamp: Number(msg.unlockTimestamp),
+      unlockTimestamp: this.toJsTimestamp(Number(msg.unlockTimestamp)),
       sender: msg.sender,
       recipient: msg.recipient,
-      createdAt: Number(msg.createdAt),
+      createdAt: this.toJsTimestamp(Number(msg.createdAt)),
     }));
   }
 
@@ -411,10 +446,10 @@ export class ContractService {
         encryptedKeyCID: msg.encryptedKeyCid,
         encryptedMessageCID: msg.encryptedMessageCid,
         messageHash: msg.messageHash,
-        unlockTimestamp: Number(msg.unlockTimestamp),
+        unlockTimestamp: this.toJsTimestamp(Number(msg.unlockTimestamp)),
         sender: msg.sender,
         recipient: msg.recipient,
-        createdAt: Number(msg.createdAt),
+        createdAt: this.toJsTimestamp(Number(msg.createdAt)),
       };
     } catch (error) {
       // Message not found or other error
@@ -426,11 +461,91 @@ export class ContractService {
   }
 
   /**
+   * Validate all parameters before submitting a blockchain transaction.
+   * This prevents wasted gas and invalid data being stored on-chain.
+   *
+   * @param params - Message parameters to validate
+   * @param signerAddress - Signer address to validate
+   * @throws Error with descriptive message if validation fails
+   */
+  private static validateStoreMessageParams(
+    params: {
+      encryptedKeyCID: string;
+      encryptedMessageCID: string;
+      messageHash: string;
+      unlockTimestamp: number;
+      recipient: string;
+    },
+    signerAddress: string
+  ): void {
+    // Validate encrypted key CID format
+    if (!params.encryptedKeyCID || !isValidIPFSCID(params.encryptedKeyCID)) {
+      throw new Error(
+        "Invalid encrypted key CID format. Expected IPFS CID (Qm... or bafy...)"
+      );
+    }
+
+    // Validate encrypted message CID format
+    if (!params.encryptedMessageCID || !isValidIPFSCID(params.encryptedMessageCID)) {
+      throw new Error(
+        "Invalid encrypted message CID format. Expected IPFS CID (Qm... or bafy...)"
+      );
+    }
+
+    // Validate message hash format (64 hex characters = 32 bytes SHA-256)
+    if (!params.messageHash || !/^[a-fA-F0-9]{64}$/.test(params.messageHash)) {
+      throw new Error(
+        "Invalid message hash format. Expected 64 hexadecimal characters (SHA-256 hash)"
+      );
+    }
+
+    // Validate unlock timestamp is in the future
+    // Allow 60 seconds buffer for transaction processing time
+    const minTimestamp = Date.now() + 60_000;
+    if (!params.unlockTimestamp || params.unlockTimestamp <= minTimestamp) {
+      throw new Error(
+        "Unlock timestamp must be at least 1 minute in the future to allow for transaction processing"
+      );
+    }
+
+    // Validate unlock timestamp is not too far in the future (10 years max)
+    const maxTimestamp = Date.now() + 10 * 365 * 24 * 60 * 60 * 1000;
+    if (params.unlockTimestamp > maxTimestamp) {
+      throw new Error(
+        "Unlock timestamp cannot be more than 10 years in the future"
+      );
+    }
+
+    // Validate recipient address format
+    if (!params.recipient || !isValidEthereumAddress(params.recipient)) {
+      throw new Error(
+        "Invalid recipient address format. Expected Ethereum address (0x followed by 40 hex characters)"
+      );
+    }
+
+    // Validate signer address format
+    if (!signerAddress || !isValidEthereumAddress(signerAddress)) {
+      throw new Error(
+        "Invalid signer address format. Expected Ethereum address (0x followed by 40 hex characters)"
+      );
+    }
+
+    // Prevent sending to self
+    if (signerAddress.toLowerCase() === params.recipient.toLowerCase()) {
+      throw new Error("Cannot send a message to yourself");
+    }
+  }
+
+  /**
    * Store a new message on the blockchain
+   *
+   * Validates all inputs before submitting the transaction to prevent
+   * wasted gas and invalid data being stored on-chain.
    *
    * @param params - Message parameters
    * @param signerAddress - Ethereum address to sign the transaction
    * @returns Promise resolving to transaction result
+   * @throws Error if validation fails (before transaction is submitted)
    */
   static async storeMessage(
     params: {
@@ -443,6 +558,10 @@ export class ContractService {
     signerAddress: string
   ): Promise<TransactionResult> {
     try {
+      // Validate all inputs BEFORE submitting transaction
+      // This prevents wasted gas and invalid data on-chain
+      this.validateStoreMessageParams(params, signerAddress);
+
       const config = this.getConfig();
 
       // Get signer from browser wallet (MetaMask or Talisman)
