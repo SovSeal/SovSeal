@@ -108,9 +108,11 @@ export class AsymmetricCrypto {
   private static async importECDHPublicKey(rawKey: Uint8Array): Promise<CryptoKey> {
     // P-256 public keys are 65 bytes (uncompressed) or 33 bytes (compressed)
     // We use uncompressed format (0x04 prefix + 32 bytes X + 32 bytes Y)
+    // Create a new Uint8Array to ensure we have a proper ArrayBuffer (not SharedArrayBuffer)
+    const keyBuffer = new Uint8Array(rawKey).buffer as ArrayBuffer;
     return crypto.subtle.importKey(
       "raw",
-      rawKey,
+      keyBuffer,
       {
         name: "ECDH",
         namedCurve: "P-256",
@@ -155,20 +157,24 @@ export class AsymmetricCrypto {
     info: string
   ): Promise<CryptoKey> {
     // Import shared secret as HKDF key material
+    // Create a new ArrayBuffer to ensure compatibility with BufferSource type
+    const secretBuffer = new Uint8Array(sharedSecret).buffer as ArrayBuffer;
     const keyMaterial = await crypto.subtle.importKey(
       "raw",
-      sharedSecret,
+      secretBuffer,
       "HKDF",
       false,
       ["deriveKey"]
     );
 
     // Derive AES-GCM key using HKDF
+    // Create ArrayBuffer for salt to ensure BufferSource compatibility
+    const saltBuffer = new Uint8Array(salt).buffer as ArrayBuffer;
     return crypto.subtle.deriveKey(
       {
         name: "HKDF",
         hash: "SHA-256",
-        salt: salt,
+        salt: saltBuffer,
         info: new TextEncoder().encode(info),
       },
       keyMaterial,
@@ -189,9 +195,11 @@ export class AsymmetricCrypto {
   ): Promise<{ publicKey: Uint8Array; privateKey: CryptoKey }> {
     // Use the seed to derive a P-256 private key
     // We use HKDF to expand the seed into proper key material
+    // Create a new ArrayBuffer to ensure compatibility with BufferSource type
+    const seedBuffer = new Uint8Array(seed).buffer as ArrayBuffer;
     const keyMaterial = await crypto.subtle.importKey(
       "raw",
-      seed,
+      seedBuffer,
       "HKDF",
       false,
       ["deriveBits"]
