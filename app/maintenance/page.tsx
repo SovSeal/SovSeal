@@ -22,20 +22,26 @@ export default function MaintenancePage() {
 
     setStatus("loading");
 
-    // Store in localStorage for now (can be replaced with actual API)
     try {
-      const existingEmails = JSON.parse(localStorage.getItem("sovseal_waitlist") || "[]");
-      if (!existingEmails.includes(email)) {
-        existingEmails.push(email);
-        localStorage.setItem("sovseal_waitlist", JSON.stringify(existingEmails));
+      const response = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setStatus("success");
+        setMessage(data.message || "You're on the list. We'll notify you when the seal is ready.");
+        setEmail("");
+      } else {
+        setStatus("error");
+        setMessage(data.error || "Something went wrong. Please try again.");
       }
-      
-      setStatus("success");
-      setMessage("You're on the list. We'll notify you when the seal is ready.");
-      setEmail("");
     } catch {
       setStatus("error");
-      setMessage("Something went wrong. Please try again.");
+      setMessage("Network error. Please try again.");
     }
   };
 
