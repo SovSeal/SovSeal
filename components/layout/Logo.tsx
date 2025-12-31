@@ -30,7 +30,7 @@ export function Logo({
       {showIcon && (
         <Image
           src="/logo.png"
-          alt="Lockdrop logo"
+          alt="SovSeal logo"
           width={iconSizes[size].width}
           height={iconSizes[size].height}
           className="object-contain"
@@ -41,7 +41,7 @@ export function Logo({
         <span
           className={`${textSizes[size]} gradient-text font-display font-bold`}
         >
-          Lockdrop
+          SovSeal
         </span>
       )}
     </div>

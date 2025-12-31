@@ -50,7 +50,7 @@ export default function GlobalError({
 
             {/* Error Description */}
             <p className="mb-6 text-center text-gray-600">
-              Lockdrop encountered an unexpected error. This may be due to a
+              SovSeal encountered an unexpected error. This may be due to a
               browser compatibility issue or a temporary problem.
             </p>
 
@@ -110,7 +110,7 @@ export default function GlobalError({
             {/* Help Section */}
             <div className="mt-6 border-t border-gray-200 pt-6">
               <p className="mb-2 text-center text-sm text-gray-600">
-                <strong>Lockdrop</strong> - Guaranteed by math, not corporations
+                <strong>SovSeal</strong> - Guaranteed by math, not corporations
               </p>
               <p className="text-center text-xs text-gray-500">
                 If this problem persists, please{" "}

@@ -99,7 +99,7 @@ export function WalletConnectButton() {
                 Install a Wallet
               </h3>
               <p className="mb-3 text-sm text-dark-400">
-                Lockdrop works best with Talisman wallet.
+                SovSeal works best with Talisman wallet.
               </p>
               <div className="space-y-2">
                 <a

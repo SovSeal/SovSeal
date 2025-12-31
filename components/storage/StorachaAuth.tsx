@@ -21,7 +21,7 @@ export function StorachaAuth({
   className = "",
 }: StorachaAuthProps) {
   const [email, setEmail] = useState("");
-  const [spaceName, setSpaceName] = useState("lockdrop-space");
+  const [spaceName, setSpaceName] = useState("sovseal-space");
   const [status, setStatus] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [authState, setAuthState] = useState<AuthState>(
@@ -219,7 +219,7 @@ export function StorachaAuth({
               value={spaceName}
               onChange={(e) => setSpaceName(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="my-lockdrop-space"
+              placeholder="my-sovseal-space"
               disabled={isLoading}
               className="mt-1 block w-full rounded-md border border-gray-600 bg-gray-800 px-3 py-2 text-gray-100 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:cursor-not-allowed disabled:bg-gray-700"
             />
@@ -346,7 +346,7 @@ export function StorachaAuth({
             value={spaceName}
             onChange={(e) => setSpaceName(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="my-lockdrop-space"
+            placeholder="my-sovseal-space"
             disabled={isLoading}
             className="mt-1 block w-full rounded-md border border-gray-600 bg-gray-900 px-3 py-2 text-gray-100 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:cursor-not-allowed disabled:bg-gray-700"
           />

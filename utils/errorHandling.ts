@@ -2,7 +2,7 @@
  * Error Handling Utilities
  *
  * Provides centralized error handling, classification, and user-friendly
- * error messages for the Lockdrop application.
+ * error messages for the SovSeal application.
  */
 
 /**

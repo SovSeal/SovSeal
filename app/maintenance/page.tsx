@@ -76,7 +76,7 @@ export default function MaintenancePage() {
 
           {/* Headline */}
           <h1 className={`text-4xl md:text-5xl lg:text-6xl font-semibold mb-6 ${playfair.className}`}>
-            <span className="text-slate-400">Lockdrop is</span>{" "}
+            <span className="text-slate-400">SovSeal is</span>{" "}
             <span className="text-white">evolving.</span>
           </h1>
 

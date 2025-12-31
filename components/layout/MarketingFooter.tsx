@@ -18,9 +18,9 @@ export function MarketingFooter() {
           {/* Brand */}
           <div className="md:col-span-2">
             <Link href="/" className="mb-4 flex items-center gap-2">
-              <Image src="/logo.png" alt="Lockdrop" width={32} height={32} />
+              <Image src="/logo.png" alt="SovSeal" width={32} height={32} />
               <span className="gradient-text font-display text-xl font-bold">
-                Lockdrop
+                SovSeal
               </span>
             </Link>
             <p className="mb-6 max-w-md text-sm text-dark-400">
@@ -86,7 +86,7 @@ export function MarketingFooter() {
             <ul className="space-y-3">
               <li>
                 <a
-                  href="https://github.com/radebe49/Lockdrop"
+                  href="https://github.com/radebe49/sovseal"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-dark-400 transition-colors hover:text-brand-400"
@@ -96,7 +96,7 @@ export function MarketingFooter() {
               </li>
               <li>
                 <a
-                  href="https://github.com/radebe49/Lockdrop/blob/main/SECURITY.md"
+                  href="https://github.com/radebe49/sovseal/blob/main/SECURITY.md"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-dark-400 transition-colors hover:text-brand-400"
@@ -106,7 +106,7 @@ export function MarketingFooter() {
               </li>
               <li>
                 <a
-                  href="https://github.com/radebe49/Lockdrop/blob/main/docs/user-guide.md"
+                  href="https://github.com/radebe49/sovseal/blob/main/docs/user-guide.md"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-dark-400 transition-colors hover:text-brand-400"
@@ -121,7 +121,7 @@ export function MarketingFooter() {
         {/* Bottom bar */}
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-dark-800 pt-8 md:flex-row">
           <p className="text-sm text-dark-500">
-            © {currentYear} Lockdrop. MIT License.
+            © {currentYear} SovSeal. Apache License 2.0.
           </p>
           <div className="flex items-center gap-6">
             <a

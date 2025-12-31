@@ -2,7 +2,7 @@
  * ContractService - Ethereum-compatible smart contract interaction layer
  *
  * Handles connection to Passet Hub testnet via Ethereum RPC and provides methods for
- * interacting with the Lockdrop time-lock Solidity contract.
+ * interacting with the SovSeal time-lock Solidity contract.
  *
  * Uses ethers.js for Ethereum-compatible contract interactions on Polkadot infrastructure.
  */

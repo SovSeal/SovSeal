@@ -12,7 +12,7 @@ export function MarketingNav() {
     { href: "#how-it-works", label: "How It Works" },
     { href: "#features", label: "Features" },
     {
-      href: "https://github.com/radebe49/Lockdrop",
+      href: "https://github.com/radebe49/sovseal",
       label: "GitHub",
       external: true,
     },
@@ -26,13 +26,13 @@ export function MarketingNav() {
           <Link href="/" className="group flex items-center gap-2">
             <Image
               src="/logo.png"
-              alt="Lockdrop"
+              alt="SovSeal"
               width={32}
               height={32}
               className="transition-transform group-hover:scale-105"
             />
             <span className="gradient-text font-display text-xl font-bold">
-              Lockdrop
+              SovSeal
             </span>
           </Link>
 

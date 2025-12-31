@@ -64,7 +64,7 @@ export default function ClaimPage({ params }: ClaimPageProps) {
       <div className="mx-auto max-w-4xl">
         {/* Header */}
         <div className="mb-8 text-center">
-          <h1 className="mb-2 text-4xl font-bold text-gray-900">Lockdrop</h1>
+          <h1 className="mb-2 text-4xl font-bold text-gray-900">SovSeal</h1>
           <p className="text-gray-600">Guaranteed by math, not corporations</p>
         </div>
 
@@ -73,7 +73,7 @@ export default function ClaimPage({ params }: ClaimPageProps) {
 
         {/* Info Section */}
         <div className="mt-8 text-center text-sm text-gray-500">
-          <p>Lockdrop uses client-side encryption and blockchain technology</p>
+          <p>SovSeal uses client-side encryption and blockchain technology</p>
           <p>to ensure your messages remain private and time-locked.</p>
         </div>
       </div>

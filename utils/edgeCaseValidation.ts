@@ -114,7 +114,7 @@ export async function isWalletInstalled(): Promise<boolean> {
       web3EnableCache = web3Enable;
     }
 
-    const extensions = await web3Enable("Lockdrop");
+    const extensions = await web3Enable("SovSeal");
     return extensions.length > 0;
   } catch {
     return false;

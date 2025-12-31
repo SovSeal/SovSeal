@@ -28,7 +28,7 @@ export function MarketingPageContent() {
             <div className="mb-8 animate-fade-in">
               <Image
                 src="/logo.png"
-                alt="Lockdrop"
+                alt="SovSeal"
                 width={80}
                 height={80}
                 className="mx-auto"
@@ -64,14 +64,6 @@ export function MarketingPageContent() {
                 Launch App
                 <ArrowRightIcon className="h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Link>
-              <a
-                href="https://github.com/radebe49/Lockdrop"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-secondary px-8 py-4 text-lg"
-              >
-                View Source
-              </a>
             </div>
 
             <div
@@ -134,7 +126,7 @@ export function MarketingPageContent() {
                 Privacy by Design
               </h2>
               <p className="mx-auto max-w-2xl text-lg text-dark-400">
-                Every layer of Lockdrop is built to protect your privacy
+                Every layer of SovSeal is built to protect your privacy
               </p>
             </div>
 

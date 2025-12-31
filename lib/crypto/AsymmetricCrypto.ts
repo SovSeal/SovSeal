@@ -80,7 +80,7 @@ export class AsymmetricCrypto {
     const normalizedAddress = address.toLowerCase();
     
     // Create a domain-separated input to prevent cross-protocol attacks
-    const domainSeparator = "lockdrop-v2-encryption:";
+    const domainSeparator = "sovseal-v2-encryption:";
     const input = new TextEncoder().encode(domainSeparator + normalizedAddress);
     
     // Use SHA-256 to derive a 32-byte key
@@ -211,7 +211,7 @@ export class AsymmetricCrypto {
         name: "HKDF",
         hash: "SHA-256",
         salt: new Uint8Array(32), // Zero salt for determinism
-        info: new TextEncoder().encode("lockdrop-ecdh-private-key"),
+        info: new TextEncoder().encode("sovseal-ecdh-private-key"),
       },
       keyMaterial,
       256
@@ -227,7 +227,7 @@ export class AsymmetricCrypto {
     const deterministicKey = await this.deriveAESKeyFromSecret(
       privateKeyArray,
       new Uint8Array(32),
-      "lockdrop-deterministic-key"
+      "sovseal-deterministic-key"
     );
 
     // Export and re-import to get raw key bytes
@@ -341,7 +341,7 @@ export class AsymmetricCrypto {
       const encryptionKey = await this.deriveAESKeyFromSecret(
         sharedSecret,
         salt,
-        "lockdrop-aes-key-encryption-v2"
+        "sovseal-aes-key-encryption-v2"
       );
 
       // Encrypt the AES key
@@ -428,7 +428,7 @@ export class AsymmetricCrypto {
     const decryptionKey = await this.deriveAESKeyFromSecret(
       sharedSecret,
       salt,
-      "lockdrop-aes-key-encryption-v2"
+      "sovseal-aes-key-encryption-v2"
     );
 
     // Decrypt the AES key

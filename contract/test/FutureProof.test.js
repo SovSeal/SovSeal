@@ -2,8 +2,8 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 const { time } = require("@nomicfoundation/hardhat-network-helpers");
 
-describe("Lockdrop", function () {
-  let lockdrop;
+describe("SovSeal", function () {
+  let sovseal;
   let owner;
   let recipient;
   let otherAccount;
@@ -15,14 +15,14 @@ describe("Lockdrop", function () {
   beforeEach(async function () {
     [owner, recipient, otherAccount] = await ethers.getSigners();
 
-    const Lockdrop = await ethers.getContractFactory("Lockdrop");
-    lockdrop = await Lockdrop.deploy();
-    await lockdrop.waitForDeployment();
+    const SovSeal = await ethers.getContractFactory("Lockdrop");
+    sovseal = await SovSeal.deploy();
+    await sovseal.waitForDeployment();
   });
 
   describe("Deployment", function () {
     it("Should initialize with zero message count", async function () {
-      expect(await lockdrop.getMessageCount()).to.equal(0);
+      expect(await sovseal.getMessageCount()).to.equal(0);
     });
   });
 
@@ -30,7 +30,7 @@ describe("Lockdrop", function () {
     it("Should store a message successfully", async function () {
       const futureTimestamp = (await time.latest()) + 3600;
 
-      const tx = await lockdrop.storeMessage(
+      const tx = await sovseal.storeMessage(
         VALID_KEY_CID,
         VALID_MESSAGE_CID,
         VALID_HASH,
@@ -39,80 +39,80 @@ describe("Lockdrop", function () {
       );
 
       await expect(tx)
-        .to.emit(lockdrop, "MessageStored")
+        .to.emit(sovseal, "MessageStored")
         .withArgs(0, owner.address, recipient.address, futureTimestamp);
 
-      expect(await lockdrop.getMessageCount()).to.equal(1);
+      expect(await sovseal.getMessageCount()).to.equal(1);
     });
 
     it("Should revert if key CID is empty", async function () {
       const futureTimestamp = (await time.latest()) + 3600;
 
       await expect(
-        lockdrop.storeMessage(
+        sovseal.storeMessage(
           "",
           VALID_MESSAGE_CID,
           VALID_HASH,
           futureTimestamp,
           recipient.address
         )
-      ).to.be.revertedWithCustomError(lockdrop, "InvalidKeyCID");
+      ).to.be.revertedWithCustomError(sovseal, "InvalidKeyCID");
     });
 
     it("Should revert if message CID is empty", async function () {
       const futureTimestamp = (await time.latest()) + 3600;
 
       await expect(
-        lockdrop.storeMessage(
+        sovseal.storeMessage(
           VALID_KEY_CID,
           "",
           VALID_HASH,
           futureTimestamp,
           recipient.address
         )
-      ).to.be.revertedWithCustomError(lockdrop, "InvalidMessageCID");
+      ).to.be.revertedWithCustomError(sovseal, "InvalidMessageCID");
     });
 
     it("Should revert if message hash is too short", async function () {
       const futureTimestamp = (await time.latest()) + 3600;
 
       await expect(
-        lockdrop.storeMessage(
+        sovseal.storeMessage(
           VALID_KEY_CID,
           VALID_MESSAGE_CID,
           "short",
           futureTimestamp,
           recipient.address
         )
-      ).to.be.revertedWithCustomError(lockdrop, "InvalidMessageHash");
+      ).to.be.revertedWithCustomError(sovseal, "InvalidMessageHash");
     });
 
     it("Should revert if unlock timestamp is in the past", async function () {
       const pastTimestamp = (await time.latest()) - 3600;
 
       await expect(
-        lockdrop.storeMessage(
+        sovseal.storeMessage(
           VALID_KEY_CID,
           VALID_MESSAGE_CID,
           VALID_HASH,
           pastTimestamp,
           recipient.address
         )
-      ).to.be.revertedWithCustomError(lockdrop, "InvalidTimestamp");
+      ).to.be.revertedWithCustomError(sovseal, "InvalidTimestamp");
     });
 
     it("Should revert if sender is recipient", async function () {
       const futureTimestamp = (await time.latest()) + 3600;
 
       await expect(
-        lockdrop.storeMessage(
+        sovseal.storeMessage(
           VALID_KEY_CID,
           VALID_MESSAGE_CID,
           VALID_HASH,
           futureTimestamp,
           owner.address
         )
-      ).to.be.revertedWithCustomError(lockdrop, "SenderIsRecipient");
+      ).to.be.revertedWithCustomError(sovseal, "SenderIsRecipient");
     });
   });
 
@@ -120,7 +120,7 @@ describe("Lockdrop", function () {
     it("Should retrieve a stored message", async function () {
       const futureTimestamp = (await time.latest()) + 3600;
 
-      await lockdrop.storeMessage(
+      await sovseal.storeMessage(
         VALID_KEY_CID,
         VALID_MESSAGE_CID,
         VALID_HASH,
@@ -128,7 +128,7 @@ describe("Lockdrop", function () {
         recipient.address
       );
 
-      const message = await lockdrop.getMessage(0);
+      const message = await sovseal.getMessage(0);
 
       expect(message.encryptedKeyCid).to.equal(VALID_KEY_CID);
       expect(message.encryptedMessageCid).to.equal(VALID_MESSAGE_CID);
@@ -138,8 +138,8 @@ describe("Lockdrop", function () {
     });
 
     it("Should revert if message not found", async function () {
-      await expect(lockdrop.getMessage(999)).to.be.revertedWithCustomError(
-        lockdrop,
+      await expect(sovseal.getMessage(999)).to.be.revertedWithCustomError(
+        sovseal,
         "MessageNotFound"
       );
     });
@@ -149,14 +149,14 @@ describe("Lockdrop", function () {
     it("Should return all messages sent by an address", async function () {
       const futureTimestamp = (await time.latest()) + 3600;
 
-      await lockdrop.storeMessage(
+      await sovseal.storeMessage(
         VALID_KEY_CID,
         VALID_MESSAGE_CID,
         VALID_HASH,
         futureTimestamp,
         recipient.address
       );
-      await lockdrop.storeMessage(
+      await sovseal.storeMessage(
         VALID_KEY_CID,
         VALID_MESSAGE_CID,
         VALID_HASH,
@@ -164,7 +164,7 @@ describe("Lockdrop", function () {
         otherAccount.address
       );
 
-      const sentMessages = await lockdrop.getSentMessages(owner.address);
+      const sentMessages = await sovseal.getSentMessages(owner.address);
 
       expect(sentMessages.length).to.equal(2);
       expect(sentMessages[0].recipient).to.equal(recipient.address);
@@ -176,14 +176,14 @@ describe("Lockdrop", function () {
     it("Should return all messages received by an address", async function () {
       const futureTimestamp = (await time.latest()) + 3600;
 
-      await lockdrop.storeMessage(
+      await sovseal.storeMessage(
         VALID_KEY_CID,
         VALID_MESSAGE_CID,
         VALID_HASH,
         futureTimestamp,
         recipient.address
       );
-      await lockdrop
+      await sovseal
         .connect(otherAccount)
         .storeMessage(
           VALID_KEY_CID,
@@ -193,7 +193,7 @@ describe("Lockdrop", function () {
           recipient.address
         );
 
-      const receivedMessages = await lockdrop.getReceivedMessages(
+      const receivedMessages = await sovseal.getReceivedMessages(
         recipient.address
       );
 
