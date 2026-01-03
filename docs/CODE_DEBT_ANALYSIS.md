@@ -1,7 +1,7 @@
 # Code Debt Analysis - Temporary & Inefficient Solutions
 
 **Generated:** November 15, 2025  
-**Last Updated:** November 30, 2025  
+**Last Updated:** January 3, 2026  
 **Purpose:** Document areas requiring refactoring, optimization, or replacement
 
 ---
@@ -143,18 +143,14 @@ return withRetry(
 
 ## 4. Module Caching Patterns
 
-### 4.1 Manual Module Caching 🟢
+### 4.1 Manual Module Caching ✅ RESOLVED
 
 **Location:** `lib/contract/ContractService.ts`  
-**Issue:** Manual caching of dynamically imported modules
-
-**Status:** Low priority - current implementation works correctly
-
-**Recommendation:**
-
-- Priority: LOW
-- Effort: 2-3 hours
-- Document why caching is needed if kept
+**Resolution:** Added comprehensive JSDoc documentation explaining:
+- Provider singleton pattern to avoid redundant RPC connections
+- Contract instance reuse to prevent ABI re-parsing
+- Race condition prevention via connection promise coalescing
+- Connection freshness tracking with TTL window
 
 ---
 
@@ -278,10 +274,9 @@ document.addEventListener("visibilitychange", handleVisibilityChange);
 - ✅ Error classification
 - ✅ AppError conversion
 
-**Remaining Gaps (Low Priority):**
+**Remaining Gaps:**
 
-- Wallet lock detection (requires browser extension mocking)
-- End-to-end integration tests with real network failures
+✅ Wallet lock detection - Added in `tests/wallet-provider.test.ts` (15+ tests covering lock states, account changes, chain events, and reconnection)
 
 ---
 
@@ -302,9 +297,9 @@ document.addEventListener("visibilitychange", handleVisibilityChange);
 
 | Item                          | Priority | Effort   | Status      |
 | ----------------------------- | -------- | -------- | ----------- |
-| Refactor module caching       | LOW      | 2-3 hrs  | Not started |
-| Consider IndexedDB for storage| LOW      | 2-3 hrs  | Not started |
-| Wallet lock detection tests   | LOW      | 1-2 hrs  | Not started |
+| Refactor module caching       | LOW      | 2-3 hrs  | ✅ Documented |
+| Consider IndexedDB for storage| LOW      | 2-3 hrs  | Future consideration |
+| Wallet lock detection tests   | LOW      | 1-2 hrs  | ✅ Completed |
 
 ---
 
@@ -340,7 +335,7 @@ document.addEventListener("visibilitychange", handleVisibilityChange);
 - Error handling standardized with ErrorCode enum and AppError class
 - Test coverage expanded with 34 new error path tests
 
-**Last Updated:** November 30, 2025
+**Last Updated:** January 3, 2026
 
 ---
 
@@ -352,3 +347,4 @@ document.addEventListener("visibilitychange", handleVisibilityChange);
 | `types/errors.ts` | Standardized error codes and AppError class |
 | `types/index.ts` | Barrel export for all types |
 | `tests/error-paths.test.ts` | Comprehensive error handling tests |
+| `tests/wallet-provider.test.ts` | Wallet lock detection and event handling tests |

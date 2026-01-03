@@ -7,7 +7,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { RedeemPackageService } from "@/lib/redeem";
-import { IPFSService } from "@/lib/storage";
+import { storachaService } from "@/lib/storage/StorachaService";
 import type { DecryptedRedeemPackage } from "@/types/redeem";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -37,7 +37,7 @@ export function ClaimInterface({ packageCID, onClaimed }: ClaimInterfaceProps) {
 
     try {
       // Download encrypted package from IPFS
-      const packageBlob = await IPFSService.downloadFile(packageCID);
+      const packageBlob = await storachaService.downloadEncryptedBlob(packageCID);
 
       // Deserialize the encrypted package
       const encryptedPackage =

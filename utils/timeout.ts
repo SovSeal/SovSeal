@@ -183,6 +183,34 @@ export function sleep(ms: number): Promise<void> {
 }
 
 /**
+ * Calculate upload timeout based on file size
+ *
+ * Assumes a conservative 500KB/s upload speed with 2x safety margin.
+ * This prevents legitimate large file uploads from timing out on slow connections.
+ *
+ * @param fileSizeBytes - Size of file in bytes
+ * @returns Timeout in milliseconds
+ *
+ * @example
+ * ```typescript
+ * const timeout = calculateUploadTimeout(blob.size);
+ * await withTimeout(uploadFile(blob), timeout, 'File upload');
+ * ```
+ */
+export function calculateUploadTimeout(fileSizeBytes: number): number {
+  const BASE_TIMEOUT = 30_000; // 30s minimum
+  const BYTES_PER_SECOND = 500_000; // 500KB/s (conservative for mobile/slow connections)
+  const BUFFER_MULTIPLIER = 2; // 2x safety margin
+  const MAX_TIMEOUT = 600_000; // 10 minutes cap
+
+  const estimatedTime = (fileSizeBytes / BYTES_PER_SECOND) * 1000;
+  return Math.min(
+    Math.max(BASE_TIMEOUT, estimatedTime * BUFFER_MULTIPLIER),
+    MAX_TIMEOUT
+  );
+}
+
+/**
  * Recommended timeout values for different operation types
  */
 export const TIMEOUTS = {

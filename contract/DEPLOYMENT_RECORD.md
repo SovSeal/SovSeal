@@ -1,11 +1,51 @@
-# Lockdrop Contract Deployment Record
+# SovSeal Contract Deployment Record
 
-## Latest Deployment
+## Latest Deployment (Production)
+
+**Network:** Base Mainnet (Coinbase L2)  
+**Date:** January 3, 2026  
+**RPC Endpoint:** https://mainnet.base.org  
+**Block Explorer:** https://basescan.org
+
+### Contract Details
+
+**SovSeal (Main Contract)**
+- **Contract Address:** `0x71fB1E5F5DD3BB8F4d442C770620457eb1c83EeC`
+- **Explorer Link:** https://basescan.org/address/0x71fB1E5F5DD3BB8F4d442C770620457eb1c83EeC
+
+**SovSealRecovery (Social Recovery)**
+- **Contract Address:** `0x715Aa05f085a48c084cb1e0525ed31547E615ACB`
+- **Explorer Link:** https://basescan.org/address/0x715Aa05f085a48c084cb1e0525ed31547E615ACB
+
+**Deployment Info**
+- **Contract Type:** Solidity 0.8.20
+- **Deployer Address:** `0x908250324AF436D74fa2C1Dd9946264C54A77876`
+- **Chain ID:** 8453
+
+### Frontend Configuration
+
+Update `.env.local`:
+
+```
+NEXT_PUBLIC_CONTRACT_ADDRESS=0x71fB1E5F5DD3BB8F4d442C770620457eb1c83EeC
+NEXT_PUBLIC_RPC_ENDPOINT=https://mainnet.base.org
+NEXT_PUBLIC_NETWORK=base
+```
+
+### Status
+
+- **Deployment:** ✅ Successful
+- **Network:** 🔴 Mainnet (Production)
+- **Frontend Integration:** ✅ Ready
+
+---
+
+## Historical Deployments
+
+### Passet Hub Testnet (Polkadot)
 
 **Network:** Passet Hub Testnet (Polkadot)  
-**Date:** November 15, 2025  
-**RPC Endpoint (Substrate):** wss://testnet-passet-hub.polkadot.io  
-**RPC Endpoint (Ethereum):** https://testnet-passet-hub-eth-rpc.polkadot.io
+**Date:** November 15, 2025
 
 ### Contract Details
 

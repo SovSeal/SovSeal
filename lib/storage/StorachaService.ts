@@ -41,6 +41,16 @@ export interface AuthState {
 const LOG_CONTEXT = "StorachaService";
 
 /**
+ * IPFS gateway fallback list for improved reliability (H4)
+ * If primary gateway fails, subsequent gateways are tried in order
+ */
+const IPFS_GATEWAYS = [
+  "storacha.link",
+  "w3s.link",
+  "dweb.link",
+];
+
+/**
  * StorachaService provides methods for uploading encrypted blobs to IPFS
  * via Storacha Network with email-based authentication.
  */
@@ -478,14 +488,22 @@ export class StorachaService {
     );
   }
 
-  async downloadEncryptedBlob(cid: string): Promise<Blob> {
+  /**
+   * Download encrypted blob from IPFS with optional hash verification
+   *
+   * @param cid - IPFS Content Identifier
+   * @param expectedHash - Optional SHA-256 hash for integrity verification (H3)
+   * @returns Downloaded blob
+   * @throws Error if download fails or hash mismatch
+   */
+  async downloadEncryptedBlob(cid: string, expectedHash?: string): Promise<Blob> {
     if (!this.isValidCID(cid)) {
       throw new Error(`Invalid CID format: ${cid}`);
     }
 
     const gatewayUrl = this.getGatewayUrl(cid);
 
-    return withRetry(
+    const blob = await withRetry(
       async () => {
         const res = await withTimeout(
           fetch(gatewayUrl),
@@ -514,6 +532,84 @@ export class StorachaService {
           });
         },
       }
+    );
+
+    // H3: Verify content hash if provided
+    if (expectedHash) {
+      const { AsymmetricCrypto } = await import("@/lib/crypto/AsymmetricCrypto");
+      const actualHash = await AsymmetricCrypto.generateHash(blob);
+      if (actualHash !== expectedHash) {
+        throw new Error(
+          "Downloaded content hash mismatch - data may be corrupted or tampered. " +
+          `Expected: ${expectedHash.substring(0, 16)}..., Got: ${actualHash.substring(0, 16)}...`
+        );
+      }
+      ErrorLogger.debug(LOG_CONTEXT, "Content hash verified", { cid });
+    }
+
+    return blob;
+  }
+
+  /**
+   * Download encrypted blob with multi-gateway fallback (H4)
+   *
+   * Tries multiple IPFS gateways in sequence until one succeeds.
+   * This prevents single point of failure if the primary gateway is down.
+   *
+   * @param cid - IPFS Content Identifier
+   * @param expectedHash - Optional SHA-256 hash for integrity verification
+   * @returns Downloaded blob
+   * @throws Error if all gateways fail
+   */
+  async downloadWithFallback(cid: string, expectedHash?: string): Promise<Blob> {
+    if (!this.isValidCID(cid)) {
+      throw new Error(`Invalid CID format: ${cid}`);
+    }
+
+    let lastError: Error | null = null;
+
+    for (const gateway of IPFS_GATEWAYS) {
+      try {
+        const url = `https://${cid}.ipfs.${gateway}`;
+        ErrorLogger.debug(LOG_CONTEXT, `Trying gateway: ${gateway}`, { cid });
+
+        const res = await withTimeout(
+          fetch(url),
+          15_000, // 15s per gateway
+          `IPFS download from ${gateway}`
+        );
+
+        if (res.ok) {
+          const blob = await res.blob();
+
+          // H3: Verify content hash if provided
+          if (expectedHash) {
+            const { AsymmetricCrypto } = await import("@/lib/crypto/AsymmetricCrypto");
+            const actualHash = await AsymmetricCrypto.generateHash(blob);
+            if (actualHash !== expectedHash) {
+              throw new Error(
+                "Downloaded content hash mismatch - data may be corrupted or tampered"
+              );
+            }
+            ErrorLogger.debug(LOG_CONTEXT, "Content hash verified", { cid, gateway });
+          }
+
+          ErrorLogger.info(LOG_CONTEXT, `Download successful via ${gateway}`, { cid });
+          return blob;
+        } else {
+          throw new Error(`Gateway returned status ${res.status}`);
+        }
+      } catch (error) {
+        lastError = error instanceof Error ? error : new Error(String(error));
+        ErrorLogger.warn(LOG_CONTEXT, `Gateway ${gateway} failed, trying next...`, {
+          cid,
+          error: lastError.message,
+        });
+      }
+    }
+
+    throw new Error(
+      `All IPFS gateways failed for CID ${cid}. Last error: ${lastError?.message}`
     );
   }
 

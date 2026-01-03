@@ -86,18 +86,66 @@ export class RedeemPackageService {
   }
 
   /**
+   * Validates passphrase strength for redeem packages (H7)
+   *
+   * Requires 12+ characters and at least 3 of 4 complexity types:
+   * - Uppercase letters
+   * - Lowercase letters
+   * - Numbers
+   * - Special characters
+   *
+   * This provides adequate protection against brute-force attacks with PBKDF2.
+   *
+   * @param passphrase - User-provided passphrase
+   * @returns Validation result with error message if invalid
+   */
+  private static validatePassphraseStrength(passphrase: string): {
+    valid: boolean;
+    error?: string;
+  } {
+    if (!passphrase || passphrase.length < 12) {
+      return {
+        valid: false,
+        error: "Passphrase must be at least 12 characters long",
+      };
+    }
+
+    const hasUpper = /[A-Z]/.test(passphrase);
+    const hasLower = /[a-z]/.test(passphrase);
+    const hasNumber = /[0-9]/.test(passphrase);
+    const hasSpecial = /[!@#$%^&*(),.?":{}|<>_\-+=\[\]\\\/`~;']/.test(passphrase);
+
+    const complexity = [hasUpper, hasLower, hasNumber, hasSpecial].filter(
+      Boolean
+    ).length;
+
+    if (complexity < 3) {
+      return {
+        valid: false,
+        error:
+          "Passphrase must contain at least 3 of: uppercase letters, lowercase letters, numbers, special characters",
+      };
+    }
+
+    return { valid: true };
+  }
+
+  /**
    * Encrypts a redeem package with a passphrase
    *
    * @param redeemPackage - Package to encrypt
-   * @param passphrase - User-provided passphrase
+   * @param passphrase - User-provided passphrase (must meet strength requirements)
    * @returns Encrypted package with IV and salt
+   * @throws Error if passphrase doesn't meet strength requirements
    */
   static async encryptRedeemPackage(
     redeemPackage: RedeemPackage,
     passphrase: string
   ): Promise<EncryptedRedeemPackage> {
-    if (!passphrase || passphrase.length < 8) {
-      throw new Error("Passphrase must be at least 8 characters long");
+    // H7: Validate passphrase strength
+    const validation = this.validatePassphraseStrength(passphrase);
+    if (!validation.valid) {
+      throw new Error(validation.error);
     }
 
     // Generate random salt and IV

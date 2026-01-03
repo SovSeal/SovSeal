@@ -27,6 +27,25 @@ SovSeal supports multiple IPFS storage providers with a unified interface. The s
 - When you need reliable, fast IPFS storage
 - When you want email-based user authentication
 
+---
+
+### Irys Network (Permanent Storage)
+
+**Permanent Arweave storage via bundler network**
+
+- Pay-once-store-forever - True permanence on Arweave
+- Multi-token payment - MATIC, ETH, or Base ETH
+- Instant finality - Bundler handles Arweave block times
+- Wallet-based auth - Uses private key for uploads
+- Gateway access - Content available at arweave.net
+
+**When to use:**
+
+- "Legacy" tier vaults requiring permanent storage
+- Long-term digital estate preservation
+- When users want one-time payment model
+- Compliance requirements for data permanence
+
 ### Backward Compatibility
 
 The `ipfsService` and `IPFSService` exports are aliases to `storachaService` for backward compatibility. All existing code using these exports will continue to work without changes.

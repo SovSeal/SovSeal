@@ -24,6 +24,7 @@ import {
   isValidEthereumAddress,
   isValidIPFSCID,
 } from "@/utils/edgeCaseValidation";
+import { RateLimiter } from "@/utils/rateLimiter";
 
 const LOG_CONTEXT = "ContractService";
 
@@ -76,23 +77,71 @@ interface ContractMessageResponse {
 /**
  * ContractService provides methods for interacting with the Solidity smart contract
  * that stores time-locked message metadata on Passet Hub (Polkadot).
+ *
+ * ## Module Caching Strategy
+ *
+ * This service uses manual caching for several reasons:
+ *
+ * 1. **Provider Singleton**: The JsonRpcProvider instance is cached to avoid repeatedly
+ *    establishing new WebSocket/HTTP connections to the RPC endpoint. Each new provider
+ *    instance would require a fresh network handshake and connection validation.
+ *
+ * 2. **Contract Instance Reuse**: Once the contract is instantiated with the ABI and
+ *    address, it's cached to avoid re-parsing the ABI on each method call.
+ *
+ * 3. **Race Condition Prevention**: The `isConnecting` flag and `connectionPromise`
+ *    ensure that concurrent connection attempts (e.g., from multiple components mounting
+ *    simultaneously) share a single connection attempt rather than racing to create
+ *    multiple providers.
+ *
+ * 4. **Connection Freshness**: The `lastConnectionTest` timestamp with `CONNECTION_TTL`
+ *    prevents excessive "is alive?" checks while ensuring stale connections are detected.
+ *
+ * This pattern is preferred over dynamic imports for ethers.js because:
+ * - ethers.js is imported statically (already bundled)
+ * - The caching is for runtime instances, not module loading
+ * - Connection state must persist across component re-renders
  */
 export class ContractService {
+  /** Cached JSON-RPC provider instance - singleton per session */
   private static provider: ethers.JsonRpcProvider | null = null;
+
+  /** Cached contract instance - reuses provider and parsed ABI */
   private static contract: ethers.Contract | null = null;
+
+  /** Lock flag to prevent concurrent connection attempts */
   private static isConnecting = false;
+
+  /** Shared promise for in-flight connection - enables request coalescing */
   private static connectionPromise: Promise<ethers.JsonRpcProvider> | null =
     null;
+
   private static connectionListeners: Set<(connected: boolean) => void> =
     new Set();
-  // Connection freshness tracking to avoid redundant RPC calls
+
+  /**
+   * Timestamp of last successful connection test.
+   * Used to skip redundant health checks within CONNECTION_TTL window.
+   */
   private static lastConnectionTest: number = 0;
   private static readonly CONNECTION_TTL = 30_000; // 30 seconds
-  // Track current RPC endpoint index for fallback rotation
+
+  /** Index of current RPC endpoint for round-robin fallback */
   private static currentEndpointIndex: number = 0;
-  // Track failed endpoints to avoid immediate retry
+
+  /** Map of endpoint URLs to failure timestamps for cooldown tracking */
   private static failedEndpoints: Map<string, number> = new Map();
   private static readonly ENDPOINT_COOLDOWN = 60_000; // 1 minute cooldown for failed endpoints
+
+  /**
+   * Rate limiter for RPC queries (H6)
+   * Prevents abuse and potential RPC endpoint bans
+   * Limit: 10 requests per second
+   */
+  private static queryLimiter = new RateLimiter({
+    maxRequests: 10,
+    windowMs: 1000,
+  });
 
   /**
    * Get the contract configuration from environment variables and network config
@@ -421,6 +470,9 @@ export class ContractService {
   static async getSentMessages(
     senderAddress: string
   ): Promise<MessageMetadata[]> {
+    // H6: Apply rate limiting to prevent RPC endpoint abuse
+    await this.queryLimiter.acquire();
+
     const contract = await this.getContract();
 
     // Use staticCall to bypass ENS resolution
@@ -471,6 +523,9 @@ export class ContractService {
   static async getReceivedMessages(
     recipientAddress: string
   ): Promise<MessageMetadata[]> {
+    // H6: Apply rate limiting to prevent RPC endpoint abuse
+    await this.queryLimiter.acquire();
+
     const contract = await this.getContract();
 
     // Use staticCall to bypass ENS resolution

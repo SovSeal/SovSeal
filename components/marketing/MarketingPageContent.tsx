@@ -87,7 +87,7 @@ export function MarketingPageContent() {
         </section>
 
         {/* How It Works Section */}
-        <section className="bg-dark-900/50 px-4 py-24 sm:px-6 lg:px-8">
+        <section className="bg-dark-900/80 px-4 py-24 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <div className="mb-16 text-center">
               <h2 className="mb-4 font-display text-3xl font-bold md:text-4xl">
@@ -156,7 +156,7 @@ export function MarketingPageContent() {
         </section>
 
         {/* Tech Stack Section */}
-        <section className="bg-dark-900/50 px-4 py-24 sm:px-6 lg:px-8">
+        <section className="bg-dark-900/80 px-4 py-24 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl text-center">
             <h2 className="mb-4 font-display text-3xl font-bold md:text-4xl">
               Built on Trusted Infrastructure
@@ -205,7 +205,7 @@ function StepCard({
 }) {
   return (
     <div className="card-glass group p-8 text-center transition-transform hover:scale-[1.02]">
-      <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl border border-brand-500/20 bg-brand-500/10 transition-shadow group-hover:shadow-glow">
+      <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl border border-brand-500/20 bg-brand-500/10 transition-all group-hover:border-brand-400/30">
         <span className="font-display text-3xl font-bold text-brand-400">
           {num}
         </span>
@@ -227,7 +227,7 @@ function FeatureCard({
 }) {
   return (
     <div className="card-glass group flex gap-4 p-6 transition-colors hover:border-brand-500/40">
-      <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-brand-500/20 bg-brand-500/10 text-brand-400 transition-shadow group-hover:shadow-glow">
+      <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-brand-500/20 bg-brand-500/10 text-brand-400 transition-all group-hover:border-brand-400/30">
         {icon}
       </div>
       <div>
@@ -249,8 +249,8 @@ function TechLogosCarousel() {
   return (
     <div className="relative mx-auto w-full overflow-hidden">
       {/* Fade edges */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-dark-900 to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-dark-900 to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-dark-950 to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-dark-950 to-transparent" />
 
       <div className="flex w-max animate-slide-logos">
         {/* First set */}

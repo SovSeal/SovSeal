@@ -88,7 +88,7 @@ export function MessageCard({ message, type, onUnlock }: MessageCardProps) {
         </span>
       </div>
 
-      <div className="border-t border-dark-700/50 pt-4">
+      <div className="border-t border-slate-500/20 pt-4">
         {isLocked && (
           <div className="flex items-center gap-2 text-sm text-dark-400">
             <LockClosedIcon className="h-4 w-4" />

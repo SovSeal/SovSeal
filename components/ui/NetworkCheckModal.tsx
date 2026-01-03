@@ -47,7 +47,7 @@ export function NetworkCheckModal({ isOpen, onClose, onNetworkReady }: NetworkCh
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-      <div className="relative mx-4 w-full max-w-md animate-fade-in rounded-2xl border border-dark-700 bg-dark-900 p-6 shadow-2xl">
+      <div className="relative mx-4 w-full max-w-md animate-fade-in rounded-2xl border border-slate-500/20 bg-dark-900 p-6 shadow-elevated">
         {/* Close button */}
         <button
           onClick={onClose}
@@ -76,7 +76,7 @@ export function NetworkCheckModal({ isOpen, onClose, onNetworkReady }: NetworkCh
         </p>
 
         {/* Network details */}
-        <div className="mb-6 rounded-lg border border-dark-700 bg-dark-800/50 p-4">
+        <div className="mb-6 rounded-lg border border-slate-500/20 bg-dark-800/50 p-4">
           <h3 className="mb-2 text-xs font-medium uppercase tracking-wider text-dark-500">
             Required Network
           </h3>

@@ -14,7 +14,7 @@
 
 import { CryptoService } from "@/lib/crypto/CryptoService";
 import { AsymmetricCrypto } from "@/lib/crypto/AsymmetricCrypto";
-import { ipfsService } from "@/lib/storage";
+import { storachaService as ipfsService } from "@/lib/storage/StorachaService";
 import { ContractService } from "@/lib/contract/ContractService";
 import { isValidEthereumAddress } from "@/utils/edgeCaseValidation";
 import type { MediaFile } from "@/types/media";
@@ -29,13 +29,13 @@ export interface MessageCreationParams {
 
 export interface MessageCreationProgress {
   stage:
-    | "encrypting"
-    | "hashing"
-    | "key-encryption"
-    | "uploading-key"
-    | "uploading-media"
-    | "submitting"
-    | "complete";
+  | "encrypting"
+  | "hashing"
+  | "key-encryption"
+  | "uploading-key"
+  | "uploading-media"
+  | "submitting"
+  | "complete";
   progress: number;
   message: string;
 }
@@ -237,9 +237,9 @@ export class MessageCreationService {
 
     // Ethereum address validation (0x followed by 40 hex characters)
     if (!isValidEthereumAddress(params.recipientAddress.trim())) {
-      return { 
-        valid: false, 
-        error: "Invalid Ethereum address format (must start with 0x followed by 40 hex characters)" 
+      return {
+        valid: false,
+        error: "Invalid Ethereum address format (must start with 0x followed by 40 hex characters)"
       };
     }
 
@@ -255,9 +255,9 @@ export class MessageCreationService {
 
     // Validate sender address format
     if (!isValidEthereumAddress(params.senderAccount.address)) {
-      return { 
-        valid: false, 
-        error: "Invalid sender address format (must be Ethereum format: 0x...)" 
+      return {
+        valid: false,
+        error: "Invalid sender address format (must be Ethereum format: 0x...)"
       };
     }
 

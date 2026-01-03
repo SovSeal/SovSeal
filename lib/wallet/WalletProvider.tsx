@@ -26,6 +26,12 @@ const WalletContext = createContext<WalletContextValue | undefined>(undefined);
 
 const LOG_CONTEXT = "WalletProvider";
 
+/**
+ * Session timeout in milliseconds (H8)
+ * Auto-disconnect wallet after 1 hour of inactivity for security
+ */
+const SESSION_TIMEOUT = 60 * 60 * 1000; // 1 hour
+
 interface WalletProviderProps {
   children: React.ReactNode;
 }
@@ -48,11 +54,14 @@ interface WindowWithProviders extends Window {
   talismanEth?: EthereumProvider;
 }
 
-declare global {
-  interface Window {
-    ethereum?: EthereumProvider;
-    talismanEth?: EthereumProvider;
-  }
+// Use WindowWithProviders type cast instead of augmenting global Window
+
+/**
+ * Get window with proper ethereum provider typing
+ */
+function getEthereumWindow(): WindowWithProviders | undefined {
+  if (typeof window === "undefined") return undefined;
+  return window as unknown as WindowWithProviders;
 }
 
 /**
@@ -60,25 +69,25 @@ declare global {
  */
 function detectAvailableWallets(): WalletType[] {
   if (typeof window === "undefined") return [];
-  
+
   const wallets: WalletType[] = [];
   const win = window as WindowWithProviders;
-  
+
   // Check for Talisman (has dedicated talismanEth or isTalisman flag)
   if (win.talismanEth || win.ethereum?.isTalisman) {
     wallets.push("talisman");
   }
-  
+
   // Check for MetaMask (has isMetaMask flag but not isTalisman)
   if (win.ethereum?.isMetaMask && !win.ethereum?.isTalisman) {
     wallets.push("metamask");
   }
-  
+
   // If only ethereum exists without specific flags, assume it's MetaMask-compatible
   if (win.ethereum && wallets.length === 0) {
     wallets.push("metamask");
   }
-  
+
   return wallets;
 }
 
@@ -87,16 +96,16 @@ function detectAvailableWallets(): WalletType[] {
  */
 function getProviderForWallet(walletType: WalletType): EthereumProvider | null {
   if (typeof window === "undefined") return null;
-  
+
   const win = window as WindowWithProviders;
-  
+
   if (walletType === "talisman") {
     // Prefer dedicated talismanEth provider if available
     if (win.talismanEth) return win.talismanEth;
     // Fall back to ethereum if it's Talisman
     if (win.ethereum?.isTalisman) return win.ethereum;
   }
-  
+
   if (walletType === "metamask") {
     // Use ethereum if it's MetaMask (and not Talisman)
     if (win.ethereum?.isMetaMask && !win.ethereum?.isTalisman) {
@@ -107,7 +116,7 @@ function getProviderForWallet(walletType: WalletType): EthereumProvider | null {
       return win.ethereum;
     }
   }
-  
+
   return null;
 }
 
@@ -128,6 +137,9 @@ export function WalletProvider({ children }: WalletProviderProps) {
   );
   const pendingConnectionResolve = useRef<((walletType: WalletType) => void) | null>(null);
 
+  // H8: Track last activity for session timeout
+  const lastActivityRef = useRef(Date.now());
+
   // Try to restore wallet connection on mount
   useEffect(() => {
     if (!isInitialMount.current) return;
@@ -142,19 +154,20 @@ export function WalletProvider({ children }: WalletProviderProps) {
         if (!stored?.wasConnected) return;
 
         // Check if ethereum provider is available
-        if (typeof window === "undefined" || !window.ethereum) return;
+        const ethWindow = getEthereumWindow();
+        if (!ethWindow?.ethereum) return;
 
         // Try to get accounts without triggering popup
-        const accounts = (await window.ethereum.request({
+        const accounts = (await ethWindow.ethereum.request({
           method: "eth_accounts",
         })) as string[];
 
         if (accounts && accounts.length > 0) {
           ErrorLogger.info(LOG_CONTEXT, "Restoring previous connection");
 
-          const walletName = window.ethereum.isTalisman
+          const walletName = ethWindow.ethereum.isTalisman
             ? "Talisman"
-            : window.ethereum.isMetaMask
+            : ethWindow.ethereum.isMetaMask
               ? "MetaMask"
               : "Ethereum Wallet";
 
@@ -200,7 +213,8 @@ export function WalletProvider({ children }: WalletProviderProps) {
 
   // Listen for account changes
   useEffect(() => {
-    if (typeof window === "undefined" || !window.ethereum) return;
+    const ethWindow = getEthereumWindow();
+    if (!ethWindow?.ethereum) return;
 
     const handleAccountsChanged = (accounts: unknown) => {
       const accountsArray = accounts as string[];
@@ -212,6 +226,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
       } else if (state.isConnected && accountsArray[0] !== state.address) {
         // Account switched
         const newAddress = accountsArray[0];
+        const currentEthWindow = getEthereumWindow();
         setState((prev) => ({
           ...prev,
           address: newAddress,
@@ -219,7 +234,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
             address: newAddress,
             meta: {
               name: "Ethereum Account",
-              source: window.ethereum?.isMetaMask ? "MetaMask" : "Talisman",
+              source: currentEthWindow?.ethereum?.isMetaMask ? "MetaMask" : "Talisman",
             },
             type: "ethereum",
           },
@@ -232,18 +247,19 @@ export function WalletProvider({ children }: WalletProviderProps) {
       window.location.reload();
     };
 
-    if (window.ethereum.on) {
-      window.ethereum.on("accountsChanged", handleAccountsChanged);
-      window.ethereum.on("chainChanged", handleChainChanged);
+    if (ethWindow.ethereum.on) {
+      ethWindow.ethereum.on("accountsChanged", handleAccountsChanged);
+      ethWindow.ethereum.on("chainChanged", handleChainChanged);
     }
 
     return () => {
-      if (window.ethereum?.removeListener) {
-        window.ethereum.removeListener(
+      const currentEthWindow = getEthereumWindow();
+      if (currentEthWindow?.ethereum?.removeListener) {
+        currentEthWindow.ethereum.removeListener(
           "accountsChanged",
           handleAccountsChanged
         );
-        window.ethereum.removeListener("chainChanged", handleChainChanged);
+        currentEthWindow.ethereum.removeListener("chainChanged", handleChainChanged);
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -254,7 +270,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
       // Detect available wallets
       const wallets = detectAvailableWallets();
       setAvailableWallets(wallets);
-      
+
       if (wallets.length === 0) {
         throw new Error(
           "No Ethereum wallet detected. Please install Talisman wallet extension (recommended) or MetaMask as an alternative."
@@ -262,32 +278,32 @@ export function WalletProvider({ children }: WalletProviderProps) {
       }
 
       let selectedWalletType: WalletType;
-      
+
       // If multiple wallets available, show selector
       if (wallets.length > 1) {
         ErrorLogger.info(LOG_CONTEXT, "Multiple wallets detected, showing selector", { wallets });
-        
+
         // Show wallet selector and wait for user choice
         selectedWalletType = await new Promise<WalletType>((resolve) => {
           pendingConnectionResolve.current = resolve;
           setShowWalletSelector(true);
         });
-        
+
         setShowWalletSelector(false);
         pendingConnectionResolve.current = null;
       } else {
         // Only one wallet, use it directly
         selectedWalletType = wallets[0];
       }
-      
+
       // Get the provider for the selected wallet
       const provider = getProviderForWallet(selectedWalletType);
       if (!provider) {
         throw new Error(`Failed to get provider for ${selectedWalletType}`);
       }
-      
+
       setActiveProvider(provider);
-      
+
       const walletName = selectedWalletType === "talisman" ? "Talisman" : "MetaMask";
       ErrorLogger.info(LOG_CONTEXT, `Connecting to ${walletName}...`);
 
@@ -331,9 +347,9 @@ export function WalletProvider({ children }: WalletProviderProps) {
         type: "ethereum" as const,
       }));
 
-      ErrorLogger.info(LOG_CONTEXT, "Successfully connected", { 
+      ErrorLogger.info(LOG_CONTEXT, "Successfully connected", {
         address: selectedAddress,
-        wallet: walletName 
+        wallet: walletName
       });
 
       setState({
@@ -344,9 +360,9 @@ export function WalletProvider({ children }: WalletProviderProps) {
       });
 
       // Persist connection state with wallet type
-      AppStorage.set(STORAGE_KEYS.WALLET_CONNECTION, { 
+      AppStorage.set(STORAGE_KEYS.WALLET_CONNECTION, {
         wasConnected: true,
-        walletType: selectedWalletType 
+        walletType: selectedWalletType
       });
 
       setIsHealthy(true);
@@ -436,8 +452,9 @@ export function WalletProvider({ children }: WalletProviderProps) {
         throw new Error("No account selected");
       }
 
-      // Use active provider or fall back to window.ethereum
-      const provider = activeProvider || window.ethereum;
+      // Use active provider or fall back to ethereum provider
+      const ethWindow = getEthereumWindow();
+      const provider = activeProvider || ethWindow?.ethereum;
       if (!provider) {
         throw new Error("Ethereum wallet not available");
       }
@@ -487,8 +504,8 @@ export function WalletProvider({ children }: WalletProviderProps) {
 
   const checkHealth = useCallback(async (): Promise<boolean> => {
     try {
-      if (typeof window === "undefined") return false;
-      return !!window.ethereum;
+      const ethWindow = getEthereumWindow();
+      return !!ethWindow?.ethereum;
     } catch {
       return false;
     }
@@ -567,6 +584,44 @@ export function WalletProvider({ children }: WalletProviderProps) {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [state.isConnected, checkHealth]);
+
+  // H8: Session timeout - auto-disconnect after 1 hour of inactivity
+  useEffect(() => {
+    if (!state.isConnected) return;
+
+    // Check for session timeout every minute
+    const checkTimeout = () => {
+      const timeSinceActivity = Date.now() - lastActivityRef.current;
+      if (timeSinceActivity > SESSION_TIMEOUT) {
+        ErrorLogger.info(LOG_CONTEXT, "Session timeout - disconnecting wallet for security", {
+          inactiveMinutes: Math.floor(timeSinceActivity / 60000),
+        });
+        disconnect();
+      }
+    };
+
+    // Update last activity on user interaction
+    const updateActivity = () => {
+      lastActivityRef.current = Date.now();
+    };
+
+    // Set up timeout check interval
+    const intervalId = setInterval(checkTimeout, 60_000); // Check every minute
+
+    // Track user activity
+    window.addEventListener("click", updateActivity);
+    window.addEventListener("keypress", updateActivity);
+    window.addEventListener("scroll", updateActivity);
+    window.addEventListener("mousemove", updateActivity);
+
+    return () => {
+      clearInterval(intervalId);
+      window.removeEventListener("click", updateActivity);
+      window.removeEventListener("keypress", updateActivity);
+      window.removeEventListener("scroll", updateActivity);
+      window.removeEventListener("mousemove", updateActivity);
+    };
+  }, [state.isConnected, disconnect]);
 
   const value: WalletContextValue = {
     ...state,

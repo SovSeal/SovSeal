@@ -60,6 +60,28 @@ export default function SettingsPage() {
         </div>
       )}
 
+      {/* Social Recovery Section */}
+      {isConnected && (
+        <div className="card-glass mb-6 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="mb-1 font-display text-xl font-semibold">
+                Social Recovery
+              </h2>
+              <p className="text-sm text-dark-400">
+                Set up guardians to recover your account if you lose access
+              </p>
+            </div>
+            <Link
+              href="/app/settings/recovery"
+              className="btn-secondary text-sm"
+            >
+              Configure
+            </Link>
+          </div>
+        </div>
+      )}
+
       {/* Storage Section */}
       <div className="card-glass mb-6 p-6">
         <h2 className="mb-4 font-display text-xl font-semibold">

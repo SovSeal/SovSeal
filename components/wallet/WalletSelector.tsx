@@ -72,11 +72,10 @@ export function WalletSelector({
                 key={wallet.id}
                 onClick={() => isAvailable && onSelect(wallet.id)}
                 disabled={!isAvailable}
-                className={`w-full rounded-lg border p-4 text-left transition-all ${
-                  isAvailable
-                    ? "border-dark-700 bg-dark-800/50 hover:border-brand-500/50 hover:bg-dark-700/50"
+                className={`w-full rounded-lg border p-4 text-left transition-all ${isAvailable
+                    ? "border-slate-500/20 bg-dark-800/50 hover:border-brand-500/30 hover:bg-dark-700/50"
                     : "cursor-not-allowed border-dark-800 bg-dark-900/50 opacity-50"
-                }`}
+                  }`}
               >
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">{wallet.icon}</span>
@@ -104,7 +103,7 @@ export function WalletSelector({
           })}
         </div>
 
-        <div className="mt-4 border-t border-dark-700 pt-4">
+        <div className="mt-4 border-t border-slate-500/20 pt-4">
           <p className="text-xs text-dark-500">
             Don&apos;t have a wallet?{" "}
             <a

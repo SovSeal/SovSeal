@@ -13,6 +13,23 @@ module.exports = {
     },
     networks: {
         // ===========================================
+        // BASE (Primary Production Network)
+        // ===========================================
+        // Base Mainnet - very low fees (~$0.001-0.01 per tx)
+        base: {
+            url: process.env.BASE_RPC || "https://mainnet.base.org",
+            accounts: process.env.DEPLOYER_PRIVATE_KEY ? [process.env.DEPLOYER_PRIVATE_KEY] : [],
+            chainId: 8453,
+            timeout: 60000,
+        },
+        // Base Sepolia Testnet
+        baseSepolia: {
+            url: process.env.BASE_SEPOLIA_RPC || "https://sepolia.base.org",
+            accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+            chainId: 84532,
+            timeout: 60000,
+        },
+        // ===========================================
         // POLKADOT (Secondary, Jan 20, 2026)
         // ===========================================
         // Polkadot Asset Hub Mainnet (available January 20, 2026)

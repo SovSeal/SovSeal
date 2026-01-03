@@ -2,15 +2,20 @@
  * Storage module exports
  *
  * Provides IPFS storage services for encrypted blob uploads and downloads.
- * Uses Storacha Network for decentralized storage.
+ * Uses Storacha Network for decentralized storage and Irys for permanent Arweave storage.
  */
 
 import { storachaService } from "./StorachaService";
+import { irysService, IrysService } from "./IrysService";
 
 export type { StorachaUploadResult, AuthState } from "./StorachaService";
+export type { IrysUploadResult, IrysUploadOptions, IrysToken, IrysConfig } from "./IrysService";
 
 // Export Storacha service for all implementations
 export { storachaService };
+
+// Export Irys service for permanent Arweave storage
+export { irysService, IrysService };
 
 // Legacy IPFS service is deprecated - use Storacha instead
 export const ipfsService = storachaService;

@@ -5,7 +5,7 @@
 "use client";
 
 import { Message } from "@/types/contract";
-import { ipfsService } from "@/lib/storage";
+import { storachaService as ipfsService } from "@/lib/storage/StorachaService";
 import { CryptoService } from "@/lib/crypto/CryptoService";
 import { AsymmetricCrypto, EncryptedKey } from "@/lib/crypto/AsymmetricCrypto";
 
@@ -73,6 +73,9 @@ export class UnlockService {
     options: UnlockOptions = {}
   ): Promise<UnlockResult> {
     const { onProgress } = options;
+
+    // Track objectUrl for cleanup on error (H2: Memory leak fix)
+    let objectUrl: string | null = null;
 
     try {
       // Stage 1: Verify timestamp
@@ -210,7 +213,7 @@ export class UnlockService {
 
       // Stage 7: Create object URL for playback
       onProgress?.("Preparing media player", 90);
-      const objectUrl = URL.createObjectURL(mediaBlob);
+      objectUrl = URL.createObjectURL(mediaBlob);
 
       // Cleanup sensitive data from memory
       CryptoService.secureCleanup(aesKeyData, encryptedData.ciphertext);
@@ -223,6 +226,11 @@ export class UnlockService {
         objectUrl,
       };
     } catch (error) {
+      // H2: Cleanup object URL on error to prevent memory leak
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl);
+      }
+
       // Ensure we provide helpful error messages
       if (error instanceof Error) {
         throw error;

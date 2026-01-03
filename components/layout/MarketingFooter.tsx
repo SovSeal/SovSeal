@@ -12,7 +12,7 @@ export function MarketingFooter() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-dark-800 bg-dark-900">
+    <footer className="border-t border-slate-500/20 bg-dark-900">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Brand */}
@@ -31,15 +31,15 @@ export function MarketingFooter() {
             {/* Trust indicators */}
             <div className="flex flex-wrap gap-4">
               <div className="flex items-center gap-2 text-sm text-dark-400">
-                <ShieldCheckIcon className="h-4 w-4 text-brand-500" />
+                <ShieldCheckIcon className="h-4 w-4 text-brand-400" />
                 <span>AES-256-GCM</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-dark-400">
-                <LockClosedIcon className="h-4 w-4 text-brand-500" />
+                <LockClosedIcon className="h-4 w-4 text-brand-400" />
                 <span>Client-side only</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-dark-400">
-                <CodeBracketIcon className="h-4 w-4 text-brand-500" />
+                <CodeBracketIcon className="h-4 w-4 text-brand-400" />
                 <span>Open source</span>
               </div>
             </div>
@@ -119,7 +119,7 @@ export function MarketingFooter() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-dark-800 pt-8 md:flex-row">
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-slate-500/20 pt-8 md:flex-row">
           <p className="text-sm text-dark-500">
             © {currentYear} SovSeal. Apache License 2.0.
           </p>

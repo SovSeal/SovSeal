@@ -2,12 +2,12 @@
  * Paymaster Module Barrel Export
  *
  * Re-exports all paymaster-related types and services.
+ * Updated for Pimlico + ZeroDev account abstraction.
  */
 
 export * from "./types";
 export { PaymasterService } from "./PaymasterService";
-export { GasEstimator } from "./GasEstimator";
+export { ZeroDevService } from "./ZeroDevService";
 
-// Note: RelayerService is intentionally NOT exported here
-// as it should only be used in server-side API routes.
-// Import it directly: import { RelayerService } from '@/lib/paymaster/RelayerService';
+// Note: PaymasterService is kept for backward compatibility (client-side utilities)
+// ZeroDevService handles actual smart account creation with Pimlico sponsorship

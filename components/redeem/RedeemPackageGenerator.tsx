@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { RedeemPackageService } from "@/lib/redeem";
-import { IPFSService } from "@/lib/storage";
+import { storachaService } from "@/lib/storage/StorachaService";
 import type { ClaimLink } from "@/types/redeem";
 
 interface RedeemPackageGeneratorProps {
@@ -73,7 +73,7 @@ export function RedeemPackageGenerator({
         RedeemPackageService.serializeEncryptedPackage(encryptedPackage);
 
       // Upload to IPFS
-      const uploadResult = await IPFSService.uploadFile(packageBlob);
+      const uploadResult = await storachaService.uploadEncryptedBlob(packageBlob);
 
       // Generate claim link
       const baseUrl = window.location.origin;

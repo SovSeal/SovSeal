@@ -8,8 +8,8 @@
  */
 
 import { useState, useEffect } from "react";
-import { storachaService } from "@/lib/storage";
-import type { AuthState } from "@/lib/storage";
+import { storachaService } from "@/lib/storage/StorachaService";
+import type { AuthState } from "@/lib/storage/StorachaService";
 
 interface StorachaAuthProps {
   onAuthComplete?: () => void;

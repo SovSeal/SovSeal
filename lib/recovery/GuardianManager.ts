@@ -7,7 +7,6 @@
 
 "use client";
 
-import { v4 as uuidv4 } from "crypto";
 import { ErrorLogger } from "@/lib/monitoring/ErrorLogger";
 import { AsymmetricCrypto } from "@/lib/crypto/AsymmetricCrypto";
 import { ShamirService } from "./ShamirService";
@@ -154,11 +153,10 @@ export class GuardianManager {
                 );
 
                 // Encrypt the share
+                // Create a proper ArrayBuffer copy from the Uint8Array slice
+                const shareData = new Uint8Array(share).buffer;
                 const encryptedKey = await AsymmetricCrypto.encryptAESKey(
-                    share.buffer.slice(
-                        share.byteOffset,
-                        share.byteOffset + share.byteLength
-                    ),
+                    shareData,
                     publicKey
                 );
 
